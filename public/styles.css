@@ -1,0 +1,93 @@
+/* -------------------------------- */
+/*            Base setup            */
+/* -------------------------------- */
+
+/* Box sizing */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* -------------------------------- */
+/*              Reset               */
+/* -------------------------------- */
+
+/* Reset margins */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+figure,
+picture {
+  margin: 0;
+}
+
+/* Make images easier to work with */
+img,
+picture {
+  display: block;
+  max-width: 100%;
+}
+
+/* Make form elements easier to work with */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+/* Make lists easier to work with */
+ul,
+li {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+/* -------------------------------- */
+/*            Variables             */
+/* -------------------------------- */
+
+:root {
+  --bg-black: #15151d;
+  --text-color: #e7e7e7;
+}
+
+/* -------------------------------- */
+/*          Global styling          */
+/* -------------------------------- */
+
+body {
+  font-family: 'Roboto Mono', monospace;
+  background: var(--bg-black);
+  color: var(--text-color);
+}
+
+.section-container {
+  height: 100%;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+}
+
+.section {
+  height: 100vh;
+  width: 100%;
+  scroll-snap-align: start;
+}
+.section:not(:last-child) {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+}
