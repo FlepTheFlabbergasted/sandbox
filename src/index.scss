@@ -1,4 +1,15 @@
 /* -------------------------------- */
+/*            Variables             */
+/* -------------------------------- */
+
+:root {
+  --bg-black: #101016;
+  --text-color: #e7e7e7;
+
+  --hexagon-size: 100px;
+}
+
+/* -------------------------------- */
 /*            Base setup            */
 /* -------------------------------- */
 
@@ -58,17 +69,6 @@ li {
 }
 
 /* -------------------------------- */
-/*            Variables             */
-/* -------------------------------- */
-
-:root {
-  --bg-black: #15151d;
-  --text-color: #e7e7e7;
-
-  --hexagon-size: 150px;
-}
-
-/* -------------------------------- */
 /*          Global styling          */
 /* -------------------------------- */
 
@@ -92,6 +92,7 @@ body {
   height: 100vh;
   width: 100%;
   scroll-snap-align: start;
+  overflow: hidden;
 }
 .section:not(:last-child) {
   border-bottom: 1px solid rgba(255, 255, 255, 0.5);
@@ -101,45 +102,48 @@ body {
 /*         Specific styling         */
 /* -------------------------------- */
 
-/* #infite-well  */
+/* ---------- infite-well --------- */
 
 #infite-well {
-  padding: 24px;
+  .hexagon-container {
+    transform: translate(calc(var(--hexagon-size) / 6 * -1), calc(var(--hexagon-size) / 3 * -1));
+  }
+
+  .hexagon-row {
+    display: flex;
+  }
+
+  $hexagonGapInit: calc(var(--hexagon-size) / 6 * -1);
+  $shiftLeft: calc(var(--hexagon-size) / 2 * -1);
+  $n: 12;
+  @for $i from 1 through $n {
+    .hexagon-row:nth-child(#{$i}) {
+      // Even rows should be moved to the left half a hexagon
+      @if $i % 2 == 0 {
+        transform: translateY(calc($hexagonGapInit * $i)) translateX($shiftLeft);
+      } @else {
+        transform: translateY(calc($hexagonGapInit * $i));
+      }
+    }
+  }
+
+  .hexagon {
+    display: inline-block;
+    min-width: var(--hexagon-size);
+    min-height: var(--hexagon-size);
+    clip-path: polygon(50% 0%, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%);
+    background: goldenrod;
+
+    &--empty {
+      @extend .hexagon;
+      background: none;
+    }
+  }
 }
 
-.box-container {
-  position: relative;
-}
-
-.hexagon-container {
-  display: flex;
-  flex-direction: column;
-}
-
-.hexagon-row {
-  display: flex;
-}
-.hexagon-row:nth-child(odd):not(:first-child) {
-  transform: translateY(calc(var(--hexagon-size) / 3 * -1));
-}
-.hexagon-row:nth-child(even) {
-  transform: translateX(calc(var(--hexagon-size) / 2 * -1)) translateY(calc(var(--hexagon-size) / 6 * -1));
-}
-.hexagon-row:nth-child(even):not(:nth-child(2)) {
-  transform: translateX(calc(var(--hexagon-size) / 2 * -1)) translateY(calc(var(--hexagon-size) / 2 * -1));
-}
-/* .hexagon-row:nth-child(even):last-child {
-  transform: translateX(calc(var(--hexagon-size) / 2 * -1)) translateY(calc(var(--hexagon-size) / 2 * -1));
-} */
-
-.hexagon {
-  display: inline-block;
-  width: var(--hexagon-size);
-  height: var(--hexagon-size);
-  clip-path: polygon(50% 0%, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%);
-
-  background: #9f2b65;
-}
+// .box-container {
+//   position: relative;
+// }
 
 /* .box {
   width: 35vw;
