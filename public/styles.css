@@ -64,6 +64,8 @@ li {
 :root {
   --bg-black: #15151d;
   --text-color: #e7e7e7;
+
+  --hexagon-size: 150px;
 }
 
 /* -------------------------------- */
@@ -74,11 +76,14 @@ body {
   font-family: 'Roboto Mono', monospace;
   background: var(--bg-black);
   color: var(--text-color);
+
+  position: relative;
 }
 
 .section-container {
   height: 100%;
   overflow-y: scroll;
+  overflow-x: hidden;
   scroll-snap-type: y mandatory;
   scroll-behavior: smooth;
 }
@@ -91,3 +96,65 @@ body {
 .section:not(:last-child) {
   border-bottom: 1px solid rgba(255, 255, 255, 0.5);
 }
+
+/* -------------------------------- */
+/*         Specific styling         */
+/* -------------------------------- */
+
+/* #infite-well  */
+
+#infite-well {
+  padding: 24px;
+}
+
+.box-container {
+  position: relative;
+}
+
+.hexagon-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.hexagon-row {
+  display: flex;
+}
+.hexagon-row:nth-child(odd):not(:first-child) {
+  transform: translateY(calc(var(--hexagon-size) / 3 * -1));
+}
+.hexagon-row:nth-child(even) {
+  transform: translateX(calc(var(--hexagon-size) / 2 * -1)) translateY(calc(var(--hexagon-size) / 6 * -1));
+}
+.hexagon-row:nth-child(even):not(:nth-child(2)) {
+  transform: translateX(calc(var(--hexagon-size) / 2 * -1)) translateY(calc(var(--hexagon-size) / 2 * -1));
+}
+/* .hexagon-row:nth-child(even):last-child {
+  transform: translateX(calc(var(--hexagon-size) / 2 * -1)) translateY(calc(var(--hexagon-size) / 2 * -1));
+} */
+
+.hexagon {
+  display: inline-block;
+  width: var(--hexagon-size);
+  height: var(--hexagon-size);
+  clip-path: polygon(50% 0%, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%);
+
+  background: #9f2b65;
+}
+
+/* .box {
+  width: 35vw;
+  height: 500px;
+  position: absolute;
+  transform-origin: center center;
+}
+
+.box:nth-child(1) {
+  background: purple;
+  transform: rotate(-45deg) translate(-3%, -71%);
+}
+.box:nth-child(2) {
+  background: hotpink;
+  transform: rotate(45deg);
+  right: -25%;
+  top: -85px;
+} */
