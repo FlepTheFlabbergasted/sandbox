@@ -177,9 +177,53 @@ body {
     --rotation: rotate(8deg) translateX(35%) translateY(15%);
   }
 
-  .card-wrapper-triangles {
+  .card-wrapper {
     position: relative;
     transform: var(--rotation);
+
+    .triangle-wrapper {
+      $triangle-size: 25px;
+      $border-fix: 12%;
+      $triangle-pos: -10px;
+
+      margin: 12px;
+      width: fit-content;
+      position: absolute;
+      padding: 2px;
+      background: var(--color-border);
+      clip-path: polygon(100% 0, 0 0, 0 100%);
+
+      &--top-left {
+        @extend .triangle-wrapper;
+        top: $triangle-pos;
+        left: $triangle-pos;
+      }
+      &--top-right {
+        @extend .triangle-wrapper;
+        top: $triangle-pos;
+        right: $triangle-pos;
+        transform: rotate(90deg);
+      }
+      &--bottom-right {
+        @extend .triangle-wrapper;
+        bottom: $triangle-pos;
+        right: $triangle-pos;
+        transform: rotate(180deg);
+      }
+      &--bottom-left {
+        @extend .triangle-wrapper;
+        bottom: $triangle-pos;
+        left: $triangle-pos;
+        transform: rotate(270deg);
+      }
+
+      .triangle {
+        width: $triangle-size;
+        height: $triangle-size;
+        background: var(--color-bg);
+        clip-path: polygon(calc(100% - $border-fix) 0, 0 0, 0 calc(100% - $border-fix));
+      }
+    }
 
     .card-wrapper-borders {
       position: relative;
@@ -205,15 +249,15 @@ body {
           top: 0;
           right: 0;
         }
-        &--bottom-left {
-          @extend .corner-box;
-          bottom: 0;
-          left: 0;
-        }
         &--bottom-right {
           @extend .corner-box;
           bottom: 0;
           right: 0;
+        }
+        &--bottom-left {
+          @extend .corner-box;
+          bottom: 0;
+          left: 0;
         }
       }
 
