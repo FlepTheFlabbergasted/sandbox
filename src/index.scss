@@ -141,24 +141,106 @@ body {
   }
 }
 
-// .box-container {
-//   position: relative;
-// }
+#fancy-cards {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 
-/* .box {
-  width: 35vw;
-  height: 500px;
-  position: absolute;
-  transform-origin: center center;
-}
+  $aspect-ratio: 1.4;
+  $corner-cutoff: 12%;
+  $corner-other: calc($corner-cutoff / $aspect-ratio);
+  $corners-off: polygon(
+    $corner-cutoff 0,
+    0 $corner-other,
+    0% calc(100% - $corner-other),
+    $corner-cutoff 100%,
+    calc(100% - $corner-cutoff) 100%,
+    100% calc(100% - $corner-other),
+    100% $corner-other,
+    calc(100% - $corner-cutoff) 0
+  );
 
-.box:nth-child(1) {
-  background: purple;
-  transform: rotate(-45deg) translate(-3%, -71%);
+  .card-wrapper {
+    position: relative;
+    padding: 3px;
+    $corner-cutoff: 10%;
+    background: transparent;
+    clip-path: $corners-off;
+
+    &--left {
+      @extend .card-wrapper;
+      --background: green;
+      transform: rotate(-8deg) translateX(-35%) translateY(15%);
+    }
+    &--middle {
+      @extend .card-wrapper;
+      --background: rgb(204, 255, 21);
+    }
+    &--right {
+      @extend .card-wrapper;
+      --background: blue;
+      transform: rotate(8deg) translateX(35%) translateY(15%);
+    }
+
+    .corner-box {
+      position: absolute;
+      min-width: 100px;
+      height: 100px;
+      background: var(--background);
+
+      &--top-left {
+        @extend .corner-box;
+        top: 0;
+        left: 0;
+      }
+      &--top-right {
+        @extend .corner-box;
+        top: 0;
+        right: 0;
+      }
+      &--bottom-left {
+        @extend .corner-box;
+        bottom: 0;
+        left: 0;
+      }
+      &--bottom-right {
+        @extend .corner-box;
+        bottom: 0;
+        right: 0;
+      }
+    }
+
+    // .deg-45 {
+    //   position: absolute;
+    //   top: 28px;
+    //   left: -42px;
+    //   width: 100px;
+    //   z-index: 5;
+    //   height: 8px;
+    //   background: white;
+    //   transform: rotate(-45deg);
+    // }
+  }
+
+  .card {
+    min-width: 350px;
+    aspect-ratio: calc(1 / $aspect-ratio);
+    position: relative;
+
+    clip-path: $corners-off;
+
+    &--left {
+      @extend .card;
+      background: rgba(255, 0, 255, 1);
+    }
+    &--middle {
+      @extend .card;
+      background: rgba(255, 86, 170, 1);
+    }
+    &--right {
+      @extend .card;
+      background: rgba(72, 255, 237, 1);
+    }
+  }
 }
-.box:nth-child(2) {
-  background: hotpink;
-  transform: rotate(45deg);
-  right: -25%;
-  top: -85px;
-} */
