@@ -148,6 +148,7 @@ body {
   align-items: center;
 
   $aspect-ratio: 1.4;
+  $border-size: 3px;
   $corner-cutoff: 12%;
   $corner-other: calc($corner-cutoff / $aspect-ratio);
   $corners-off: polygon(
@@ -162,18 +163,21 @@ body {
   );
 
   .left {
-    --color-bg: rgba(255, 0, 255, 1);
-    --color-border: green;
+    // https://unsplash.com/photos/NNTGEoohoE4?utm_source=unsplash&utm_medium=referral&utm_content=creditShareLink
+    --background-image: url('../public/images/fancy-cards-red-bg.jpg');
+    --color-border: rgb(255, 33, 33);
     --rotation: rotate(-8deg) translateX(-35%) translateY(15%);
   }
   .middle {
-    --color-bg: rgba(255, 86, 170, 1);
-    --color-border: rgb(204, 255, 21);
+    // https://unsplash.com/photos/OOE4xAnBhKo?utm_source=unsplash&utm_medium=referral&utm_content=creditShareLink
+    --background-image: url('../public/images/fancy-cards-green-bg.jpg');
+    --color-border: rgb(48, 255, 21);
     --rotation: '';
   }
   .right {
-    --color-bg: rgba(72, 255, 237, 1);
-    --color-border: blue;
+    // https://unsplash.com/photos/J1t1FY__6EI?utm_source=unsplash&utm_medium=referral&utm_content=creditShareLink
+    --background-image: url('../public/images/fancy-cards-blue-bg.jpg');
+    --color-border: rgb(21, 25, 255);
     --rotation: rotate(8deg) translateX(35%) translateY(15%);
   }
 
@@ -189,7 +193,7 @@ body {
       margin: 12px;
       width: fit-content;
       position: absolute;
-      padding: 2px;
+      padding: $border-size - 1px;
       background: var(--color-border);
       clip-path: polygon(100% 0, 0 0, 0 100%);
 
@@ -220,23 +224,28 @@ body {
       .triangle {
         width: $triangle-size;
         height: $triangle-size;
-        background: var(--color-bg);
+        background: var(--background-image);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        filter: blur(2px);
         clip-path: polygon(calc(100% - $border-fix) 0, 0 0, 0 calc(100% - $border-fix));
       }
     }
 
     .card-wrapper-borders {
       position: relative;
-      padding: 3px;
+      padding: $border-size;
       $corner-cutoff: 10%;
-      background: transparent;
+      background-image: var(--background-image);
+      background-size: cover;
       clip-path: $corners-off;
 
       .corner-box {
-        $size: 75px;
+        $corner-box-size: 75px;
         position: absolute;
-        min-width: $size;
-        height: $size;
+        min-width: $corner-box-size;
+        height: $corner-box-size;
         background: var(--color-border);
 
         &--top-left {
@@ -261,6 +270,40 @@ body {
         }
       }
 
+      .middle-border {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        position: absolute;
+        top: 50%;
+        left: 0;
+        z-index: 1;
+        width: 100%;
+        height: 50px;
+        border-left: $border-size solid var(--color-border);
+        border-right: $border-size solid var(--color-border);
+        transform: translateY(60%);
+
+        .line {
+          height: $border-size;
+          background: var(--color-border);
+
+          &--left {
+            @extend .line;
+            width: 12%;
+          }
+          &--middle {
+            @extend .line;
+            width: 50%;
+          }
+          &--right {
+            @extend .line;
+            width: 12%;
+          }
+        }
+      }
+
       // .deg-45 {
       //   position: absolute;
       //   top: 28px;
@@ -277,7 +320,8 @@ body {
       min-width: 350px;
       aspect-ratio: calc(1 / $aspect-ratio);
       position: relative;
-      background: var(--color-bg);
+      background-image: var(--background-image);
+      background-size: cover;
       clip-path: $corners-off;
     }
   }
