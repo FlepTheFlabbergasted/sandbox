@@ -151,7 +151,7 @@ body {
 
   $card-width: 350px;
   $aspect-ratio: 1.4;
-  $border-size: 3px;
+  $border-size: 4px;
   $corner-cutoff: 12%;
   $corner-other: calc($corner-cutoff / $aspect-ratio);
   $corners-off: polygon(
@@ -190,7 +190,7 @@ body {
 
     .triangle-wrapper {
       $triangle-size: 25px;
-      $border-fix: 12%;
+      $triangle-border-fix: 17%;
       $triangle-pos: -10px;
 
       margin: 12px;
@@ -232,7 +232,7 @@ body {
         background-repeat: no-repeat;
         background-size: cover;
         filter: blur(2px);
-        clip-path: polygon(calc(100% - $border-fix) 0, 0 0, 0 calc(100% - $border-fix));
+        clip-path: polygon(calc(100% - $triangle-border-fix) 0, 0 0, 0 calc(100% - $triangle-border-fix));
       }
     }
 
@@ -327,58 +327,21 @@ body {
       background-size: cover;
       clip-path: $corners-off;
 
-      // .corner-border {
-      //   $width-n-top: calc($card-width * $aspect-ratio * $corner-other / 100%);
-      //   position: absolute;
-      //   width: math.hypot($width-n-top, $width-n-top);
-      //   height: $border-size;
-      //   top: $width-n-top + 100px;
-      //   left: 100px;
-      //   background: var(--color-border);
-      //   transform-origin: top left;
-      //   transform: rotate(-45deg);
-
-      //   &::before {
-      //     content: '';
-      //     position: absolute;
-      //     width: calc(($width-n-top / 3) * 2);
-      //     height: $border-size;
-      //     top: -$border-size;
-      //     left: 0;
-      //     background: var(--color-border);
-      //     transform-origin: bottom left;
-      //     transform: rotate(135deg);
-      //   }
-
-      //   &::after {
-      //     content: '';
-      //     position: absolute;
-      //     width: calc(($width-n-top / 3) * 2);
-      //     height: $border-size;
-      //     bottom: 0;
-      //     right: 0;
-      //     // background: var(--color-border);
-      //     background: red;
-      //     transform-origin: right;
-      //     transform: rotate(-135deg);
-      //   }
-      // }
-
       .corner-border {
-        $width-n-top: calc($card-width * $aspect-ratio * $corner-other / 100%);
+        $middle-border-width-calc: calc($card-width * $aspect-ratio * $corner-other / 100%);
+        $middle-border-width: math.hypot($middle-border-width-calc, $middle-border-width-calc);
+        $side-borders-width: calc($middle-border-width / 2);
+
         position: absolute;
-        width: math.hypot($width-n-top, $width-n-top);
+        width: $middle-border-width;
         height: $border-size;
-        top: $width-n-top;
-        left: 0;
         background: var(--color-border);
         transform-origin: top left;
-        transform: rotate(-45deg);
 
         &::before {
           content: '';
           position: absolute;
-          width: calc(($width-n-top / 3) * 2);
+          width: $side-borders-width;
           height: $border-size;
           top: -$border-size;
           left: 0;
@@ -390,12 +353,37 @@ body {
         &::after {
           content: '';
           position: absolute;
-          width: calc(($width-n-top / 3) * 2);
+          width: $side-borders-width;
           height: $border-size;
-          bottom: $border-size;
-          right: 0;
+          bottom: calc(100% - $border-size);
+          right: -$side-borders-width;
           background: var(--color-border);
-          transform-origin: bottom right;
+          transform-origin: top left;
+          transform: rotate(45deg);
+        }
+
+        &--top-left {
+          @extend .corner-border;
+          top: $middle-border-width-calc;
+          left: 0;
+          transform: rotate(-45deg);
+        }
+        &--top-right {
+          @extend .corner-border;
+          top: 0;
+          right: -17px; // TODO: What relationship is this?
+          transform: rotate(45deg);
+        }
+        &--bottom-right {
+          @extend .corner-border;
+          bottom: 38px; // TODO: What relationship is this?
+          right: -$middle-border-width;
+          transform: rotate(135deg);
+        }
+        &--bottom-left {
+          @extend .corner-border;
+          bottom: -$border-size;
+          left: $middle-border-width-calc;
           transform: rotate(-135deg);
         }
       }
