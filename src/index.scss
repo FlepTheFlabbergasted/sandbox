@@ -164,29 +164,42 @@ body {
     100% $corner-other,
     calc(100% - $corner-cutoff) 0
   );
+  $neon-glow-shadow:
+    0 0 9px #ffffff62,
+    0 0 21px var(--color-border-glow),
+    0 0 151px var(--color-border-glow);
 
   .left {
     // https://unsplash.com/photos/NNTGEoohoE4?utm_source=unsplash&utm_medium=referral&utm_content=creditShareLink
     --background-image: url('../public/images/fancy-cards-red-bg.jpg');
     --color-border: rgb(255, 33, 33);
+    --color-border-glow: rgba(255, 33, 33, 0.25);
     --rotation: rotate(-8deg) translateX(-35%) translateY(15%);
   }
   .middle {
     // https://unsplash.com/photos/OOE4xAnBhKo?utm_source=unsplash&utm_medium=referral&utm_content=creditShareLink
     --background-image: url('../public/images/fancy-cards-green-bg.jpg');
     --color-border: rgb(48, 255, 21);
+    --color-border-glow: rgba(48, 255, 21, 0.25);
     --rotation: '';
   }
   .right {
     // https://unsplash.com/photos/J1t1FY__6EI?utm_source=unsplash&utm_medium=referral&utm_content=creditShareLink
     --background-image: url('../public/images/fancy-cards-blue-bg.jpg');
     --color-border: rgb(21, 25, 255);
+    --color-border-glow: rgba(21, 25, 255, 0.25);
     --rotation: rotate(8deg) translateX(35%) translateY(15%);
   }
 
   .card-wrapper {
     position: relative;
     transform: var(--rotation);
+
+    .neon-drop-shadow {
+      // Like $neon-glow-shadow
+      filter: drop-shadow(0 0 9px #ffffff62) drop-shadow(0 0 21px var(--color-border-glow))
+        drop-shadow(0 0 151px var(--color-border-glow));
+    }
 
     .triangle-wrapper {
       $triangle-size: 25px;
@@ -247,6 +260,105 @@ body {
     //   transform: rotate(-45deg);
     // }
 
+    .corner-border {
+      $middle-border-width-calc: calc($card-width * $aspect-ratio * $corner-other / 100%);
+      $middle-border-width: math.hypot($middle-border-width-calc, $middle-border-width-calc);
+      $side-borders-width: calc($middle-border-width / 2);
+
+      position: absolute;
+      width: $middle-border-width;
+      height: $border-size;
+      background: var(--color-border);
+      transform-origin: top left;
+      box-shadow: $neon-glow-shadow;
+      z-index: 1;
+
+      &::before {
+        content: '';
+        position: absolute;
+        width: $side-borders-width;
+        height: $border-size;
+        top: -$border-size;
+        left: 0;
+        background: var(--color-border);
+        transform-origin: bottom left;
+        transform: rotate(135deg);
+        box-shadow: $neon-glow-shadow;
+      }
+
+      &::after {
+        content: '';
+        position: absolute;
+        width: $side-borders-width;
+        height: $border-size;
+        bottom: calc(100% - $border-size);
+        right: -$side-borders-width;
+        background: var(--color-border);
+        transform-origin: top left;
+        transform: rotate(45deg);
+        box-shadow: $neon-glow-shadow;
+      }
+
+      &--top-left {
+        @extend .corner-border;
+        top: $middle-border-width-calc;
+        left: 0;
+        transform: rotate(-45deg);
+      }
+      &--top-right {
+        @extend .corner-border;
+        top: 0;
+        right: -17px; // TODO: What relationship is this?
+        transform: rotate(45deg);
+      }
+      &--bottom-right {
+        @extend .corner-border;
+        bottom: 38px; // TODO: What relationship is this?
+        right: -$middle-border-width;
+        transform: rotate(135deg);
+      }
+      &--bottom-left {
+        @extend .corner-border;
+        bottom: -$border-size;
+        left: $middle-border-width-calc;
+        transform: rotate(-135deg);
+      }
+    }
+
+    .middle-border {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: absolute;
+      top: 60%;
+      left: 0;
+      z-index: 1;
+      width: 100%;
+      height: 50px;
+      border-left: 4px solid var(--color-border);
+      border-right: 4px solid var(--color-border);
+      transform: translateY(-49%);
+
+      .line {
+        height: $border-size;
+        background: var(--color-border);
+        box-shadow: $neon-glow-shadow;
+
+        &--left {
+          @extend .line;
+          width: 12%;
+        }
+        &--middle {
+          @extend .line;
+          width: 60%;
+        }
+        &--right {
+          @extend .line;
+          width: 12%;
+        }
+      }
+    }
+
     .card {
       display: grid;
       grid-template-rows: 6fr 4fr;
@@ -255,100 +367,6 @@ body {
       aspect-ratio: calc(math.floor(calc(1 / $aspect-ratio) * 1000) / 1000); // Use only 3 decimals
       position: relative;
       clip-path: $corners-off;
-
-      .corner-border {
-        $middle-border-width-calc: calc($card-width * $aspect-ratio * $corner-other / 100%);
-        $middle-border-width: math.hypot($middle-border-width-calc, $middle-border-width-calc);
-        $side-borders-width: calc($middle-border-width / 2);
-
-        position: absolute;
-        width: $middle-border-width;
-        height: $border-size;
-        background: var(--color-border);
-        transform-origin: top left;
-
-        &::before {
-          content: '';
-          position: absolute;
-          width: $side-borders-width;
-          height: $border-size;
-          top: -$border-size;
-          left: 0;
-          background: var(--color-border);
-          transform-origin: bottom left;
-          transform: rotate(135deg);
-        }
-
-        &::after {
-          content: '';
-          position: absolute;
-          width: $side-borders-width;
-          height: $border-size;
-          bottom: calc(100% - $border-size);
-          right: -$side-borders-width;
-          background: var(--color-border);
-          transform-origin: top left;
-          transform: rotate(45deg);
-        }
-
-        &--top-left {
-          @extend .corner-border;
-          top: $middle-border-width-calc;
-          left: 0;
-          transform: rotate(-45deg);
-        }
-        &--top-right {
-          @extend .corner-border;
-          top: 0;
-          right: -17px; // TODO: What relationship is this?
-          transform: rotate(45deg);
-        }
-        &--bottom-right {
-          @extend .corner-border;
-          bottom: 38px; // TODO: What relationship is this?
-          right: -$middle-border-width;
-          transform: rotate(135deg);
-        }
-        &--bottom-left {
-          @extend .corner-border;
-          bottom: -$border-size;
-          left: $middle-border-width-calc;
-          transform: rotate(-135deg);
-        }
-      }
-
-      .middle-border {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        position: absolute;
-        top: 60%;
-        left: 0;
-        z-index: 1;
-        width: 100%;
-        height: 50px;
-        border-left: 4px solid var(--color-border);
-        border-right: 4px solid var(--color-border);
-        transform: translateY(-49%);
-
-        .line {
-          height: $border-size;
-          background: var(--color-border);
-
-          &--left {
-            @extend .line;
-            width: 12%;
-          }
-          &--middle {
-            @extend .line;
-            width: 60%;
-          }
-          &--right {
-            @extend .line;
-            width: 12%;
-          }
-        }
-      }
 
       .top-content {
         display: flex;
@@ -361,7 +379,7 @@ body {
       .bottom-content {
         width: 100%;
         height: 100%;
-        background: rgba(9, 9, 19, 1);
+        background: rgba(9, 9, 19, 0.6);
       }
     }
   }
