@@ -75,12 +75,12 @@ li {
 /* -------------------------------- */
 
 body {
-  font-family: 'Roboto Mono', monospace;
-  background: var(--bg-black);
-  color: var(--text-color);
-
   position: relative;
-  overflow: scroll;
+
+  background: var(--bg-black);
+
+  color: var(--text-color);
+  font-family: 'Roboto Mono', monospace;
 }
 
 /* -------------------------------- */
