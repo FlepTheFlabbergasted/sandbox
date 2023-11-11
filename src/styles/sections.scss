@@ -2,14 +2,13 @@
   width: 100%;
   height: 100%;
 
-  overflow-scrolling: touch;
-  -webkit-overflow-scrolling: touch;
-  overflow-anchor: none;
-  overflow-y: scroll;
-
-  scroll-snap-type: y mandatory;
-  scroll-snap-stop: normal;
-  scroll-behavior: auto;
+  /* Set by JS to be able to scroll initially to a section */
+  // -webkit-overflow-scrolling: touch;
+  // overflow-anchor: none;
+  // overflow-y: auto;
+  // scroll-snap-type: y mandatory;
+  // scroll-snap-stop: normal;
+  // scroll-behavior: auto;
 }
 
 .section {
@@ -17,8 +16,8 @@
   height: 100vh;
   overflow: hidden;
 
-  scroll-snap-align: start;
-  scroll-snap-stop: normal;
+  // scroll-snap-align: start;
+  // scroll-snap-stop: normal;
 
   &:not(:last-child) {
     border-bottom: 1px solid rgba(255, 255, 255, 0.5);
