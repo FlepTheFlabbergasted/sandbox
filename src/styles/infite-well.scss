@@ -1,3 +1,7 @@
+:root {
+  --hexagon-size: 100px;
+}
+
 #infite-well {
   .hexagon-container {
     transform: translate(calc(var(--hexagon-size) / 6 * -1), calc(var(--hexagon-size) / 3 * -1));

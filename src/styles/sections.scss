@@ -1,16 +1,24 @@
-.section-container {
+#section-container {
+  width: 100%;
   height: 100%;
+
+  overflow-scrolling: touch;
+  -webkit-overflow-scrolling: touch;
+  overflow-anchor: none;
   overflow-y: scroll;
-  // overflow-x: hidden;
+
   scroll-snap-type: y mandatory;
-  scroll-behavior: smooth;
+  scroll-snap-stop: normal;
+  scroll-behavior: auto;
 }
 
 .section {
-  height: 100vh;
   width: 100%;
+  height: 100vh;
+  overflow: hidden;
+
   scroll-snap-align: start;
-  // overflow: hidden;
+  scroll-snap-stop: normal;
 
   &:not(:last-child) {
     border-bottom: 1px solid rgba(255, 255, 255, 0.5);
