@@ -3,7 +3,7 @@ const path = require('path');
 const devMode = process.env.NODE_ENV !== 'production';
 
 module.exports = {
-  entry: [__dirname + '/src/index.js', __dirname + '/src/index.scss'],
+  entry: [__dirname + '/src/index.js', __dirname + '/src/styles/index.scss'],
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'index.min.js',

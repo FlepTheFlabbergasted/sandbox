@@ -1,148 +1,5 @@
 @use 'sass:math';
 
-/* -------------------------------- */
-/*            Variables             */
-/* -------------------------------- */
-
-:root {
-  --bg-black: #101016;
-  --text-color: #e7e7e7;
-
-  --hexagon-size: 100px;
-}
-
-/* -------------------------------- */
-/*            Base setup            */
-/* -------------------------------- */
-
-/* Box sizing */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-html,
-body {
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  padding: 0;
-}
-
-/* -------------------------------- */
-/*              Reset               */
-/* -------------------------------- */
-
-/* Reset margins */
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p,
-figure,
-picture {
-  margin: 0;
-}
-
-/* Make images easier to work with */
-img,
-picture {
-  display: block;
-  max-width: 100%;
-}
-
-/* Make form elements easier to work with */
-input,
-button,
-textarea,
-select {
-  font: inherit;
-}
-
-/* Make lists easier to work with */
-ul,
-li {
-  padding: 0;
-  margin: 0;
-  list-style: none;
-}
-
-/* -------------------------------- */
-/*          Global styling          */
-/* -------------------------------- */
-
-body {
-  font-family: 'Roboto Mono', monospace;
-  background: var(--bg-black);
-  color: var(--text-color);
-
-  position: relative;
-}
-
-.section-container {
-  height: 100%;
-  overflow-y: scroll;
-  // overflow-x: hidden;
-  scroll-snap-type: y mandatory;
-  scroll-behavior: smooth;
-}
-
-.section {
-  height: 100vh;
-  width: 100%;
-  scroll-snap-align: start;
-  // overflow: hidden;
-}
-.section:not(:last-child) {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
-}
-
-/* -------------------------------- */
-/*         Specific styling         */
-/* -------------------------------- */
-
-/* ---------- infite-well --------- */
-
-#infite-well {
-  .hexagon-container {
-    transform: translate(calc(var(--hexagon-size) / 6 * -1), calc(var(--hexagon-size) / 3 * -1));
-  }
-
-  .hexagon-row {
-    display: flex;
-  }
-
-  $hexagonGapInit: calc(var(--hexagon-size) / 6 * -1);
-  $shiftLeft: calc(var(--hexagon-size) / 2 * -1);
-  $n: 12;
-  @for $i from 1 through $n {
-    .hexagon-row:nth-child(#{$i}) {
-      // Even rows should be moved to the left half a hexagon
-      @if $i % 2 == 0 {
-        transform: translateY(calc($hexagonGapInit * $i)) translateX($shiftLeft);
-      } @else {
-        transform: translateY(calc($hexagonGapInit * $i));
-      }
-    }
-  }
-
-  .hexagon {
-    display: inline-block;
-    min-width: var(--hexagon-size);
-    min-height: var(--hexagon-size);
-    clip-path: polygon(50% 0%, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%);
-    background: goldenrod;
-
-    &--empty {
-      @extend .hexagon;
-      background: none;
-    }
-  }
-}
-
 #fancy-cards {
   display: flex;
   flex-direction: row;
@@ -171,21 +28,21 @@ body {
 
   .left {
     // https://unsplash.com/photos/NNTGEoohoE4?utm_source=unsplash&utm_medium=referral&utm_content=creditShareLink
-    --background-image: url('../public/images/fancy-cards-red-bg-sm.jpg');
+    --background-image: url('../../public/images/fancy-cards-red-bg-sm.jpg');
     --color-border: rgb(255, 33, 33);
     --color-border-glow: rgba(255, 33, 33, 0.25);
     --rotation: rotate(-8deg) translateX(-35%) translateY(15%);
   }
   .middle {
     // https://unsplash.com/photos/OOE4xAnBhKo?utm_source=unsplash&utm_medium=referral&utm_content=creditShareLink
-    --background-image: url('../public/images/fancy-cards-green-bg-sm.jpg');
+    --background-image: url('../../public/images/fancy-cards-green-bg-sm.jpg');
     --color-border: rgb(48, 255, 21);
     --color-border-glow: rgba(48, 255, 21, 0.25);
     --rotation: '';
   }
   .right {
     // https://unsplash.com/photos/J1t1FY__6EI?utm_source=unsplash&utm_medium=referral&utm_content=creditShareLink
-    --background-image: url('../public/images/fancy-cards-blue-bg-sm.jpg');
+    --background-image: url('../../public/images/fancy-cards-blue-bg-sm.jpg');
     --color-border: rgb(21, 25, 255);
     --color-border-glow: rgba(21, 25, 255, 0.25);
     --rotation: rotate(8deg) translateX(35%) translateY(15%);
