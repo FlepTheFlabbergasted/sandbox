@@ -1,0 +1,128 @@
+@use 'sass:math';
+
+$aspect-ratio: 1.65;
+$phone-color: rgb(14, 14, 14);
+
+#phone-scroll {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .box2 {
+    width: 322px;
+    background-color: #faebd7;
+    height: 229px;
+    clip-path: polygon(100% 100%, 0% 100%, 0% 0%, 100% 0%);
+    margin: 0 auto;
+  }
+
+  .svg-rounded-corners {
+    visibility: hidden;
+    position: absolute;
+    width: 0px;
+    height: 0px;
+  }
+
+  .box_parent {
+    filter: url('#svg-filter-rounded-corners');
+  }
+
+  .test-img {
+    width: 550px;
+    height: 550px;
+    background: rgb(124, 30, 30);
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    clip-path: inset(12px 12px round 30px);
+
+    // clip-path: polygon(
+    //   0% 0%,
+    //   0% 100%,
+    //   12px 100%,
+    //   12px 12px,
+    //   calc(100% - 12px) 12px,
+    //   calc(100% - 12px) calc(100% - 12px),
+    //   12px calc(100% - 12px),
+    //   12px 100%,
+    //   100% 100%,
+    //   100% 0%
+    // );
+    // filter: url('#svg-filter-rounded-corners');
+  }
+
+  .mobile-phone {
+    width: 400px;
+    aspect-ratio: calc(math.floor(calc(1 / $aspect-ratio) * 1000) / 1000); // Use only 3 decimals
+
+    position: relative;
+
+    padding: 12px 12px 20px;
+
+    background: $phone-color;
+    border-radius: 30px;
+    box-shadow: inset 0 0 6px rgb(58 58 58 / 60%);
+
+    clip-path: polygon(
+      0% 0%,
+      0% 100%,
+      12px 100%,
+      12px 12px,
+      calc(100% - 12px) 12px,
+      calc(100% - 12px) calc(100% - 12px),
+      12px calc(100% - 12px),
+      12px 100%,
+      100% 100%,
+      100% 0%
+    );
+  }
+
+  .screen {
+    width: 100%;
+    height: 100%;
+
+    position: relative;
+
+    // background: #645e5e;
+    border-radius: 30px;
+    box-shadow: inset 0 0 6px rgb(58 58 58);
+  }
+
+  .brove {
+    width: 36px;
+    height: 18px;
+
+    position: absolute;
+    top: 0px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    background: $phone-color;
+    border-radius: 0 0 20px 20px;
+
+    .front-camera {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      width: 12px;
+      height: 12px;
+
+      margin: auto;
+
+      background: #7d7979;
+      border-radius: 20px;
+      box-shadow: inset 0 0 3px black;
+
+      .stuff {
+        width: 8px;
+        height: 8px;
+        background: rgb(24, 23, 23);
+        border-radius: 4px;
+      }
+    }
+  }
+}

@@ -313,9 +313,37 @@
       </div>
     </section>
 
-    <!---------- ... ---------->
-    <section class="section" id="todo">
-      <h1>Blah 3</h1>
+    <!---------- Phone Scroll ---------->
+    <section class="section" id="phone-scroll">
+      <!-- https://www.plantcss.com/blog/how-to-make-rounded-corners-when-using-css-clip-path -->
+      <svg class="svg-rounded-corners">
+        <defs>
+          <filter id="svg-filter-rounded-corners">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="8" result="blur" />
+            <feColorMatrix
+              in="blur"
+              mode="matrix"
+              values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9"
+              result="svg-filter-rounded-corners"
+            />
+            <feComposite in="SourceGraphic" in2="svg-filter-rounded-corners" operator="atop" />
+          </filter>
+        </defs>
+      </svg>
+
+      <!-- <div class="box_parent">
+        <div class="box2"></div>
+      </div> -->
+
+      <div class="test-img"></div>
+
+      <div class="mobile-phone">
+        <div class="screen">
+          <div class="brove">
+            <div class="front-camera"><div class="stuff"></div></div>
+          </div>
+        </div>
+      </div>
     </section>
   </body>
 </html>
