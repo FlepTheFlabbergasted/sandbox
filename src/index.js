@@ -4,7 +4,7 @@ const body = document.body;
 
 body.onload = () => {
   const panelSnap = new PanelSnap({
-    container: document.body,
+    container: body,
     panelSelector: '> section',
     directionThreshold: 100,
     delay: 0,
