@@ -1,0 +1,74 @@
+@use 'sass:math';
+
+#border-animation {
+  .card {
+    $card-width: 350px;
+    $aspect-ratio: 1.4;
+    $card-background: rgb(20, 20, 20);
+    $border-radius: 12px;
+    $border-width: 5px;
+    $border-start-deg: 30;
+
+    min-width: $card-width;
+    aspect-ratio: calc(math.floor(calc(1 / $aspect-ratio) * 1000) / 1000); // Use only 3 decimals
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: relative;
+    overflow: hidden;
+    background: $card-background;
+    border-radius: $border-radius;
+    padding: $border-width;
+
+    &::before {
+      content: '';
+      width: 50%;
+      height: 150%;
+      // https://angrytools.com/gradient/
+      background: conic-gradient(
+        from 87deg at 50% 50%,
+        rgba(0, 0, 0, 0) 20%,
+        rgb(0, 120, 255) 30%,
+        rgba(0, 0, 0, 0) 50%,
+        rgba(0, 0, 0, 0) 70%,
+        rgb(0, 120, 255) 80%
+      );
+
+      position: absolute;
+      transform: rotate($border-start-deg + deg);
+      pointer-events: none;
+      // TODO: Move the same speed around the rectangle (longer distance to travel on height than on width)
+      animation: rotate 2s linear infinite;
+      animation-play-state: paused;
+    }
+
+    &::after {
+      content: '';
+      background: $card-background;
+      border-radius: $border-radius;
+      position: absolute;
+      inset: $border-width;
+      pointer-events: none;
+    }
+
+    &:hover::before {
+      animation-play-state: running;
+    }
+
+    @keyframes rotate {
+      from {
+        transform: rotate($border-start-deg + deg);
+      }
+      from {
+        transform: rotate(calc(-1 * (360 - $border-start-deg)) + deg);
+      }
+    }
+
+    .content {
+      z-index: 9;
+      padding: 16px 16px 24px;
+    }
+  }
+}
