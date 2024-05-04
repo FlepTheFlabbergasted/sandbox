@@ -1,31 +1,85 @@
 @use 'sass:math';
 
+$golden-ratio: 1.6180339887498948482;
+
+/// Remove the unit of a length
+/// @param {Number} $number - Number to remove unit from
+/// @return {Number} - Unitless number
+/// @see https://css-tricks.com/snippets/sass/strip-unit-function/
+@function strip-unit($number) {
+  @if type-of($number) == 'number' and not unitless($number) {
+    @return math.div($number, ($number * 0 + 1));
+  }
+
+  @return $number;
+}
+
 #border-animation {
   .card {
     $card-width: 350px;
-    $aspect-ratio: 1.4;
+    $card-height: $card-width * 1.1; // * $golden-ratio;
     $card-background: rgb(20, 20, 20);
     $border-radius: 12px;
     $border-width: 5px;
-    $border-start-deg: 30;
 
-    min-width: $card-width;
-    aspect-ratio: calc(math.floor(calc(1 / $aspect-ratio) * 1000) / 1000); // Use only 3 decimals
+    width: $card-width;
+    height: $card-height;
+
+    // ==========================================================
+
+    // Calculate the angles to the corners so we can have the same apparent speed around the rectangle
+
+    $triangle-side-a: calc(strip-unit($card-width) / 2);
+    $triangle-side-b: calc(strip-unit($card-height) / 2);
+    $triangle-side-c: strip-unit(math.hypot($triangle-side-a, $triangle-side-b)); // hypotenuse
+
+    $offset-side-a: calc(strip-unit($card-width) / 2 / 2);
+    $offset-side-b: $triangle-side-c;
+    $offset-angle: strip-unit(math.atan(calc($offset-side-a / $offset-side-b))) + 1; // +1 because.... idk man i looks better
+
+    $angle-top-right-corner: strip-unit(math.atan(calc($triangle-side-a / $triangle-side-b))) - $offset-angle;
+    $angle-bottom-right-corner: strip-unit(math.atan(calc($triangle-side-b / $triangle-side-a))) + 90 - $offset-angle;
+    $angle-bottom-left-corner: $angle-top-right-corner + 180;
+    $angle-top-left-corner: $angle-bottom-right-corner + 180;
+
+    // ==========================================================
 
     display: flex;
     justify-content: center;
     align-items: center;
 
     position: relative;
-    overflow: hidden;
+    overflow: hidden; // Comment out to view "magic"
     background: $card-background;
     border-radius: $border-radius;
     padding: $border-width;
 
+    // .debug-line-1 {
+    //   width: 1px;
+    //   height: $card-height * 2;
+    //   background-color: red;
+    //   position: absolute;
+    //   transform: rotate(strip-unit(math.atan(calc($triangle-side-a / $triangle-side-b))) + deg);
+    // }
+    // .debug-line-2 {
+    //   width: 1px;
+    //   height: $card-height * 2;
+    //   background-color: red;
+    //   position: absolute;
+    //   transform: rotate(strip-unit(math.atan(calc($triangle-side-b / $triangle-side-a))) + 90 + deg);
+    // }
+    // .debug-line-3 {
+    //   width: 1px;
+    //   height: $card-height * 2;
+    //   background-color: green;
+    //   position: absolute;
+    //   transform: rotate($offset-angle + deg);
+    // }
+
     &::before {
       content: '';
       width: 50%;
-      height: 150%;
+      height: 200%;
       // https://angrytools.com/gradient/
       background: conic-gradient(
         from 87deg at 50% 50%,
@@ -37,13 +91,13 @@
       );
 
       position: absolute;
-      transform: rotate($border-start-deg + deg);
       pointer-events: none;
-      // TODO: Move the same speed around the rectangle (longer distance to travel on height than on width)
+
       animation: rotate 2s linear infinite;
       animation-play-state: paused;
     }
 
+    // Comment out to view "magic"
     &::after {
       content: '';
       background: $card-background;
@@ -58,11 +112,20 @@
     }
 
     @keyframes rotate {
-      from {
-        transform: rotate($border-start-deg + deg);
+      0% {
+        transform: rotate($angle-top-right-corner + deg);
       }
-      from {
-        transform: rotate(calc(-1 * (360 - $border-start-deg)) + deg);
+      25% {
+        transform: rotate($angle-bottom-right-corner + deg);
+      }
+      50% {
+        transform: rotate($angle-bottom-left-corner + deg);
+      }
+      75% {
+        transform: rotate($angle-top-left-corner + deg);
+      }
+      100% {
+        transform: rotate((360 + $angle-top-right-corner) + deg);
       }
     }
 
