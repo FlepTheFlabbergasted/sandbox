@@ -15,7 +15,6 @@
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: repeat(var(--side-menu-rows), 1fr);
-    gap: 50px;
 
     width: 42px;
     height: 100%;
@@ -27,6 +26,12 @@
     .tile {
       width: 42px;
       height: 42px;
+      cursor: pointer;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
       background:
         linear-gradient($transparent 0 0) top / 100% 1px,
         linear-gradient($transparent 0 0) bottom / 100% 1px,
@@ -35,16 +40,20 @@
       background-repeat: no-repeat;
       // transition: all 0.9s; // TODO: Not really working...
 
-      // box-shadow: 0px 0px 20px 0px rgba(255, 0, 0, 0.75);
-      // clip-path: inset(0px -60px 0px 0px);
+      box-shadow: 0px 0px 20px 0px rgba(255, 0, 0, 0.75);
+      clip-path: polygon(100% 0%, 0% 0%, 0% 100%, 100% 100%, 100% 200%, 200% 200%, 200% -100%, 100% -100%);
 
       &:hover {
         background:
           linear-gradient($border-color 0 0) top / 100% 1px,
+          // linear-gradient(rgba(0, 0, 0, 0.5) 0%, rgba(255, 0, 0, 0.75) 30%),
           linear-gradient($border-color 0 0) bottom / 100% 1px,
           linear-gradient($transparent 0 0) left / 1px 100%,
-          linear-gradient($transparent 0 0) right / 1px 100%;
+          linear-gradient($transparent 0 0) right / 1px 100%,
+          $transparent;
         background-repeat: no-repeat;
+        box-shadow: none;
+        clip-path: unset;
       }
     }
 
