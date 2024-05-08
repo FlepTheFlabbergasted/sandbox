@@ -6,6 +6,7 @@ const section = document.getElementById('side-menu');
 const menu = section.getElementsByClassName('menu')[0];
 
 const polygonSpeaker = 'polygon(100% 0%, 0% 0%, 0% 100%, 100% 100%, 100% 200%, 200% 200%, 200% -100%, 100% -100%)'; // "speaker" shape
+// const polygonSpeaker = 'polygon(0% 1%, 100% 1%, 100% 200%, 200% 200%, 200% -200%, 100% -200%, 100% 99%, 0% 99%)'; // "speaker" shape with -1% top n bot to prevent bleeding of box shadow
 const polygonSquareTop = 'polygon(0% 0%, 0% 0%, 0% 100%, 100% 100%, 100% 200%, 200% 200%, 200% -100%, 0% -100%)'; // "square" with 1/4 removed on top left
 const polygonSquareBot = 'polygon(100% 0%, 0% 0%, 0% 100%, 0% 100%, 0% 200%, 200% 200%, 200% -100%, 100% -100%)'; // "square" with 1/4 removed on bot left
 
