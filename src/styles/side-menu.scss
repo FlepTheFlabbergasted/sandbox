@@ -8,16 +8,45 @@
 
 #side-menu {
   .menu {
-    @extend .icons-in-menu-container;
+    $border-color: rgba(255, 0, 0, 0.9);
+    $transparent: rgba(0, 0, 0, 0);
+
+    // @extend .icons-in-menu-container;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(var(--side-menu-rows), 1fr);
+    gap: 50px;
 
     width: 42px;
     height: 100%;
-    padding: 16px 0 24px 0;
-    border-right: 1px solid rgba(255, 0, 0, 0.9);
-    box-shadow: 0px 0px 20px 0px rgba(255, 0, 0, 0.75);
-    animation: border-glow 10s ease infinite;
+    // padding: 16px 0 24px 0;
+    // border-right: 1px solid rgba(255, 0, 0, 0.9);
+    // box-shadow: 0px 0px 20px 0px rgba(255, 0, 0, 0.75);
+    // animation: border-glow 10s ease infinite;
 
-    overflow: hidden;
+    .tile {
+      width: 42px;
+      height: 42px;
+      background:
+        linear-gradient($transparent 0 0) top / 100% 1px,
+        linear-gradient($transparent 0 0) bottom / 100% 1px,
+        linear-gradient($transparent 0 0) left / 1px 100%,
+        linear-gradient($border-color 0 0) right / 1px 100%;
+      background-repeat: no-repeat;
+      // transition: all 0.9s; // TODO: Not really working...
+
+      // box-shadow: 0px 0px 20px 0px rgba(255, 0, 0, 0.75);
+      // clip-path: inset(0px -60px 0px 0px);
+
+      &:hover {
+        background:
+          linear-gradient($border-color 0 0) top / 100% 1px,
+          linear-gradient($border-color 0 0) bottom / 100% 1px,
+          linear-gradient($transparent 0 0) left / 1px 100%,
+          linear-gradient($transparent 0 0) right / 1px 100%;
+        background-repeat: no-repeat;
+      }
+    }
 
     .top,
     .bottom {

@@ -1,4 +1,5 @@
 import PanelSnap from 'panelsnap';
+import './scripts/side-menu';
 
 const body = document.body;
 
