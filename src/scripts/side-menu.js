@@ -1,6 +1,6 @@
 // Most of code from https://www.youtube.com/watch?v=bAwEj_mSzOs&ab_channel=Hyperplexed
 
-const TILE_SIZE_PX = 42;
+const TILE_HEIGHT_PX = 42;
 
 const section = document.getElementById('side-menu');
 const menu = section.getElementsByClassName('menu')[0];
@@ -45,7 +45,7 @@ const createTiles = (nrRows) => {
 
 const createGrid = () => {
   menu.innerHTML = '';
-  let rows = Math.ceil(section.clientHeight / TILE_SIZE_PX);
+  let rows = Math.ceil(section.clientHeight / TILE_HEIGHT_PX);
   menu.style.setProperty('--side-menu-rows', rows);
 
   createTiles(rows);
