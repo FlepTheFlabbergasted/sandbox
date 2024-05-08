@@ -35,12 +35,16 @@
       position: relative;
 
       background:
-        linear-gradient($transparent 0 0) top / 100% 1px,
-        linear-gradient($transparent 0 0) bottom / 100% 1px,
-        linear-gradient($transparent 0 0) left / 1px 100%,
-        linear-gradient($border-color 0 0) right / 1px 100%;
+        // top right to left
+        linear-gradient($transparent 0 0) 100% 0% / 0% 1px,
+        // bottom right to left
+        linear-gradient($transparent 0 0) 100% 100% / 0% 1px,
+        // top left to bottom left
+        linear-gradient($transparent 0 0) 100% 0% / 1px 100%,
+        // top right to bottom right
+        linear-gradient($border-color 0 0) 100% 100% / 1px 100%;
       background-repeat: no-repeat;
-      // transition: all 0.9s; // TODO: Not really working...
+      transition: all 0.2s ease-out; // For backgorund: linear-gradient it only works the distance not the color
 
       box-shadow: 0px 0px 20px 0px rgba(255, 0, 0, 0.75);
       clip-path: polygon(
@@ -56,11 +60,14 @@
 
       &:hover {
         background:
-          linear-gradient($border-color 0 0) top / 100% 1px,
-          linear-gradient($border-color 0 0) bottom / 100% 1px,
-          linear-gradient($transparent 0 0) left / 1px 100%,
-          linear-gradient($transparent 0 0) right / 1px 100%,
-          $transparent;
+          // top right to left
+          linear-gradient($border-color 0 0) 100% 0% / 100% 1px,
+          // bottom right to left
+          linear-gradient($border-color 0 0) 100% 100% / 100% 1px,
+          // top left to bottom left
+          linear-gradient($transparent 0 0) 100% 0% / 1px 100%,
+          // top right to bottom right
+          linear-gradient($transparent 0 0) 100% 100%/ 1px 100%;
         background-repeat: no-repeat;
         box-shadow: none;
       }
