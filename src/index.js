@@ -1,11 +1,9 @@
 import PanelSnap from 'panelsnap';
 import './scripts/side-menu';
 
-const body = document.body;
-
-body.onload = () => {
+window.addEventListener('load', () => {
   const panelSnap = new PanelSnap({
-    container: body,
+    container: document.body,
     panelSelector: '> section',
     directionThreshold: 100,
     delay: 0,
@@ -14,7 +12,7 @@ body.onload = () => {
   });
 
   panelSnap.on('activatePanel', (activatePanel) => setSectionUrlHash(activatePanel.id));
-};
+});
 
 function setSectionUrlHash(sectionId) {
   history.replaceState(undefined, undefined, `#${sectionId}`);

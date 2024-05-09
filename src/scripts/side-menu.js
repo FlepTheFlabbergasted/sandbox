@@ -1,4 +1,4 @@
-// Most of code from https://www.youtube.com/watch?v=bAwEj_mSzOs&ab_channel=Hyperplexed
+// Tile code from https://www.youtube.com/watch?v=bAwEj_mSzOs&ab_channel=Hyperplexed
 
 const TILE_HEIGHT_PX = 42;
 
@@ -7,33 +7,36 @@ const menu = section.getElementsByClassName('menu')[0];
 const topIcons = ['fa-solid fa-music fa-lg', 'fa-solid fa-code fa-lg'];
 const bottomIcons = ['fa-regular fa-circle-user fa-lg', 'fa-solid fa-gear fa-lg'];
 
-const polygonSpeaker = 'polygon(100% 0%, 0% 0%, 0% 100%, 100% 100%, 100% 200%, 200% 200%, 200% -100%, 100% -100%)'; // "speaker" shape
-// const polygonSpeaker = 'polygon(0% 1%, 100% 1%, 100% 200%, 200% 200%, 200% -200%, 100% -200%, 100% 99%, 0% 99%)'; // "speaker" shape with -1% top n bot to prevent bleeding of box shadow
-const polygonSquareTop = 'polygon(0% 0%, 0% 0%, 0% 100%, 100% 100%, 100% 200%, 200% 200%, 200% -100%, 0% -100%)'; // "square" with 1/4 removed on top left
-const polygonSquareBot = 'polygon(100% 0%, 0% 0%, 0% 100%, 0% 100%, 0% 200%, 200% 200%, 200% -100%, 100% -100%)'; // "square" with 1/4 removed on bot left
-
 const createTile = (nrRows, index) => {
   const tile = document.createElement('div');
-  tile.classList.add('tile');
+  tile.classList.add('tile', 'polygon-speaker');
   tile.setAttribute('data-tile-index', index);
   //   tile.innerHTML = 'test';
 
   tile.addEventListener('mouseover', () => {
     if (index > 0) {
-      menu.querySelector(`.tile[data-tile-index='${index - 1}']`).style.setProperty('clip-path', polygonSquareBot);
+      menu
+        .querySelector(`.tile[data-tile-index='${index - 1}']`)
+        .classList.replace('polygon-speaker', 'polygon-square-bot');
     }
 
     if (index < nrRows - 1) {
-      menu.querySelector(`.tile[data-tile-index='${index + 1}']`).style.setProperty('clip-path', polygonSquareTop);
+      menu
+        .querySelector(`.tile[data-tile-index='${index + 1}']`)
+        .classList.replace('polygon-speaker', 'polygon-square-top');
     }
   });
   tile.addEventListener('mouseout', () => {
     if (index > 0) {
-      menu.querySelector(`.tile[data-tile-index='${index - 1}']`).style.setProperty('clip-path', polygonSpeaker);
+      menu
+        .querySelector(`.tile[data-tile-index='${index - 1}']`)
+        .classList.replace('polygon-square-bot', 'polygon-speaker');
     }
 
     if (index < nrRows - 1) {
-      menu.querySelector(`.tile[data-tile-index='${index + 1}']`).style.setProperty('clip-path', polygonSpeaker);
+      menu
+        .querySelector(`.tile[data-tile-index='${index + 1}']`)
+        .classList.replace('polygon-square-top', 'polygon-speaker');
     }
   });
 
@@ -62,5 +65,5 @@ const createTiles = () => {
   }
 };
 
-document.body.onload = () => createTiles();
+window.addEventListener('load', () => createTiles());
 window.onresize = () => createTiles();
