@@ -1,6 +1,7 @@
 #side-menu {
   $border-color: rgba(255, 0, 0, 0.9);
   $shadow-color: rgba(255, 0, 0, 0.75);
+  $bow-shadow: 0px 0px 18px 0px $shadow-color;
   $transparent: rgba(0, 0, 0, 0);
 
   // =====================================
@@ -39,10 +40,6 @@
 
     width: 42px;
     height: 100%;
-    // padding: 16px 0 24px 0;
-    // border-right: 1px solid rgba(255, 0, 0, 0.9);
-    // box-shadow: 0px 0px 20px 0px rgba(255, 0, 0, 0.75);
-    // animation: border-glow 10s ease infinite;
 
     .tile {
       @extend .polygon-speaker;
@@ -68,7 +65,9 @@
       transition: all 0.2s ease-out; // For backgorund: linear-gradient it only works the distance not the color
 
       // background: red;
-      box-shadow: 0px 0px 20px 0px $shadow-color;
+      box-shadow: $bow-shadow;
+
+      animation: border-glow 10s linear infinite;
     }
   }
 
@@ -85,18 +84,34 @@
     clip-path: polygon(100% 0%, 0% 0%, 0% 100%, 0% 100%, 0% 200%, 200% 200%, 200% -100%, 100% -100%) !important;
   }
 
+  // Kinda line sine wave like __|_-___-_-__
   @keyframes border-glow {
     0% {
+      box-shadow: $bow-shadow;
+    }
+    10% {
+      box-shadow: 0px 0px 23px 2px $shadow-color;
+    }
+    20% {
+      box-shadow: $bow-shadow;
+    }
+    40% {
+      box-shadow: 0px 0px 20px 2px $shadow-color;
+    }
+    50% {
+      box-shadow: $bow-shadow;
+    }
+    70% {
       box-shadow: 0px 0px 20px 0px $shadow-color;
     }
-    33% {
-      box-shadow: 2px 0px 19px 2px rgba(255, 0, 0, 0.6);
+    75% {
+      box-shadow: $bow-shadow;
     }
-    66% {
-      box-shadow: -2px 0px 21px 1px rgba(255, 0, 0, 0.8);
+    80% {
+      box-shadow: 0px 0px 21px 1px $shadow-color;
     }
     100% {
-      box-shadow: 0px 0px 20px 0px $shadow-color;
+      box-shadow: $bow-shadow;
     }
   }
 }
