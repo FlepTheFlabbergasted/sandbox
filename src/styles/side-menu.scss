@@ -1,47 +1,37 @@
-.icons-in-menu-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  // gap: 16px;
-}
-
-// =====================================
-//   Classes to be set/unset by scipt
-// =====================================
-.polygon-speaker {
-  // "speaker" shape
-  clip-path: polygon(100% 0%, 0% 0%, 0% 100%, 100% 100%, 100% 200%, 200% 200%, 200% -100%, 100% -100%);
-}
-.polygon-square-top {
-  // "square" with 1/4 removed on top left
-  clip-path: polygon(0% 0%, 0% 0%, 0% 100%, 100% 100%, 100% 200%, 200% 200%, 200% -100%, 0% -100%);
-}
-.polygon-square-bot {
-  // "square" with 1/4 removed on bot left
-  clip-path: polygon(100% 0%, 0% 0%, 0% 100%, 0% 100%, 0% 200%, 200% 200%, 200% -100%, 100% -100%);
-}
-// clip-path: polygon(
-//   0% 1%,
-//   100% 1%,
-//   100% 200%,
-//   200% 200%,
-//   200% -200%,
-//   100% -200%,
-//   100% 100%,
-//   0% 100%
-// ); // "speaker" shape with -1% top n bot to prevent bleeding of box shadow
-.cursor-pointer {
-  cursor: pointer;
-}
-// =====================================
-
 #side-menu {
-  .menu {
-    $border-color: rgba(255, 0, 0, 0.9);
-    $transparent: rgba(0, 0, 0, 0);
+  $border-color: rgba(255, 0, 0, 0.9);
+  $shadow-color: rgba(255, 0, 0, 0.75);
+  $transparent: rgba(0, 0, 0, 0);
 
-    // @extend .icons-in-menu-container;
+  // =====================================
+  //   Classes to be set/unset by scipt
+  // =====================================
+  .cursor-pointer {
+    cursor: pointer;
+  }
+
+  .active-tile-below {
+    @extend .polygon-square-bot;
+  }
+  .active-tile {
+    background:
+      // top right to left
+      linear-gradient($border-color 0 0) 100% 0% / 100% 1px,
+      // bottom right to left
+      linear-gradient($border-color 0 0) 100% 100% / 100% 1px,
+      // top left to bottom left
+      linear-gradient($transparent 0 0) 100% 0% / 1px 100%,
+      // top right to bottom right
+      linear-gradient($border-color 0 0) 100% 0%/ 1px 0% !important;
+    background-repeat: no-repeat !important;
+    box-shadow: none !important;
+  }
+  .active-tile-above {
+    @extend .polygon-square-top;
+  }
+  // =====================================
+
+  .menu {
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: repeat(var(--side-menu-rows), 1fr);
@@ -55,6 +45,7 @@
     // animation: border-glow 10s ease infinite;
 
     .tile {
+      @extend .polygon-speaker;
       width: 43px;
       padding-right: 1px;
       height: 42px;
@@ -77,60 +68,26 @@
       transition: all 0.2s ease-out; // For backgorund: linear-gradient it only works the distance not the color
 
       // background: red;
-      box-shadow: 0px 0px 20px 0px rgba(255, 0, 0, 0.75);
-
-      &:hover:not(:empty) {
-        background:
-          // top right to left
-          linear-gradient($border-color 0 0) 100% 0% / 100% 1px,
-          // bottom right to left
-          linear-gradient($border-color 0 0) 100% 100% / 100% 1px,
-          // top left to bottom left
-          linear-gradient($transparent 0 0) 100% 0% / 1px 100%,
-          // top right to bottom right
-          linear-gradient($border-color 0 0) 100% 0%/ 1px 0%;
-        background-repeat: no-repeat;
-        box-shadow: none;
-      }
+      box-shadow: 0px 0px 20px 0px $shadow-color;
     }
+  }
 
-    .top,
-    .bottom {
-      @extend .icons-in-menu-container;
-      width: 100%;
-
-      .icon-container {
-        width: 100%;
-        height: 42px;
-        position: relative;
-
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        cursor: pointer;
-        border: 1px solid rgba(255, 0, 0, 0);
-        transition: border 0.2s ease-in-out;
-
-        // &::before {
-        //   content: '';
-        //   width: 200%;
-        //   height: 100%;
-        //   position: absolute;
-        //   background: var(--bg-black);
-        // }
-
-        &:hover {
-          border-top: 1px solid rgba(255, 0, 0, 0.9);
-          border-bottom: 1px solid rgba(255, 0, 0, 0.9);
-        }
-      }
-    }
+  .polygon-speaker {
+    // "speaker" shape
+    clip-path: polygon(100% 0%, 0% 0%, 0% 100%, 100% 100%, 100% 200%, 200% 200%, 200% -100%, 100% -100%);
+  }
+  .polygon-square-top {
+    // "square" with 1/4 removed on top left
+    clip-path: polygon(0% 0%, 0% 0%, 0% 100%, 100% 100%, 100% 200%, 200% 200%, 200% -100%, 0% -100%) !important;
+  }
+  .polygon-square-bot {
+    // "square" with 1/4 removed on bot left
+    clip-path: polygon(100% 0%, 0% 0%, 0% 100%, 0% 100%, 0% 200%, 200% 200%, 200% -100%, 100% -100%) !important;
   }
 
   @keyframes border-glow {
     0% {
-      box-shadow: 0px 0px 20px 0px rgba(255, 0, 0, 0.75);
+      box-shadow: 0px 0px 20px 0px $shadow-color;
     }
     33% {
       box-shadow: 2px 0px 19px 2px rgba(255, 0, 0, 0.6);
@@ -139,7 +96,7 @@
       box-shadow: -2px 0px 21px 1px rgba(255, 0, 0, 0.8);
     }
     100% {
-      box-shadow: 0px 0px 20px 0px rgba(255, 0, 0, 0.75);
+      box-shadow: 0px 0px 20px 0px $shadow-color;
     }
   }
 }

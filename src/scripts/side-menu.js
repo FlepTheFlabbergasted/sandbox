@@ -9,9 +9,8 @@ const bottomIcons = ['fa-regular fa-circle-user fa-lg', 'fa-solid fa-gear fa-lg'
 
 const createTile = (index) => {
   const tile = document.createElement('div');
-  tile.classList.add('tile', 'polygon-speaker');
+  tile.classList.add('tile');
   tile.setAttribute('data-tile-index', index);
-  //   tile.innerHTML = 'test';
 
   return tile;
 };
@@ -43,30 +42,31 @@ const createTiles = () => {
 };
 
 const addEventListenerToTile = (tile, index, nrRows) => {
-  tile.addEventListener('mouseover', () => {
-    if (index > 0) {
-      menu
-        .querySelector(`.tile[data-tile-index='${index - 1}']`)
-        .classList.replace('polygon-speaker', 'polygon-square-bot');
-    }
+  tile.addEventListener('click', () => {
+    if (tile.classList.contains('active-tile')) {
+      tile.classList.remove('active-tile');
 
-    if (index < nrRows - 1) {
-      menu
-        .querySelector(`.tile[data-tile-index='${index + 1}']`)
-        .classList.replace('polygon-speaker', 'polygon-square-top');
-    }
-  });
-  tile.addEventListener('mouseout', () => {
-    if (index > 0) {
-      menu
-        .querySelector(`.tile[data-tile-index='${index - 1}']`)
-        .classList.replace('polygon-square-bot', 'polygon-speaker');
-    }
+      if (index > 0) {
+        menu.querySelector(`.tile[data-tile-index='${index - 1}']`).classList.remove('polygon-square-bot');
+      }
 
-    if (index < nrRows - 1) {
+      if (index < nrRows - 1) {
+        menu.querySelector(`.tile[data-tile-index='${index + 1}']`).classList.remove('polygon-square-top');
+      }
+    } else {
       menu
-        .querySelector(`.tile[data-tile-index='${index + 1}']`)
-        .classList.replace('polygon-square-top', 'polygon-speaker');
+        .querySelectorAll(`.tile`)
+        .forEach((tile) => tile.classList.remove('active-tile', 'polygon-square-top', 'polygon-square-bot'));
+
+      tile.classList.add('active-tile');
+
+      if (index > 0) {
+        menu.querySelector(`.tile[data-tile-index='${index - 1}']`).classList.add('polygon-square-bot');
+      }
+
+      if (index < nrRows - 1) {
+        menu.querySelector(`.tile[data-tile-index='${index + 1}']`).classList.add('polygon-square-top');
+      }
     }
   });
 };
