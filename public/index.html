@@ -423,18 +423,27 @@
     <!---------- Side Menu ---------->
     <section id="side-menu">
       <div class="menu">
-        <!-- <div class="top">
-          <div class="icon-container"><i class="fa-solid fa-music fa-lg"></i></div>
-          <div class="icon-container"><i class="fa-solid fa-code fa-lg"></i></div>
+        <div class="top-icons">
+          <div class="tile start-tile"></div>
+          <div class="tile icon-tile"><i class="fa-solid fa-music fa-lg"></i></div>
+          <div class="tile icon-tile"><i class="fa-solid fa-code fa-lg"></i></div>
         </div>
 
-        <div class="bottom">
-          <div class="icon-container"><i class="fa-regular fa-circle-user fa-lg"></i></div>
-          <div class="icon-container"><i class="fa-solid fa-gear fa-lg"></i></div>
-        </div> -->
+        <div class="tile divider-tile"></div>
+
+        <div class="bottom-icons">
+          <div class="tile icon-tile"><i class="fa-regular fa-circle-user fa-lg"></i></div>
+          <div class="tile icon-tile"><i class="fa-solid fa-gear fa-lg"></i></div>
+          <div class="tile end-tile"></div>
+        </div>
       </div>
-      <div class="content center-content">
-        <h1 id="content-title">Content goes here</h1>
+
+      <div class="content-container center-content">
+        <div id="content"><h2>- Content goes here -</h2></div>
+        <h1 class="content-title"><i class="fa-solid fa-music fa-lg"></i> Music</h1>
+        <h1 class="content-title"><i class="fa-solid fa-code fa-lg"></i> Code</h1>
+        <h1 class="content-title"><i class="fa-regular fa-circle-user fa-lg"></i> User</h1>
+        <h1 class="content-title"><i class="fa-solid fa-gear fa-lg"></i> Settings</h1>
       </div>
     </section>
   </body>

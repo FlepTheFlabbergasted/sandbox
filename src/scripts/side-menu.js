@@ -1,112 +1,67 @@
-// Tile code from https://www.youtube.com/watch?v=bAwEj_mSzOs&ab_channel=Hyperplexed
+const CSS_CLASS_TILE = 'tile';
+const CSS_CLASS_ICON_TILE = 'icon-tile';
+const CSS_CLASS_ACTIVE_TILE = 'active-tile';
+const CSS_CLASS_ACTIVE_TILE_ABOVE = 'active-tile-above';
+const CSS_CLASS_ACTIVE_TILE_BELOW = 'active-tile-below';
 
-const TILE_HEIGHT_PX = 42;
-const TILE_CSS_CLASS = 'tile';
-const TILE_ACTIVE_CSS_CLASS = 'active-tile';
-const TILE_ACTIVE_ABOVE_CSS_CLASS = 'active-tile-above';
-const TILE_ACTIVE_BELOW_CSS_CLASS = 'active-tile-below';
-const TILE_DATA_INDEX_ATTR = 'data-tile-index';
-
-const CSS_VAR_TILE_ROWS = '--side-menu-rows';
-const CURSOR_POINTER_CSS_CLASS = 'cursor-pointer';
-
-const TOP_ICONS = [
-  { icon: 'fa-solid fa-music fa-lg', title: 'Music' },
-  { icon: 'fa-solid fa-code fa-lg', title: 'Code' },
-];
-const BOTTOM_ICONS = [
-  { icon: 'fa-regular fa-circle-user fa-lg', title: 'User' },
-  { icon: 'fa-solid fa-gear fa-lg', title: 'Settings' },
-];
+const DATA_ATTR_TILE_INDEX = 'data-tile-index';
+const DATA_ATTR_CONTENT_INDEX = 'data-content-index';
 
 const sectionEl = document.getElementById('side-menu');
 const menuEl = sectionEl.getElementsByClassName('menu')[0];
-const contentTitleEl = sectionEl.querySelector('#content-title');
+const contentContainerEl = sectionEl.querySelector('.content-container');
+const contentEl = contentContainerEl.querySelector('#content');
 
-const createIconHtml = (iconClasses) => {
-  return `<i class="${iconClasses}"></i>`;
+const setDataTileIndexes = () => {
+  Array.from(menuEl.getElementsByClassName(CSS_CLASS_TILE)).forEach((tile, index) =>
+    tile.setAttribute(DATA_ATTR_TILE_INDEX, index)
+  );
 };
 
-const addEventListenerToTile = (tile, index, nrRows) => {
-  tile.addEventListener('click', () => {
-    if (tile.classList.contains(TILE_ACTIVE_CSS_CLASS)) {
-      tile.classList.remove(TILE_ACTIVE_CSS_CLASS);
-      if (index < nrRows - 1) {
-        menuEl
-          .querySelector(`.${TILE_CSS_CLASS}[${TILE_DATA_INDEX_ATTR}='${index + 1}']`)
-          .classList.remove(TILE_ACTIVE_ABOVE_CSS_CLASS);
-      }
+const clearActiveTileCssClasses = () => {
+  menuEl
+    .querySelectorAll(`.${CSS_CLASS_TILE}`)
+    .forEach((tile) =>
+      tile.classList.remove(CSS_CLASS_ACTIVE_TILE, CSS_CLASS_ACTIVE_TILE_ABOVE, CSS_CLASS_ACTIVE_TILE_BELOW)
+    );
+};
 
-      if (index > 0) {
-        menuEl
-          .querySelector(`.${TILE_CSS_CLASS}[${TILE_DATA_INDEX_ATTR}='${index - 1}']`)
-          .classList.remove(TILE_ACTIVE_BELOW_CSS_CLASS);
-      }
-    } else {
-      menuEl
-        .querySelectorAll(`.${TILE_CSS_CLASS}`)
-        .forEach((tile) =>
-          tile.classList.remove(TILE_ACTIVE_CSS_CLASS, TILE_ACTIVE_ABOVE_CSS_CLASS, TILE_ACTIVE_BELOW_CSS_CLASS)
-        );
+const setTileCssClass = (iconTileDataIndex, cssClass) => {
+  menuEl.querySelector(`.${CSS_CLASS_TILE}[${DATA_ATTR_TILE_INDEX}='${iconTileDataIndex}']`).classList.add(cssClass);
+};
 
-      tile.classList.add(TILE_ACTIVE_CSS_CLASS);
+const removeTileCssClass = (iconTileDataIndex, cssClass) => {
+  menuEl.querySelector(`.${CSS_CLASS_TILE}[${DATA_ATTR_TILE_INDEX}='${iconTileDataIndex}']`).classList.remove(cssClass);
+};
 
-      if (index < nrRows - 1) {
-        menuEl
-          .querySelector(`.${TILE_CSS_CLASS}[${TILE_DATA_INDEX_ATTR}='${index + 1}']`)
-          .classList.add(TILE_ACTIVE_ABOVE_CSS_CLASS);
-      }
+const addEventListenerToIconTiles = () => {
+  const contentDivs = Array.from(contentContainerEl.querySelectorAll('h1'));
 
-      if (index > 0) {
-        menuEl
-          .querySelector(`.${TILE_CSS_CLASS}[${TILE_DATA_INDEX_ATTR}='${index - 1}']`)
-          .classList.add(TILE_ACTIVE_BELOW_CSS_CLASS);
+  Array.from(menuEl.getElementsByClassName(CSS_CLASS_ICON_TILE)).forEach((iconTile, index) => {
+    const iconTileDataIndex = Number(iconTile.getAttribute(DATA_ATTR_TILE_INDEX));
+
+    iconTile.addEventListener('click', () => {
+      if (iconTile.classList.contains(CSS_CLASS_ACTIVE_TILE)) {
+        iconTile.classList.remove(CSS_CLASS_ACTIVE_TILE);
+        removeTileCssClass(iconTileDataIndex + 1, CSS_CLASS_ACTIVE_TILE_ABOVE);
+        removeTileCssClass(iconTileDataIndex - 1, CSS_CLASS_ACTIVE_TILE_BELOW);
+      } else {
+        clearActiveTileCssClasses();
+        iconTile.classList.add(CSS_CLASS_ACTIVE_TILE);
+        setTileCssClass(iconTileDataIndex + 1, CSS_CLASS_ACTIVE_TILE_ABOVE);
+        setTileCssClass(iconTileDataIndex - 1, CSS_CLASS_ACTIVE_TILE_BELOW);
+
+        // Just to spice up the content showing
+        contentEl.innerHTML = '';
+        contentEl.classList.remove('power-up');
+        contentEl.innerHTML = contentDivs[index].outerHTML;
+        setTimeout(() => contentEl.classList.add('power-up'), 0);
       }
-    }
+    });
   });
 };
 
-const createTile = (index) => {
-  const tile = document.createElement('div');
-  tile.classList.add(TILE_CSS_CLASS);
-  tile.setAttribute(TILE_DATA_INDEX_ATTR, index);
-
-  return tile;
-};
-
-const createTiles = () => {
-  let nrRows = Math.ceil(sectionEl.clientHeight / TILE_HEIGHT_PX);
-  let tiles = Array.from(Array(nrRows)).map((_, index) => createTile(index));
-  let bottomIconsCopy = [...BOTTOM_ICONS];
-
-  menuEl.innerHTML = '';
-  menuEl.style.setProperty(CSS_VAR_TILE_ROWS, nrRows);
-
-  for (let i = 0; i < tiles.length; i++) {
-    if (TOP_ICONS[i]) {
-      tiles[i + 1].innerHTML = createIconHtml(TOP_ICONS[i].icon);
-      tiles[i + 1].classList.add(CURSOR_POINTER_CSS_CLASS);
-      tiles[i + 1].addEventListener('click', () => {
-        contentTitleEl.innerHTML = `${createIconHtml(TOP_ICONS[i].icon)} ${TOP_ICONS[i].title}`;
-      });
-      addEventListenerToTile(tiles[i + 1], i + 1, nrRows);
-    }
-
-    menuEl.appendChild(tiles[i]);
-  }
-
-  let j = tiles.length - 2;
-  for (let i = BOTTOM_ICONS.length - 1; i >= 0; i--) {
-    tiles[j].innerHTML = createIconHtml(BOTTOM_ICONS[i].icon);
-    tiles[j].classList.add(CURSOR_POINTER_CSS_CLASS);
-    tiles[j].addEventListener('click', () => {
-      contentTitleEl.innerHTML = `${createIconHtml(BOTTOM_ICONS[i].icon)} ${BOTTOM_ICONS[i].title}`;
-    });
-    addEventListenerToTile(tiles[j], j, nrRows);
-
-    j--;
-  }
-};
-
-window.addEventListener('load', () => createTiles());
-window.onresize = () => createTiles();
+window.addEventListener('load', () => {
+  setDataTileIndexes();
+  addEventListenerToIconTiles();
+});

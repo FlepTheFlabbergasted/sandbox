@@ -1,123 +1,138 @@
 #side-menu {
-  $border-color: rgba(255, 0, 0, 0.9);
-  $shadow-color: rgba(255, 0, 0, 0.75);
-  $bow-shadow: 0px 0px 18px 0px $shadow-color;
-  $transparent: rgba(0, 0, 0, 0);
+  --tile-size: 42px;
+  --color-border: rgba(255, 0, 0, 0.9);
+  --color-transparent: rgba(0, 0, 0, 0);
+  --color-box-shadow: rgba(255, 0, 0, 0.75);
+  --box-shadow: 0px 0px 18px 0px var(--color-box-shadow);
 
   display: flex;
 
-  // =====================================
-  //   Classes to be set/unset by scipt
-  // =====================================
-  .cursor-pointer {
-    cursor: pointer;
-  }
-
-  .active-tile-below {
-    @extend .polygon-square-bot;
-  }
-  .active-tile {
-    background:
-      // top right to left
-      linear-gradient($border-color 0 0) 100% 0% / 100% 1px,
-      // bottom right to left
-      linear-gradient($border-color 0 0) 100% 100% / 100% 1px,
-      // top left to bottom left
-      linear-gradient($transparent 0 0) 100% 0% / 1px 100%,
-      // top right to bottom right
-      linear-gradient($border-color 0 0) 100% 0%/ 1px 0% !important;
-    background-repeat: no-repeat !important;
-    box-shadow: none !important;
-  }
-  .active-tile-above {
-    @extend .polygon-square-top;
-  }
-  // =====================================
-
   .menu {
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: repeat(var(--side-menu-rows), 1fr);
-    // gap: 52px;
-
     width: 42px;
     height: 100%;
 
-    .tile {
-      @extend .polygon-speaker;
-      width: 43px;
-      padding-right: 1px;
-      height: 42px;
+    display: flex;
+    flex-direction: column;
 
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      position: relative;
+    .tile {
+      width: calc(var(--tile-size) + 1px);
+      height: var(--tile-size);
+      padding-right: 1px;
+
+      // "speaker" shape
+      clip-path: polygon(100% 0%, 0% 0%, 0% 100%, 100% 100%, 100% 200%, 200% 200%, 200% -100%, 100% -100%);
 
       background:
-        // top right to left
-        linear-gradient($transparent 0 0) 100% 0% / 0% 1px,
+          // top right to left
+        linear-gradient(var(--color-transparent) 0 0) 100% 0% / 0% 1px,
         // bottom right to left
-        linear-gradient($transparent 0 0) 100% 100% / 0% 1px,
+        linear-gradient(var(--color-transparent) 0 0) 100% 100% / 0% 1px,
         // top left to bottom left
-        linear-gradient($transparent 0 0) 100% 0% / 1px 100%,
+        linear-gradient(var(--color-transparent) 0 0) 100% 0% / 1px 100%,
         // top right to bottom right
-        linear-gradient($border-color 0 0) 100% 0% / 1px 100%;
+        linear-gradient(var(--color-border) 0 0) 100% 0% / 1px 100%;
       background-repeat: no-repeat;
       transition: all 0.25s ease-out; // For backgorund: linear-gradient it only works the distance not the color
 
-      // background: red;
-      box-shadow: $bow-shadow;
+      box-shadow: var(--box-shadow);
 
       animation: border-glow 10s linear infinite;
     }
+
+    .icon-tile {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      cursor: pointer;
+    }
+
+    .divider-tile {
+      flex-grow: 1;
+    }
+
+    // ================================
+    //      Classes set by script
+    // ================================
+    .active-tile-below {
+      // "square" with 1/4 removed on bot left
+      clip-path: polygon(100% 0%, 0% 0%, 0% 100%, 0% 100%, 0% 200%, 200% 200%, 200% -100%, 100% -100%) !important;
+    }
+    .active-tile {
+      background:
+        // top right to left
+        linear-gradient(var(--color-border) 0 0) 100% 0% / 100% 1px,
+        // bottom right to left
+        linear-gradient(var(--color-border) 0 0) 100% 100% / 100% 1px,
+        // top left to bottom left
+        linear-gradient(var(--color-transparent) 0 0) 100% 0% / 1px 100%,
+        // top right to bottom right
+        linear-gradient(var(--color-border) 0 0) 100% 0%/ 1px 0% !important;
+      background-repeat: no-repeat !important;
+      box-shadow: none !important;
+    }
+    .active-tile-above {
+      // "square" with 1/4 removed on top left
+      clip-path: polygon(0% 0%, 0% 0%, 0% 100%, 100% 100%, 100% 200%, 200% 200%, 200% -100%, 0% -100%) !important;
+    }
+    // ================================
+
+    // Kinda sine wave like __|_-___-_-__ attempting to mimick some neon light flickering
+    @keyframes border-glow {
+      0% {
+        box-shadow: var(--box-shadow);
+      }
+      10% {
+        box-shadow: 0px 0px 23px 2px var(--color-box-shadow);
+      }
+      20% {
+        box-shadow: var(--box-shadow);
+      }
+      40% {
+        box-shadow: 0px 0px 20px 2px var(--color-box-shadow);
+      }
+      50% {
+        box-shadow: var(--box-shadow);
+      }
+      70% {
+        box-shadow: 0px 0px 20px 0px var(--color-box-shadow);
+      }
+      75% {
+        box-shadow: var(--box-shadow);
+      }
+      80% {
+        box-shadow: 0px 0px 21px 1px var(--color-box-shadow);
+      }
+      100% {
+        box-shadow: var(--box-shadow);
+      }
+    }
   }
 
-  .content {
+  .content-container {
     width: 100%;
-  }
 
-  .polygon-speaker {
-    // "speaker" shape
-    clip-path: polygon(100% 0%, 0% 0%, 0% 100%, 100% 100%, 100% 200%, 200% 200%, 200% -100%, 100% -100%);
-  }
-  .polygon-square-top {
-    // "square" with 1/4 removed on top left
-    clip-path: polygon(0% 0%, 0% 0%, 0% 100%, 100% 100%, 100% 200%, 200% 200%, 200% -100%, 0% -100%) !important;
-  }
-  .polygon-square-bot {
-    // "square" with 1/4 removed on bot left
-    clip-path: polygon(100% 0%, 0% 0%, 0% 100%, 0% 100%, 0% 200%, 200% 200%, 200% -100%, 100% -100%) !important;
-  }
+    .content-title {
+      display: none;
+    }
 
-  // Kinda line sine wave like __|_-___-_-__
-  @keyframes border-glow {
-    0% {
-      box-shadow: $bow-shadow;
+    .power-up {
+      animation: fade-in 0.4s ease-in-out;
+
+      .content-title {
+        display: block;
+      }
     }
-    10% {
-      box-shadow: 0px 0px 23px 2px $shadow-color;
-    }
-    20% {
-      box-shadow: $bow-shadow;
-    }
-    40% {
-      box-shadow: 0px 0px 20px 2px $shadow-color;
-    }
-    50% {
-      box-shadow: $bow-shadow;
-    }
-    70% {
-      box-shadow: 0px 0px 20px 0px $shadow-color;
-    }
-    75% {
-      box-shadow: $bow-shadow;
-    }
-    80% {
-      box-shadow: 0px 0px 21px 1px $shadow-color;
-    }
-    100% {
-      box-shadow: $bow-shadow;
+
+    @keyframes fade-in {
+      from {
+        opacity: 0;
+        transform: translateX(-50px) scale(0.8);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+      }
     }
   }
 }
