@@ -10,22 +10,21 @@ const TILE_DATA_INDEX_ATTR = 'data-tile-index';
 const CSS_VAR_TILE_ROWS = '--side-menu-rows';
 const CURSOR_POINTER_CSS_CLASS = 'cursor-pointer';
 
-const TOP_ICONS = ['fa-solid fa-music fa-lg', 'fa-solid fa-code fa-lg'];
-const BOTTOM_ICONS = ['fa-regular fa-circle-user fa-lg', 'fa-solid fa-gear fa-lg'];
+const TOP_ICONS = [
+  { icon: 'fa-solid fa-music fa-lg', title: 'Music' },
+  { icon: 'fa-solid fa-code fa-lg', title: 'Code' },
+];
+const BOTTOM_ICONS = [
+  { icon: 'fa-regular fa-circle-user fa-lg', title: 'User' },
+  { icon: 'fa-solid fa-gear fa-lg', title: 'Settings' },
+];
 
 const sectionEl = document.getElementById('side-menu');
 const menuEl = sectionEl.getElementsByClassName('menu')[0];
+const contentTitleEl = sectionEl.querySelector('#content-title');
 
 const createIconHtml = (iconClasses) => {
   return `<i class="${iconClasses}"></i>`;
-};
-
-const createTile = (index) => {
-  const tile = document.createElement('div');
-  tile.classList.add(TILE_CSS_CLASS);
-  tile.setAttribute(TILE_DATA_INDEX_ATTR, index);
-
-  return tile;
 };
 
 const addEventListenerToTile = (tile, index, nrRows) => {
@@ -67,6 +66,14 @@ const addEventListenerToTile = (tile, index, nrRows) => {
   });
 };
 
+const createTile = (index) => {
+  const tile = document.createElement('div');
+  tile.classList.add(TILE_CSS_CLASS);
+  tile.setAttribute(TILE_DATA_INDEX_ATTR, index);
+
+  return tile;
+};
+
 const createTiles = () => {
   let nrRows = Math.ceil(sectionEl.clientHeight / TILE_HEIGHT_PX);
   let tiles = Array.from(Array(nrRows)).map((_, index) => createTile(index));
@@ -77,19 +84,27 @@ const createTiles = () => {
 
   for (let i = 0; i < tiles.length; i++) {
     if (TOP_ICONS[i]) {
-      tiles[i + 1].innerHTML = createIconHtml(TOP_ICONS[i]);
+      tiles[i + 1].innerHTML = createIconHtml(TOP_ICONS[i].icon);
       tiles[i + 1].classList.add(CURSOR_POINTER_CSS_CLASS);
+      tiles[i + 1].addEventListener('click', () => {
+        contentTitleEl.innerHTML = `${createIconHtml(TOP_ICONS[i].icon)} ${TOP_ICONS[i].title}`;
+      });
       addEventListenerToTile(tiles[i + 1], i + 1, nrRows);
     }
 
-    if (i + 1 === tiles.length - bottomIconsCopy.length && bottomIconsCopy.length) {
-      tiles[i].innerHTML = createIconHtml(bottomIconsCopy[0]);
-      tiles[i].classList.add(CURSOR_POINTER_CSS_CLASS);
-      bottomIconsCopy.shift();
-      addEventListenerToTile(tiles[i], i, nrRows);
-    }
-
     menuEl.appendChild(tiles[i]);
+  }
+
+  let j = tiles.length - 2;
+  for (let i = BOTTOM_ICONS.length - 1; i >= 0; i--) {
+    tiles[j].innerHTML = createIconHtml(BOTTOM_ICONS[i].icon);
+    tiles[j].classList.add(CURSOR_POINTER_CSS_CLASS);
+    tiles[j].addEventListener('click', () => {
+      contentTitleEl.innerHTML = `${createIconHtml(BOTTOM_ICONS[i].icon)} ${BOTTOM_ICONS[i].title}`;
+    });
+    addEventListenerToTile(tiles[j], j, nrRows);
+
+    j--;
   }
 };
 
