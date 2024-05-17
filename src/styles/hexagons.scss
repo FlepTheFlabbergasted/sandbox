@@ -1,0 +1,56 @@
+// https://www.youtube.com/watch?v=A5GXdjEOvos&list=PLDCHtNttcDy8-TyJw6uyimX0pzeaWCiIA&index=6&ab_channel=KevinPowell
+
+#hexagons {
+  --size: 200px;
+  --animation-duration: 500ms;
+
+  .container {
+    display: grid;
+    grid-template-columns: repeat(6, calc((var(--size) / 2) - 1%));
+    grid-template-rows: repeat(3, calc(var(--size) - 7%));
+
+    &:hover > div {
+      filter: brightness(0.5) saturate(0.5);
+    }
+
+    & > div:hover {
+      filter: brightness(1) saturate(1.5);
+    }
+  }
+
+  .hexagon {
+    width: var(--size);
+    aspect-ratio: 1;
+
+    grid-column: span 2;
+    // clip-path: path('M 100 0 L 190 50 L 190 150 L 100 200 L 10 150 L 10 50 Z');
+    clip-path: polygon(50% 0%, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%);
+
+    background-size: 300%;
+    background-repeat: no-repeat;
+    background-position: center;
+
+    transition: all var(--animation-duration);
+
+    &:nth-child(5n - 1) {
+      grid-column: 2 / span 2;
+    }
+
+    &:hover {
+      z-index: 100;
+      transform: scale(150%);
+      background-size: 150%;
+    }
+
+    &:not(:hover) {
+      animation: z-index-hack var(--animation-duration);
+    }
+  }
+
+  @keyframes z-index-hack {
+    0%,
+    100% {
+      z-index: 10;
+    }
+  }
+}
