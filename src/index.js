@@ -1,5 +1,6 @@
 import PanelSnap from 'panelsnap';
 import './scripts/side-menu';
+import './scripts/string-rings';
 
 window.addEventListener('load', () => {
   const panelSnap = new PanelSnap({

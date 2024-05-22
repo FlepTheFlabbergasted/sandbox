@@ -5,11 +5,14 @@
     <title>Sandbox</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+      rel="stylesheet"
+    />
     <script src="https://kit.fontawesome.com/324425dc68.js" crossorigin="anonymous"></script>
     <script type="module" src="index.min.js"></script>
   </head>
-  <body>
+  <body class="font-quicksand-thin">
     <!---------- Infinite Well ---------->
     <section id="infite-well">
       <div class="hexagon-container">
@@ -489,6 +492,75 @@
           class="hexagon"
           style="background-image: url('https://assets.codepen.io/1506195/unsplash-music-7.avif')"
         ></div>
+      </div>
+    </section>
+
+    <!---------- String Rings ---------->
+    <section id="string-rings" class="center-content">
+      <div class="container-rings center-content">
+        <i class="ring" style="--color: #1c92ff; border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%"></i>
+        <!--
+        <i class="ring" style="--color: #ff0057"></i>
+        <i class="ring" style="--color: #fffd44"></i>
+        -->
+
+        <div class="container-interactions">
+          <div class="container-sliders">
+            <div class="row">
+              <div class="column">
+                <label for="top-left">Top left</label>
+                <input type="range" name="top-left" min="0" max="100" value="50" step="1" />
+              </div>
+
+              <div class="column">
+                <label for="top-right">Top right</label>
+                <input type="range" name="top-right" min="0" max="100" value="50" step="1" />
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="column">
+                <label for="bottom-left">Bottom left</label>
+                <input type="range" name="bottom-left" min="0" max="100" value="50" step="1" />
+              </div>
+
+              <div class="column">
+                <label for="bottom-right">Bottom right</label>
+                <input type="range" name="bottom-right" min="0" max="100" value="50" step="1" />
+              </div>
+            </div>
+          </div>
+
+          <div class="container-results">
+            <code>border-radius: <span id="results">50% 50% 50% 50% / 50% 50% 50% 50%</span></code>
+          </div>
+
+          <div class="container-sliders">
+            <div class="row">
+              <div class="column">
+                <label for="top-left2">Top left</label>
+                <input type="range" name="top-left2" min="0" max="100" value="50" step="1" />
+              </div>
+
+              <div class="column">
+                <label for="top-right2">Top right</label>
+                <input type="range" name="top-right2" min="0" max="100" value="50" step="1" />
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="column">
+                <label for="bottom-left2">Bottom left</label>
+                <input type="range" name="bottom-left2" min="0" max="100" value="50" step="1" />
+              </div>
+
+              <div class="column">
+                <label for="bottom-right2">Bottom right</label>
+                <input type="range" name="bottom-right2" min="0" max="100" value="50" step="1" />
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   </body>
