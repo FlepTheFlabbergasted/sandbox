@@ -1,4 +1,5 @@
 import PanelSnap from 'panelsnap';
+import './scripts/infinite-well';
 import './scripts/side-menu';
 import './scripts/string-rings';
 

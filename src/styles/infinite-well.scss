@@ -1,0 +1,45 @@
+#infinite-well {
+  .layer {
+    width: 100%;
+    height: 100%;
+    background: hotpink;
+    mask-image: radial-gradient(circle 52px at calc(50%) calc(50%), transparent 104px, #fff 0);
+  }
+
+  // --hexagon-size: 100px;
+
+  // .hexagon-container {
+  //   transform: translate(calc(var(--hexagon-size) / 6 * -1), calc(var(--hexagon-size) / 3 * -1));
+  // }
+
+  // .hexagon-row {
+  //   display: flex;
+  // }
+
+  // $hexagonGapInit: calc(var(--hexagon-size) / 6 * -1);
+  // $shiftLeft: calc(var(--hexagon-size) / 2 * -1);
+  // $n: 12;
+  // @for $i from 1 through $n {
+  //   .hexagon-row:nth-child(#{$i}) {
+  //     // Even rows should be moved to the left half a hexagon
+  //     @if $i % 2 == 0 {
+  //       transform: translateY(calc($hexagonGapInit * $i)) translateX($shiftLeft);
+  //     } @else {
+  //       transform: translateY(calc($hexagonGapInit * $i));
+  //     }
+  //   }
+  // }
+
+  // .hexagon {
+  //   display: inline-block;
+  //   min-width: var(--hexagon-size);
+  //   min-height: var(--hexagon-size);
+  //   clip-path: polygon(50% 0%, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%);
+  //   background: goldenrod;
+
+  //   &--empty {
+  //     @extend .hexagon;
+  //     background: none;
+  //   }
+  // }
+}
