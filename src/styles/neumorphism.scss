@@ -1,0 +1,118 @@
+@use 'sass:math';
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap');
+
+#neumorphism {
+  --size: 42px;
+
+  font-family: 'Montserrat', sans-serif;
+  font-size: 20px;
+  color: rgb(216, 216, 216);
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    gap: 32px;
+  }
+
+  .circle {
+    position: relative;
+    display: flex;
+    width: var(--size);
+    height: var(--size);
+    border-radius: var(--size);
+    align-items: center;
+    justify-content: center;
+
+    animation: reveal 1s;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: forwards;
+  }
+
+  .circle:before {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: block;
+    width: var(--size);
+    height: var(--size);
+    content: ' ';
+    cursor: pointer;
+    transition: 0.3s ease-out;
+    border-radius: var(--size);
+    filter: blur(6px);
+
+    animation: reveal 1s;
+    animation-timing-function: ease-in-out;
+    // animation-fill-mode: forwards;
+
+    box-shadow:
+      8px 8px 20px rgba(0, 0, 0, 0.5),
+      -8px -8px 20px rgba(255, 255, 255, 0.2);
+  }
+
+  .circle:before:nth-of-type(1) {
+    animation-delay: 1.5s;
+  }
+  .circle:before:nth-of-type(2) {
+    animation-delay: 2s;
+  }
+  .circle:before:nth-of-type(3) {
+    animation-delay: 2.5s;
+  }
+  .circle:nth-of-type(1) {
+    animation-delay: 1.5s;
+  }
+  .circle:nth-of-type(2) {
+    animation-delay: 2s;
+  }
+  .circle:nth-of-type(3) {
+    animation-delay: 2.5s;
+  }
+
+  .circle:hover:before {
+    transition: 0.3s ease-in;
+    transform: scale(1.02);
+
+    box-shadow:
+      8px 8px 20px rgba(0, 0, 0, 0.5),
+      -8px -8px 20px rgba(255, 255, 255, 0.2),
+      inset 8px 8px 20px rgba(0, 0, 0, 1),
+      inset -8px -8px 20px rgba(255, 255, 255, 0.2);
+
+    // box-shadow:
+    //   8px 8px 20px rgba(0, 0, 0, 0.5),
+    //   -8px -8px 20px rgba(255, 255, 255, 0.2);
+  }
+
+  .text {
+    position: relative;
+    z-index: 5;
+    user-select: none;
+    cursor: pointer;
+
+    transition: 0.3s ease-out;
+    opacity: 1;
+
+    text-shadow:
+      1px 1px 2px rgba(0, 0, 0, 0.5),
+      -1px -1px 2px rgba(255, 255, 255, 0.2);
+  }
+
+  // .circle:hover .text {
+  //   transition: 0.3s ease-in;
+  //   opacity: 1;
+  // }
+
+  @keyframes reveal {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}
