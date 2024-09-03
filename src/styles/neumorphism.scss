@@ -115,4 +115,62 @@
       opacity: 1;
     }
   }
+
+  .shape {
+    --size: 500px;
+
+    width: var(--size);
+    height: var(--size);
+    border-radius: var(--size);
+
+    position: relative;
+
+    &:before {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      display: block;
+      width: var(--size);
+      height: var(--size);
+      content: ' ';
+      cursor: pointer;
+      transition: 0.6s ease-out;
+      border-radius: var(--size);
+      filter: blur(6px);
+
+      animation: shapes 5s linear infinite;
+
+      box-shadow:
+        8px 8px 20px rgba(0, 0, 0, 0.5),
+        -8px -8px 20px rgba(255, 255, 255, 0.2);
+    }
+
+    &:hover:before {
+      transition: 0.6s ease-in;
+      transform: scale(1.02);
+
+      box-shadow:
+        8px 8px 20px rgba(0, 0, 0, 0.5),
+        -8px -8px 20px rgba(255, 255, 255, 0.2),
+        inset 8px 8px 20px rgba(0, 0, 0, 1),
+        inset -8px -8px 20px rgba(255, 255, 255, 0.2);
+    }
+  }
+
+  @keyframes shapes {
+    0% {
+      box-shadow: initial;
+      // border-radius: var(--size);
+    }
+    50% {
+      box-shadow: none;
+      // border-radius: 8px;
+    }
+    75% {
+      box-shadow: initial;
+      // border-radius: 100px;
+    }
+  }
 }
