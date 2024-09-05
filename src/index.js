@@ -1,5 +1,7 @@
 import PanelSnap from 'panelsnap';
 import './scripts/infinite-well';
+import './scripts/retrofuturism/tiles';
+import './scripts/retrofuturism/transmission-1-khz';
 import './scripts/side-menu';
 import './scripts/string-rings';
 

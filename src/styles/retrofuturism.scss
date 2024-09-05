@@ -1,3 +1,5 @@
+@use 'sass:color';
+
 @font-face {
   font-family: ocr-a-extended;
   src: url('../../public/fonts/OCRAEXT.TTF') format('opentype');
@@ -5,6 +7,7 @@
 
 #retrofuturism {
   --primary-rgb: 199, 163, 20;
+  --primary-hsl: hsl(48, 82%, 43%);
   --primary-rgb-TEST: rgb(199, 163, 20);
 
   color: rgb(var(--primary-rgb));
@@ -173,6 +176,29 @@
 
   .fuses {
     grid-area: fuses;
+  }
+
+  .transmission-1 {
+    display: flex;
+    flex-direction: column;
+  }
+
+  #tiles-container {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(var(--tile-columns), 1fr);
+    grid-template-rows: repeat(var(--tile-rows), 1fr);
+
+    .tile {
+      border: 2px solid var(--color-background);
+      // "CSS variable to SASS color" to use CSS relative colors since i don't like sass variables
+      $color: 'hsl(from var(--primary-hsl) h s l / var(--tile-opacity))';
+      background: unquote($color);
+
+      &:hover {
+        border-color: rgb(var(--primary-rgb));
+      }
+    }
   }
 
   @keyframes pan-overlay {
