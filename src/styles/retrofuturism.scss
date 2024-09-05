@@ -71,6 +71,12 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+
+    &:active,
+    &:focus {
+      outline: none;
+      @extend .filled;
+    }
   }
 
   .anim-blink {
