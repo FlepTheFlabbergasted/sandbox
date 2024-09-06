@@ -1,3 +1,5 @@
+import { getRandomInt } from '../../util/get-random-int';
+
 const CHANGE_INTERVAL_MS = 500;
 const CHANGE_AMOUNT_MIN = 5;
 const CHANGE_AMOUNT_MAX = 63;
@@ -20,16 +22,10 @@ const changeKhzNumber = () => {
   if (operation === '+') {
     numberSpan.innerHTML = Number(numberSpan.innerHTML) + getRandomInt(CHANGE_AMOUNT_MIN, CHANGE_AMOUNT_MAX);
   } else {
-    numberSpan.innerHTML = Number(numberSpan.innerHTML) - getRandomInt(CHANGE_AMOUNT_MIN, CHANGE_AMOUNT_MAX);
+    numberSpan.innerHTML = Math.abs(Number(numberSpan.innerHTML) - getRandomInt(CHANGE_AMOUNT_MIN, CHANGE_AMOUNT_MAX));
   }
 
   setTimeout(() => changeKhzNumber(), CHANGE_INTERVAL_MS);
-};
-
-const getRandomInt = (min, max) => {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
 window.addEventListener('load', () => {

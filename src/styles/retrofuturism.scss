@@ -16,8 +16,8 @@
   padding: 24px;
 
   .filled {
-    color: var(--color-background);
-    background: rgb(var(--primary-rgb));
+    color: var(--color-background) !important;
+    background: rgb(var(--primary-rgb)) !important;
   }
 
   .bordered {
@@ -71,6 +71,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    background: none;
 
     &:active,
     &:focus {
@@ -205,6 +206,12 @@
         border-color: rgb(var(--primary-rgb));
       }
     }
+  }
+
+  @property --num {
+    syntax: '<integer>';
+    initial-value: 0;
+    inherits: false;
   }
 
   @keyframes pan-overlay {
