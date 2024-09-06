@@ -5,6 +5,12 @@
   src: url('../public/fonts/OCRAEXT.TTF') format('opentype');
 }
 
+@property --rssi-num {
+  syntax: '<integer>';
+  initial-value: 69;
+  inherits: false;
+}
+
 #retrofuturism {
   --primary-rgb: 199, 163, 20;
   --primary-hsl: hsl(48, 82%, 43%);
@@ -208,10 +214,22 @@
     }
   }
 
-  @property --num {
-    syntax: '<integer>';
-    initial-value: 0;
-    inherits: false;
+  #rssi {
+    animation: rssi-counter 5s infinite alternate cubic-bezier(0.42, 1.19, 0.68, -0.34);
+    counter-reset: num var(--rssi-num);
+
+    &::after {
+      content: counter(num);
+    }
+  }
+
+  @keyframes rssi-counter {
+    from {
+      --rssi-num: 69;
+    }
+    to {
+      --rssi-num: 83;
+    }
   }
 
   @keyframes pan-overlay {
