@@ -23,6 +23,7 @@
     "webpack-dev-server": "^4.15.1"
   },
   "dependencies": {
-    "panelsnap": "^1.3.0"
+    "panelsnap": "^1.3.0",
+    "sass": "^1.78.0"
   }
 }

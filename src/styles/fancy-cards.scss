@@ -28,21 +28,21 @@
 
   .left {
     // https://unsplash.com/photos/NNTGEoohoE4?utm_source=unsplash&utm_medium=referral&utm_content=creditShareLink
-    --background-image: url('../../public/images/fancy-cards-red-bg-sm.jpg');
+    --background-image: url('../public/images/fancy-cards-red-bg-sm.jpg');
     --color-border: rgb(255, 33, 33);
     --color-border-glow: rgba(255, 33, 33, 0.25);
     --rotation: rotate(-8deg) translateX(-35%) translateY(15%);
   }
   .middle {
     // https://unsplash.com/photos/OOE4xAnBhKo?utm_source=unsplash&utm_medium=referral&utm_content=creditShareLink
-    --background-image: url('../../public/images/fancy-cards-green-bg-sm.jpg');
+    --background-image: url('../public/images/fancy-cards-green-bg-sm.jpg');
     --color-border: rgb(48, 255, 21);
     --color-border-glow: rgba(48, 255, 21, 0.25);
     --rotation: '';
   }
   .right {
     // https://unsplash.com/photos/J1t1FY__6EI?utm_source=unsplash&utm_medium=referral&utm_content=creditShareLink
-    --background-image: url('../../public/images/fancy-cards-blue-bg-sm.jpg');
+    --background-image: url('../public/images/fancy-cards-blue-bg-sm.jpg');
     --color-border: rgb(21, 25, 255);
     --color-border-glow: rgba(21, 25, 255, 0.25);
     --rotation: rotate(8deg) translateX(35%) translateY(15%);
