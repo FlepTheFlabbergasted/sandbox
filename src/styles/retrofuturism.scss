@@ -2,7 +2,7 @@
 
 @font-face {
   font-family: ocr-a-extended;
-  src: url('../public/fonts/OCRAEXT.TTF') format('opentype');
+  src: url('../public/fonts/OCR-A-EXT.ttf') format('opentype');
 }
 
 @property --rssi-num {
@@ -191,9 +191,31 @@
     grid-area: fuses;
   }
 
-  .transmission-1 {
+  #transmission-1,
+  #transmission-2 {
     display: flex;
     flex-direction: column;
+  }
+
+  #scan-container {
+    position: relative;
+    height: 100%;
+
+    #scan-squeegee {
+      width: 4px;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: rgb(var(--primary-rgb));
+      animation: squeegee 5s ease-in-out infinite alternate;
+    }
+
+    #scan-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
   }
 
   #tiles-container {
@@ -244,6 +266,12 @@
   @keyframes blink {
     to {
       visibility: hidden;
+    }
+  }
+
+  @keyframes squeegee {
+    to {
+      left: calc(100% - 4px);
     }
   }
 }

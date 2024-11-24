@@ -159,18 +159,18 @@
     }
   }
 
-  @keyframes shapes {
-    0% {
-      box-shadow: initial;
-      // border-radius: var(--size);
-    }
-    50% {
-      box-shadow: none;
-      // border-radius: 8px;
-    }
-    75% {
-      box-shadow: initial;
-      // border-radius: 100px;
-    }
-  }
+  // @keyframes shapes {
+  //   0% {
+  //     box-shadow: initial;
+  //     // border-radius: var(--size);
+  //   }
+  //   50% {
+  //     box-shadow: none;
+  //     // border-radius: 8px;
+  //   }
+  //   75% {
+  //     box-shadow: initial;
+  //     // border-radius: 100px;
+  //   }
+  // }
 }

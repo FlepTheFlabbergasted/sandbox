@@ -9,6 +9,10 @@
       href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
       rel="stylesheet"
     />
+    <link type="font/ttf" href="./fonts/OCR-A-EXT.ttf" rel="preload" as="font" crossorigin />
+    <link type="font/otf" href="./fonts/proximanova-regular.otf" rel="preload" as="font" crossorigin />
+    <link type="font/otf" href="./fonts/proximanova-semibold.otf" rel="preload" as="font" crossorigin />
+
     <script src="https://kit.fontawesome.com/324425dc68.js" crossorigin="anonymous"></script>
     <script type="module" src="index.min.js"></script>
   </head>
@@ -627,7 +631,7 @@
               <div class="footer padding-sm vertical-center horizontal-right">RSSI: -<span id="rssi"></span>dBm</div>
             </div>
             <div class="transmissions">
-              <div class="transmission-1 bordered">
+              <div id="transmission-1" class="bordered">
                 <div class="info-window-heading-2">
                   <div class="padding-md vertical-center">Scanning Incoming Transmissions</div>
                   <div class="padding-md filled vertical-center horizontal-right">
@@ -636,10 +640,14 @@
                 </div>
                 <div id="tiles-container"></div>
               </div>
-              <div class="bordered">
+              <div id="transmission-2" class="bordered">
                 <div class="info-window-heading-2">
                   <div class="padding-md vertical-center">Scanning Incoming Transmissions</div>
                   <div class="padding-md filled vertical-center horizontal-right">Channel: 45</div>
+                </div>
+                <div id="scan-container">
+                  <div id="scan-squeegee"></div>
+                  <canvas id="scan-canvas"></canvas>
                 </div>
               </div>
             </div>
@@ -657,6 +665,17 @@
           </div>
           <div class="upload bordered padding-md vertical-center">UPLOADING</div>
           <div class="fuses bordered padding-md">X8 M4</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Test -->
+    <section id="test">
+      <div class="container">
+        <div class="content">
+          <div class="box"></div>
+          <div class="box"></div>
+          <div class="box"></div>
         </div>
       </div>
     </section>
