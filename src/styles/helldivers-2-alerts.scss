@@ -1,0 +1,58 @@
+@font-face {
+  font-family: ocr-a-extended;
+  src: url('../public/fonts/OCR-A-EXT.ttf') format('opentype');
+}
+
+#helldivers-2-alerts {
+  --primary-hsl: hsl(48, 82%, 43%);
+  --secondary-hsl: hsl(43, 15%, 91%);
+
+  background: url('https://images.unsplash.com/photo-1720736005617-db0603b42149?q=80&w=2075&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color: rgb(0 0 0 / 30%);
+  background-blend-mode: overlay;
+
+  font-size: 20px;
+  font-family: 'ocr-a-extended';
+
+  .alert {
+    &__container {
+      min-width: 400px;
+      max-width: 800px;
+      border: 1px solid var(--bg-color, var(--primary-hsl));
+
+      &.yellow {
+        --bg-color: var(--primary-hsl);
+      }
+
+      &.white {
+        --bg-color: var(--secondary-hsl);
+      }
+    }
+
+    &__title {
+      font-weight: bold;
+      font-size: 1.3em;
+      color: black;
+      padding: 6px 16px;
+      text-transform: uppercase;
+
+      background: var(--bg-color, var(--primary-hsl));
+      background-image: repeating-linear-gradient(
+        -45deg,
+        transparent,
+        transparent 4px,
+        rgba(0, 0, 0, 0.2) 4px,
+        rgba(0, 0, 0, 0.2) 6px
+      );
+    }
+
+    &__message {
+      text-align: center;
+      padding: 20px 32px;
+      font-size: 0.8em;
+      background: rgba(0, 0, 0, 0.8);
+    }
+  }
+}
