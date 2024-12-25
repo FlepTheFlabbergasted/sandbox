@@ -1,5 +1,7 @@
 @use 'sass:color';
 
+// https://www.youtube.com/watch?v=7KDlPgRUm6w&list=PLDCHtNttcDy8-TyJw6uyimX0pzeaWCiIA&index=8&ab_channel=TinSleeves
+
 @font-face {
   font-family: ocr-a-extended;
   src: url('../public/fonts/OCR-A-EXT.ttf') format('opentype');
@@ -181,6 +183,32 @@
 
   .sat-data-link {
     grid-area: sat-data-link;
+  }
+
+  #console {
+    padding: 8px;
+    overflow: hidden;
+    // max-height: 15ch;
+
+    .console-code {
+      overflow: hidden;
+      white-space: nowrap;
+      animation: typing calc(var(--anim-time) * 1ms) steps(var(--nr-chars), end);
+
+      &:empty {
+        height: 1em;
+      }
+
+      @keyframes typing {
+        from {
+          width: 0;
+        }
+        to {
+          // Works because the OCR-A font is monospaced
+          width: calc(var(--nr-chars) * 1ch);
+        }
+      }
+    }
   }
 
   .upload {
