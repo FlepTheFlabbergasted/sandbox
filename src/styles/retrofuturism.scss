@@ -113,8 +113,8 @@
   .container {
     display: grid;
     height: 100%;
-    grid-template-columns: 5fr 3fr;
-    grid-template-rows: 0.5fr 8fr;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 3fr);
+    grid-template-rows: minmax(0, 0.5fr) minmax(0, 8fr);
     gap: 24px 24px;
     grid-auto-flow: row;
     grid-template-areas:
@@ -183,6 +183,7 @@
 
   .sat-data-link {
     grid-area: sat-data-link;
+    overflow: hidden; // Code in the #console might overflow
   }
 
   #console {

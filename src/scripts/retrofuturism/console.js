@@ -3,7 +3,7 @@ import { getRandomInt } from '../../util/get-random-int';
 const sectionEl = document.getElementById('retrofuturism');
 const consoleDiv = sectionEl.querySelector('#console');
 
-const CODE_BLOCKS = [
+const TEXT_BLOCKS = [
   [
     'struct group_info',
     'init_groups = { .usage = ATOMIC_INIT(2) };',
@@ -42,38 +42,38 @@ const createSpanEl = (content, animTime) => {
   return divEl;
 };
 
-const appendCodeRows = async (codeRows, completeCallbackFn) => {
-  if (!codeRows.length) {
+const appendTextRows = async (textRows, completeCallbackFn) => {
+  if (!textRows.length) {
     completeCallbackFn();
     return;
   }
 
-  const content = codeRows[0];
-  const animTime = codeRows[0].length * ANIM_TIME_PER_CHAR_MS;
+  const content = textRows[0];
+  const animTime = textRows[0].length * ANIM_TIME_PER_CHAR_MS;
   consoleDiv.appendChild(createSpanEl(content, animTime));
 
   await timeout(animTime);
-  appendCodeRows(codeRows.slice(1), completeCallbackFn);
+  appendTextRows(textRows.slice(1), completeCallbackFn);
 };
 
-const appendCodeBlocks = async (codeBlocks) => {
-  if (!codeBlocks.length) {
+const appendTextBlocks = async (textBlocks) => {
+  if (!textBlocks.length) {
     return;
   }
 
-  await new Promise((resolveFn) => appendCodeRows(codeBlocks[0], resolveFn));
+  await new Promise((resolveFn) => appendTextRows(textBlocks[0], resolveFn));
   await timeout(getRandomInt(500, 2000));
 
   // Blank row between blocks if this is not the last block
-  if (codeBlocks.length - 1 > 0) {
-    await new Promise((resolveFn) => appendCodeRows([''], resolveFn));
+  if (textBlocks.length - 1 > 0) {
+    await new Promise((resolveFn) => appendTextRows([''], resolveFn));
   }
 
-  appendCodeBlocks(codeBlocks.slice(1));
+  appendTextBlocks(textBlocks.slice(1));
 };
 
 const timeout = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 window.addEventListener('load', () => {
-  appendCodeBlocks(CODE_BLOCKS);
+  appendTextBlocks(TEXT_BLOCKS);
 });
