@@ -187,26 +187,38 @@
   }
 
   #console {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
     padding: 8px;
     overflow: hidden;
-    // max-height: 15ch;
 
-    .console-code {
-      overflow: hidden;
-      white-space: nowrap;
-      animation: typing calc(var(--anim-time) * 1ms) steps(var(--nr-chars), end);
+    .text-container {
+      margin-top: auto;
 
-      &:empty {
-        height: 1em;
+      // Just show the last 11 rows of text
+      .console-text:nth-last-child(-n + 11) {
+        display: block;
       }
 
-      @keyframes typing {
-        from {
-          width: 0;
+      .console-text {
+        display: none;
+        overflow: hidden;
+        white-space: pre;
+        animation: typing calc(var(--anim-time) * 1ms) steps(var(--nr-chars), end);
+
+        &:empty {
+          height: 1em;
         }
-        to {
-          // Works because the OCR-A font is monospaced
-          width: calc(var(--nr-chars) * 1ch);
+
+        @keyframes typing {
+          from {
+            width: 0;
+          }
+          to {
+            // Works because the OCR-A font is monospaced
+            width: calc(var(--nr-chars) * 1ch);
+          }
         }
       }
     }
