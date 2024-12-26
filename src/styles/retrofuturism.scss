@@ -171,7 +171,7 @@
   .right {
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 3fr 0.5fr 4.5fr;
+    grid-template-rows: 4fr 0.5fr 4.5fr;
     gap: 24px 24px;
     grid-auto-flow: row;
     grid-template-areas:
@@ -181,12 +181,12 @@
     grid-area: right;
   }
 
-  .sat-data-link {
+  #sat-data-link {
     grid-area: sat-data-link;
     overflow: hidden; // Code in the #console might overflow
   }
 
-  #console {
+  #sat-data-link-console {
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -197,7 +197,7 @@
       margin-top: auto;
 
       // Just show the last 11 rows of text
-      .console-text:nth-last-child(-n + 11) {
+      .console-text:nth-last-child(-n + 14) {
         display: block;
       }
 

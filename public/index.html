@@ -657,13 +657,18 @@
         </div>
 
         <div class="right">
-          <div class="sat-data-link bordered with-footer">
+          <div id="sat-data-link" class="bordered with-footer">
             <div class="info-window-heading-2">
               <div class="padding-md vertical-center">Satellite Data Link v6.9</div>
-              <div class="filled vertical-center horizontal-center"><span class="anim-blink">CONNECTED</span></div>
+              <div class="filled vertical-center horizontal-center">
+                <!-- NO SIGNAL -->
+                <!-- CONNECTED -->
+                <!-- DISCONNECTED -->
+                <span id="sat-data-link-status" class="anim-blink">NO SIGNAL</span>
+              </div>
             </div>
 
-            <div id="console">
+            <div id="sat-data-link-console">
               <div class="text-container">
                 <!-- Console text goes here -->
               </div>

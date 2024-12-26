@@ -1,7 +1,8 @@
 import PanelSnap from 'panelsnap';
 import './scripts/infinite-well';
 import './scripts/retrofuturism/broadcast-towers-percentage';
-import './scripts/retrofuturism/console';
+import './scripts/retrofuturism/sat-data-link-console';
+import './scripts/retrofuturism/sat-data-link-status';
 import './scripts/retrofuturism/tiles';
 import './scripts/retrofuturism/transmission-1-khz';
 import './scripts/retrofuturism/transmission-2-scan';
