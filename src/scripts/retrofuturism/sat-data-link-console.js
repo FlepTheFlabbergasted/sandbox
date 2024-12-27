@@ -9,8 +9,11 @@ const ANIM_TIME_PER_CHAR_MS = 10;
 const TIME_BETWEEN_TEXT_BLOCKS_MIN_MS = 500;
 const TIME_BETWEEN_TEXT_BLOCKS_MAX_MS = 2000;
 
-const EVENT_TRIGGER_SATELLITE_DATA_LINK_UP_STR = '   Connection status: Secure';
-const EVENT_TRIGGER_SATELLITE_DATA_LINK_DOWN_STR = 'Connection terminated successfully';
+const EVENT_TRIGGER_SAT_DATA_LINK_UP_STR = '   Connection status: Secure';
+const EVENT_TRIGGER_SAT_DATA_LINK_DOWN_STR = 'Connection terminated successfully';
+const EVENT_TRIGGER_SAT_DATA_UPLOAD_BEGIN_STR = 'Uploading mining data...';
+const EVENT_TRIGGER_SAT_DATA_UPLOAD_END_STR = 'Data upload complete ...OK';
+
 const TEXT_BLOCKS = [
   ['Flep ST-30 Systems, BIOs v2.7', 'Copyright (C) 2240, Flep System, Inc.', ''],
   [
@@ -89,7 +92,7 @@ const TEXT_BLOCKS = [
     'JMC-037-A node response received ...OK',
     '   Authentication accepted',
     '   Encryption link established (Protocol: Crystal Lock v3.1)',
-    EVENT_TRIGGER_SATELLITE_DATA_LINK_UP_STR,
+    EVENT_TRIGGER_SAT_DATA_LINK_UP_STR,
     '',
   ],
   [
@@ -110,17 +113,23 @@ const TEXT_BLOCKS = [
   ],
   [
     'Beginning data transfer...',
-    'Uploading mining data...',
-    '  File                                 SIZE MB   STATUS',
+    EVENT_TRIGGER_SAT_DATA_UPLOAD_BEGIN_STR,
+    '  File                                 SIZE TB   STATUS',
     '  ----                                 -------   ------',
-    '  MINING_LOG_2024_01.DAT               54.3      [Uploaded ... OK]',
-    '  MINERAL_ANALYSIS_XI.DAT              82.1      [Uploaded ... OK]',
-    '  EXTRATERRESTRIAL_GEOLOGY_2024.DAT    91.7      [Uploaded ... OK]',
-    '  LUNAR_SURFACE_PRESSURE_DYNAMICS.DAT  67.5      [Uploaded ... OK]',
-    '  ORE_COMPOSITION_ETA-9.DAT            134.3     [Uploaded ... OK]',
-    '  ASTEROID_MINE_SITE_12-17-2024.DAT    113.8     [Uploaded ... OK]',
-    '',
-    'Data upload complete ...OK',
+  ],
+  ['  MINING_LOG_2024_01.DAT               54.3      [Uploaded ... OK]'],
+  ['  MINERAL_ANALYSIS_XI.DAT              82.1      [Uploaded ... OK]'],
+  ['  EXTRATERRESTRIAL_GEOLOGY_2024.DAT    91.7      [Uploaded ... OK]'],
+  ['  LUNAR_SURFACE_PRESSURE_DYNAMICS.DAT  67.5      [Uploaded ... OK]'],
+  ['  ORE_COMPOSITION_ETA-9.DAT            134.3     [Uploaded ... OK]'],
+  ['  ASTEROID_MINE_SITE_12-17-2024.DAT    113.8     [Uploaded ... OK]'],
+  ['  PLANETARY_MAGNETIC_FIELD_DATA.DAT    78.2      [Uploaded ... OK]'],
+  ['  SEISMIC_ACTIVITY_LOG_2024.DAT        92.4      [Uploaded ... OK]'],
+  ['  ATMOSPHERIC_SAMPLING_RESULTS.DAT     45.9      [Uploaded ... OK]'],
+  ['  GRAVITATIONAL_WAVE_ANALYSIS.DAT      68.3      [Uploaded ... OK]'],
+  ['  RESOURCE_EXTRACTION_LOG_2024.DAT     104.5     [Uploaded ... OK]', ''],
+  [
+    EVENT_TRIGGER_SAT_DATA_UPLOAD_END_STR,
     '',
     'Confirming receipt with JMC-037-A node ...OK',
     '  Status: Files successfully received ...OK',
@@ -160,7 +169,7 @@ const TEXT_BLOCKS = [
     'Disconnecting from node JMC-037-A ... OK',
     'Closing encryption channel ... OK',
     '',
-    EVENT_TRIGGER_SATELLITE_DATA_LINK_DOWN_STR,
+    EVENT_TRIGGER_SAT_DATA_LINK_DOWN_STR,
     '',
   ],
   ['Returning to idle mode ... OK', 'Engaging system standby ... OK'],
@@ -188,12 +197,7 @@ const appendTextRows = async (textRows, completeCallbackFn) => {
   textContainerDiv.appendChild(createSpanEl(content, animTime));
 
   await timeout(animTime);
-
-  if (content === EVENT_TRIGGER_SATELLITE_DATA_LINK_UP_STR) {
-    window.dispatchEvent(new Event(EventTypes.SatelliteDataLinkUp));
-  } else if (content === EVENT_TRIGGER_SATELLITE_DATA_LINK_DOWN_STR) {
-    window.dispatchEvent(new Event(EventTypes.SatelliteDataLinkDown));
-  }
+  dispatchEvents(content);
 
   appendTextRows(textRows.slice(1), completeCallbackFn);
 };
@@ -210,6 +214,20 @@ const appendTextBlocks = async (textBlocks) => {
 };
 
 const timeout = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+const dispatchEvents = (content) => {
+  if (content === EVENT_TRIGGER_SAT_DATA_LINK_UP_STR) {
+    window.dispatchEvent(new Event(EventTypes.SatDataLinkUp));
+  } else if (content === EVENT_TRIGGER_SAT_DATA_LINK_DOWN_STR) {
+    window.dispatchEvent(new Event(EventTypes.SatDataLinkDown));
+  }
+
+  if (content === EVENT_TRIGGER_SAT_DATA_UPLOAD_BEGIN_STR) {
+    window.dispatchEvent(new Event(EventTypes.SatDataUploadBegin));
+  } else if (content === EVENT_TRIGGER_SAT_DATA_UPLOAD_END_STR) {
+    window.dispatchEvent(new Event(EventTypes.SatDataUploadEnd));
+  }
+};
 
 window.addEventListener('load', () => {
   appendTextBlocks(TEXT_BLOCKS);

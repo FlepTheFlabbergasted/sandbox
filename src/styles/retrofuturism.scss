@@ -7,9 +7,15 @@
   src: url('../public/fonts/OCR-A-EXT.ttf') format('opentype');
 }
 
-@property --rssi-num {
+@property --rssi-nr {
   syntax: '<integer>';
   initial-value: 69;
+  inherits: false;
+}
+
+@property --sat-data-link-upload-speed-nr {
+  syntax: '<integer>';
+  initial-value: 0;
   inherits: false;
 }
 
@@ -183,42 +189,64 @@
 
   #sat-data-link {
     grid-area: sat-data-link;
-    overflow: hidden; // Code in the #console might overflow
-  }
+    overflow: hidden; // Text in the #sat-data-link-console might overflow
 
-  #sat-data-link-console {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    padding: 8px;
-    overflow: hidden;
+    #sat-data-link-console {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      padding: 8px;
+      overflow: hidden;
 
-    .text-container {
-      margin-top: auto;
+      .text-container {
+        margin-top: auto;
 
-      // Just show the last 11 rows of text
-      .console-text:nth-last-child(-n + 14) {
-        display: block;
-      }
-
-      .console-text {
-        display: none;
-        overflow: hidden;
-        white-space: pre;
-        animation: typing calc(var(--anim-time) * 1ms) steps(var(--nr-chars), end);
-
-        &:empty {
-          height: 1em;
+        // Just show the last 14 rows of text
+        // TODO: Make it reactive (set to height of window)
+        .console-text:nth-last-child(-n + 14) {
+          display: block;
         }
 
-        @keyframes typing {
-          from {
-            width: 0;
+        .console-text {
+          display: none;
+          overflow: hidden;
+          white-space: pre;
+          animation: typing calc(var(--anim-time) * 1ms) steps(var(--nr-chars), end);
+
+          &:empty {
+            height: 1em;
           }
-          to {
-            // Works because the OCR-A font is monospaced
-            width: calc(var(--nr-chars) * 1ch);
+
+          @keyframes typing {
+            from {
+              width: 0;
+            }
+            to {
+              // Works because the OCR-A font is monospaced
+              width: calc(var(--nr-chars) * 1ch);
+            }
           }
+        }
+      }
+    }
+
+    #sat-data-link-upload-speed {
+      counter-reset: num var(--sat-data-link-upload-speed-nr);
+
+      &.animate-nr {
+        animation: upload-speed-counter 3s infinite alternate cubic-bezier(0.42, 1.69, 0.75, -0.61);
+      }
+
+      &::after {
+        content: counter(num);
+      }
+
+      @keyframes upload-speed-counter {
+        from {
+          --sat-data-link-upload-speed-nr: 415;
+        }
+        to {
+          --sat-data-link-upload-speed-nr: 425;
         }
       }
     }
@@ -279,19 +307,19 @@
 
   #rssi {
     animation: rssi-counter 5s infinite alternate cubic-bezier(0.42, 1.19, 0.68, -0.34);
-    counter-reset: num var(--rssi-num);
+    counter-reset: num var(--rssi-nr);
 
     &::after {
       content: counter(num);
     }
-  }
 
-  @keyframes rssi-counter {
-    from {
-      --rssi-num: 69;
-    }
-    to {
-      --rssi-num: 83;
+    @keyframes rssi-counter {
+      from {
+        --rssi-nr: 69;
+      }
+      to {
+        --rssi-nr: 83;
+      }
     }
   }
 

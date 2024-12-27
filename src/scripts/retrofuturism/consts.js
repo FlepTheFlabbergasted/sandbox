@@ -1,4 +1,6 @@
 export const EventTypes = {
-  SatelliteDataLinkUp: 'satellite-data-link-up',
-  SatelliteDataLinkDown: 'satellite-data-link-down',
+  SatDataLinkUp: 'sat-data-link-up',
+  SatDataLinkDown: 'sat-data-link-down',
+  SatDataUploadBegin: 'sat-data-upload-begin',
+  SatDataUploadEnd: 'sat-data-upload-end',
 };
