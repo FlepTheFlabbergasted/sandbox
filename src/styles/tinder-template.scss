@@ -1,3 +1,5 @@
+@use "phone-scroll";
+
 @use 'sass:math';
 
 @font-face {
@@ -12,7 +14,7 @@
   src: url('../public/fonts/proximanova-semibold.otf') format('opentype');
 }
 
-$aspect-ratio: 1.65;
+phone-scroll.$aspect-ratio: 1.65;
 $box-padding: 12px;
 $app-background: #d0cbed;
 
@@ -51,7 +53,7 @@ $app-background: #d0cbed;
 
   .app-window {
     width: 350px;
-    aspect-ratio: calc(math.floor(calc(1 / $aspect-ratio) * 1000) / 1000); // Use only 3 decimals
+    aspect-ratio: calc(math.floor(calc(1 / phone-scroll.$aspect-ratio) * 1000) / 1000); // Use only 3 decimals
 
     position: relative;
 

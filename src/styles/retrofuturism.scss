@@ -1,3 +1,4 @@
+@use 'sass:string';
 @use 'sass:color';
 
 // https://www.youtube.com/watch?v=7KDlPgRUm6w&list=PLDCHtNttcDy8-TyJw6uyimX0pzeaWCiIA&index=8&ab_channel=TinSleeves
@@ -183,7 +184,7 @@
     grid-template-areas:
       'sat-data-link'
       'upload'
-      'fuses';
+      'reactors';
     grid-area: right;
   }
 
@@ -256,8 +257,31 @@
     grid-area: upload;
   }
 
-  .fuses {
-    grid-area: fuses;
+  #reactors {
+    grid-area: reactors;
+
+    display: grid;
+    grid-template-columns: 1fr 4fr 4fr 4fr 4fr 1fr;
+
+    .reactor-column {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      .reactor {
+        width: 60px;
+        aspect-ratio: 1/1;
+
+        border: 2px solid var(--primary-hsl);
+      }
+
+      .line {
+        width: 2px;
+        height: 50px;
+        background: var(--primary-hsl);
+      }
+    }
   }
 
   #transmission-1,
@@ -295,9 +319,7 @@
 
     .tile {
       border: 2px solid var(--color-background);
-      // "CSS variable to SASS color" to use CSS relative colors since i don't like sass variables
-      $color: 'hsl(from var(--primary-hsl) h s l / var(--tile-opacity))';
-      background: unquote($color);
+      background: hsl(from var(--primary-hsl) h s l / var(--tile-opacity));
 
       &:hover {
         border-color: rgb(var(--primary-rgb));

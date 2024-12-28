@@ -1,7 +1,15 @@
-@import './styles/sections.scss', './styles/infinite-well.scss', './styles/fancy-cards.scss',
-  './styles/phone-scroll.scss', './styles/tinder-template.scss', './styles/border-animation.scss',
-  './styles/side-menu.scss', './styles/hexagons.scss', './styles/string-rings.scss', './styles/neumorphism.scss',
-  './styles/retrofuturism.scss', './styles/helldivers-2-alerts.scss';
+@use 'styles/sections.scss';
+@use 'styles/infinite-well.scss';
+@use 'styles/fancy-cards.scss';
+@use 'styles/phone-scroll.scss';
+@use 'styles/tinder-template.scss';
+@use 'styles/border-animation.scss';
+@use 'styles/side-menu.scss';
+@use 'styles/hexagons.scss';
+@use 'styles/string-rings.scss';
+@use 'styles/neumorphism.scss';
+@use 'styles/retrofuturism.scss';
+@use 'styles/helldivers-2-alerts.scss';
 
 /* -------------------------------- */
 /*            Variables             */
