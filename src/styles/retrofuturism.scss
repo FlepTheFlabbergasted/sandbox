@@ -32,6 +32,11 @@
   .filled {
     color: var(--color-background) !important;
     background: var(--primary-color) !important;
+
+    &--pale {
+      color: var(--color-background) !important;
+      background: var(--primary-color-op50) !important;
+    }
   }
 
   .bordered {
@@ -255,8 +260,27 @@
     }
   }
 
-  .upload {
+  #upload {
     grid-area: upload;
+
+    display: grid;
+    grid-template-columns: auto 1fr 2fr;
+
+    #tower-name {
+      white-space: nowrap;
+      width: min-content;
+    }
+
+    #loader {
+      height: 100%;
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+
+      .cell:not(:last-of-type) {
+        height: 100%;
+        border-right: 4px solid var(--primary-color);
+      }
+    }
   }
 
   #reactors {
