@@ -21,20 +21,21 @@
 }
 
 #retrofuturism {
-  --primary-hsl: hsl(48, 82%, 43%);
+  --primary-color: hsl(48, 82%, 43%);
+  --primary-color-op50: hsl(from var(--primary-color) h s l / 0.5);
 
-  color: var(--primary-hsl);
+  color: var(--primary-color);
   font-family: 'ocr-a-extended';
   font-weight: bold;
   padding: 24px;
 
   .filled {
     color: var(--color-background) !important;
-    background: var(--primary-hsl) !important;
+    background: var(--primary-color) !important;
   }
 
   .bordered {
-    border: 4px solid var(--primary-hsl);
+    border: 4px solid var(--primary-color);
   }
 
   .padding-sm {
@@ -42,6 +43,9 @@
   }
   .padding-md {
     padding: 8px;
+  }
+  .padding-lg {
+    padding: 16px;
   }
 
   .vertical-center {
@@ -55,13 +59,13 @@
   }
 
   .info-window-heading-1 {
-    border-bottom: 4px solid var(--primary-hsl);
+    border-bottom: 4px solid var(--primary-color);
   }
 
   .info-window-heading-2 {
     display: grid;
     grid-template-columns: 5fr 3fr;
-    border-bottom: 4px solid var(--primary-hsl);
+    border-bottom: 4px solid var(--primary-color);
   }
 
   .horizontal-right {
@@ -106,8 +110,8 @@
     pointer-events: none;
 
     background: linear-gradient(
-      hsl(from var(--primary-hsl) h s l / 0.1),
-      hsl(from var(--primary-hsl) h s l / 0.1) 3px,
+      hsl(from var(--primary-color) h s l / 0.1),
+      hsl(from var(--primary-color) h s l / 0.1) 3px,
       transparent 3px,
       transparent 9px
     );
@@ -176,7 +180,7 @@
   .right {
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 4fr 0.5fr 4.5fr;
+    grid-template-rows: 5fr 1fr 5.5fr;
     gap: 24px 24px;
     grid-auto-flow: row;
     grid-template-areas:
@@ -276,15 +280,15 @@
         position: relative;
         width: 50px;
         aspect-ratio: 1/1;
-        color: hsl(from var(--primary-hsl) h s l / 0.5);
-        border: 4px solid hsl(from var(--primary-hsl) h s l / 0.5);
+        color: var(--primary-color-op50);
+        border: 4px solid var(--primary-color-op50);
 
         &.active {
-          color: var(--primary-hsl);
-          border-color: var(--primary-hsl);
+          color: var(--primary-color);
+          border-color: var(--primary-color);
 
           &::after {
-            border-right-color: var(--primary-hsl);
+            border-right-color: var(--primary-color);
           }
         }
 
@@ -296,7 +300,7 @@
           border-top: 12px solid transparent;
           border-bottom: 12px solid transparent;
           border-left: 12px solid transparent;
-          border-right: 12px solid hsl(from var(--primary-hsl) h s l / 0.5);
+          border-right: 12px solid var(--primary-color-op50);
           transform-origin: center;
           transform: rotate(45deg);
         }
@@ -305,7 +309,7 @@
       .line {
         width: 4px;
         height: 30px;
-        background: hsl(from var(--primary-hsl) h s l / 0.5);
+        background: var(--primary-color-op50);
       }
     }
 
@@ -315,18 +319,28 @@
       justify-content: center;
       gap: 64px; // Visully put them in the center of each reactor box
 
-      .arrow-right {
-        align-self: flex-end;
+      .arrow-right,
+      .arrow-left {
         border-top: 8px solid transparent;
         border-bottom: 8px solid transparent;
-        border-left: 12px solid var(--primary-hsl);
+      }
+
+      .arrow-right {
+        align-self: flex-end;
+        border-left: 12px solid var(--primary-color-op50);
+
+        &.active {
+          border-left: 12px solid var(--primary-color);
+        }
       }
 
       .arrow-left {
         align-self: flex-start;
-        border-top: 8px solid transparent;
-        border-bottom: 8px solid transparent;
-        border-right: 12px solid var(--primary-hsl);
+        border-right: 12px solid var(--primary-color-op50);
+
+        &.active {
+          border-right: 12px solid var(--primary-color);
+        }
       }
     }
   }
@@ -347,7 +361,7 @@
       position: absolute;
       top: 0;
       left: 0;
-      background: var(--primary-hsl);
+      background: var(--primary-color);
       animation: squeegee 5s ease-in-out infinite alternate;
     }
 
@@ -366,10 +380,10 @@
 
     .tile {
       border: 2px solid var(--color-background);
-      background: hsl(from var(--primary-hsl) h s l / var(--tile-opacity));
+      background: hsl(from var(--primary-color) h s l / var(--tile-opacity));
 
       &:hover {
-        border-color: var(--primary-hsl);
+        border-color: var(--primary-color);
       }
     }
   }
