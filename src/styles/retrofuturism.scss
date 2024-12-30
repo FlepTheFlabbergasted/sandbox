@@ -209,9 +209,9 @@
       .text-container {
         margin-top: auto;
 
-        // Just show the last 14 rows of text
+        // Just show the last X rows of text
         // TODO: Make it reactive (set to height of window)
-        .console-text:nth-last-child(-n + 14) {
+        .console-text:nth-last-child(-n + 13) {
           display: block;
         }
 

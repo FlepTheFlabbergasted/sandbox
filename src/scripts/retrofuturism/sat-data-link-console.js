@@ -35,7 +35,6 @@ const TEXT_BLOCKS = [
     '',
     'System hardware checks complete',
     '',
-    '',
   ],
   [
     'Life support and environmental systems',
@@ -44,7 +43,6 @@ const TEXT_BLOCKS = [
     '  Crew status monitors ............. OK',
     '',
     'Environmental checks complete',
-    '',
     '',
   ],
   [
