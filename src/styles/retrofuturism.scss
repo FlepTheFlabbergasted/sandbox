@@ -272,14 +272,51 @@
     }
 
     #loading-bar {
+      --nr-cells: 6;
+      --line-width: 4;
+      --line-width-w-symbol: 4px;
+      --percentage-per-cell: calc(100 / var(--nr-cells));
+      --percentage-per-cell-w-symbol: calc(var(--percentage-per-cell) * 1%);
+      --missing-part: calc(var(--nr-cells) * (var(--percentage-per-cell) - var(--line-width)) / 100 * 1px);
       height: 100%;
       position: relative;
-      background-image: repeating-linear-gradient(
+
+      /**
+        Explanation for var(--missing-part)
+
+        It is needed since sometimes (with certain screen widths and nr cells) a sliver of a cell is not filled in in
+        the end. This is because how we use the repeating-linear-gradient for the vertical lines. It uses a start and
+        an offset for values, and with our line width, the percentage of the offset does not work out to exactly 100%
+        anymore. So to fix this, we need to see how much is missing and add that to each step.
+
+        If we have X nr of cells, with a total width of Y and a line width of Z, then the repeating-linear-gradient
+        equation will look like this:
+
+        x((y / x) - z)
+
+        Examples:
+        x: 5, y: 100px, z: 4px,
+        5 * ((100 / 5) - 4) --> 5 * 16px --> 80px (missing 20px or 20% from 100px)
+
+        x: 5, y: 200px, z: 4px,
+        5 * ((200 / 5) - 4) --> 5 * 36px --> 180px (missing 20px or 10% from 200px)
+
+        So to get to 100% width, we need to add the missing length to each step of the gradient.
+        So we need to add "how much is missing from 100%" to each step, this can be written as as:
+
+        Well we need to know how much is missing, so take how much we get (e.g. 80px or 180px) and divide it with 100
+        and add that to the left side of the equation.
+
+        x((y / x) - z) = y - x((y / x) - z) / 100 -->
+        x((y / x) - z) + x((y / x) - z) / 100 = y
+      */
+      background: repeating-linear-gradient(
         90deg,
         transparent,
-        transparent calc(20% - 4px),
-        var(--primary-color) calc(20% - 4px),
-        var(--primary-color) calc(20% + 1px)
+        transparent calc(var(--percentage-per-cell-w-symbol) - var(--line-width-w-symbol) + var(--missing-part)),
+        var(--primary-color)
+          calc(var(--percentage-per-cell-w-symbol) - var(--line-width-w-symbol) + var(--missing-part)),
+        var(--primary-color) calc(var(--percentage-per-cell-w-symbol) + 0px + var(--missing-part))
       );
 
       &::after {
@@ -291,7 +328,7 @@
         z-index: -1;
         background: var(--primary-color-op50);
 
-        width: calc(round(down, var(--percentage-loaded), 20) * 1%);
+        width: calc(round(down, var(--percentage-loaded), var(--percentage-per-cell)) * 1%);
       }
     }
   }
