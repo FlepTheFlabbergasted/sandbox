@@ -185,7 +185,7 @@
   .right {
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 5fr 1fr 5.5fr;
+    grid-template-rows: 5fr 0.5fr 5.5fr;
     gap: 24px 24px;
     grid-auto-flow: row;
     grid-template-areas:
@@ -211,7 +211,7 @@
 
         // Just show the last X rows of text
         // TODO: Make it reactive (set to height of window)
-        .console-text:nth-last-child(-n + 13) {
+        .console-text:nth-last-child(-n + 14) {
           display: block;
         }
 
@@ -271,14 +271,27 @@
       width: min-content;
     }
 
-    #loader {
+    #loading-bar {
       height: 100%;
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
+      position: relative;
+      background-image: repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent calc(20% - 4px),
+        var(--primary-color) calc(20% - 4px),
+        var(--primary-color) calc(20% + 1px)
+      );
 
-      .cell:not(:last-of-type) {
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
         height: 100%;
-        border-right: 4px solid var(--primary-color);
+        z-index: -1;
+        background: var(--primary-color-op50);
+
+        width: calc(round(down, var(--percentage-loaded), 20) * 1%);
       }
     }
   }
