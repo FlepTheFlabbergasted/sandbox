@@ -1,0 +1,118 @@
+@use 'sass:list';
+
+/*
+ *  This file defines the following usable spacing variables:
+ *  --spacing-x
+ *  --spacing-xxs
+ *  --spacing-xs
+ *  --spacing-sm
+ *  --spacing-md
+ *  --spacing-lg
+ *  --spacing-xl
+ *  --spacing-xxl
+ *
+ *  It also defines the following spacing classes:
+ *
+ *  Sets both horizontal and vertical margin and padding:
+ *  margin-[KEY]
+ *  margin-[KEY]-[KEY]
+ *  padding-[KEY]
+ *  padding-[KEY]-[KEY]
+ *
+ *  Sets horizontal (left and right) margin and padding
+ *  margin-h-[KEY]-[KEY]
+ *  padding-h-[KEY]-[KEY]
+ *
+ *  Sets vertical (top and bottom) margin and padding
+ *  margin-v-[KEY]-[KEY]
+ *  padding-v-[KEY]-[KEY]
+ *
+ *  [KEY] can be one of the following (where the key 'x' is 0):
+ *  x xs xxs sm md lg xl xxl
+ *
+ */
+
+:root {
+  --base-spacing-unit: 8px;
+
+  --spacing-x: 0;
+  --spacing-xxs: calc(var(--base-spacing-unit) / 2); // 4px
+  --spacing-xs: calc(var(--base-spacing-unit)); // 8px
+  --spacing-sm: calc(var(--base-spacing-unit) * 2); // 16px
+  --spacing-md: calc(var(--base-spacing-unit) * 3); // 24px
+  --spacing-lg: calc(var(--base-spacing-unit) * 4); // 32px
+  --spacing-xl: calc(var(--base-spacing-unit) * 5); // 40px
+  --spacing-xxl: calc(var(--base-spacing-unit) * 6); // 48px
+}
+
+$spacing-keys: x xxs xs sm md lg xl xxl;
+$spacing-values: var(--spacing-x) var(--spacing-xxs) var(--spacing-xs) var(--spacing-sm) var(--spacing-md)
+  var(--spacing-lg) var(--spacing-xl) var(--spacing-xxl);
+
+$spacing-types: 'margin' 'padding';
+
+@mixin _make-spacing($type, $value_a, $value_b, $orientation) {
+  @if $orientation == 'horizontal' {
+    #{$type}-left: #{$value_a} !important;
+    #{$type}-right: #{$value_b} !important;
+  } @else if $orientation == 'vertical' {
+    #{$type}-top: #{$value_a} !important;
+    #{$type}-bottom: #{$value_b} !important;
+  } @else {
+    @if $value_b {
+      #{$type}: #{$value_a} #{$value_b} !important;
+    } @else {
+      #{$type}: #{$value_a} !important;
+    }
+  }
+}
+
+// Creates the margin-[KEY], margin-[KEY]-[KEY], padding-[KEY] and padding-[KEY]-[KEY] classes
+@each $type in $spacing-types {
+  @each $key_a in $spacing-keys {
+    $index_a: list.index($spacing-keys, $key_a);
+    $value_a: list.nth($spacing-values, $index_a);
+
+    @each $key_b in $spacing-keys {
+      $index_b: list.index($spacing-keys, $key_b);
+      $value_b: list.nth($spacing-values, $index_b);
+
+      .#{$type}-#{$key_a} {
+        @include _make-spacing($type, $value_a, null, null);
+      }
+
+      .#{$type}-#{$key_a} {
+        @include _make-spacing($type, $value_a, null, null);
+      }
+
+      .#{$type}-#{$key_a}-#{$key_b} {
+        @include _make-spacing($type, $value_a, $value_b, null);
+      }
+
+      .#{$type}-#{$key_a}-#{$key_b} {
+        @include _make-spacing($type, $value_a, $value_b, null);
+      }
+    }
+  }
+}
+
+// Creates the margin-h-[KEY]-[KEY], padding-h-[KEY]-[KEY], margin-v-[KEY]-[KEY] and padding-v-[KEY]-[KEY] classes
+@each $type in $spacing-types {
+  @each $key_a in $spacing-keys {
+    $index_a: list.index($spacing-keys, $key_a);
+    $value_a: list.nth($spacing-values, $index_a);
+
+    @each $key_b in $spacing-keys {
+      $index_b: list.index($spacing-keys, $key_b);
+      $value_b: list.nth($spacing-values, $index_b);
+
+      .#{$type}-h-#{$key_a}-#{$key_b} {
+        @include _make-spacing($type, $value_a, $value_b, 'horizontal');
+      }
+
+      .#{$type}-v-#{$key_a}-#{$key_b} {
+        @include _make-spacing($type, $value_a, $value_b, 'vertical');
+      }
+    }
+  }
+}

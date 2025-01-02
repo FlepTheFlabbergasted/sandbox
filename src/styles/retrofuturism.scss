@@ -43,16 +43,6 @@
     border: 4px solid var(--primary-color);
   }
 
-  .padding-sm {
-    padding: 4px;
-  }
-  .padding-md {
-    padding: 8px;
-  }
-  .padding-lg {
-    padding: 16px;
-  }
-
   .vertical-center {
     display: flex;
     align-items: center;
@@ -272,13 +262,14 @@
     }
 
     #loading-bar {
-      --nr-cells: 6;
+      --nr-cells: 7;
       --line-width: 4;
       --line-width-w-symbol: 4px;
       --percentage-per-cell: calc(100 / var(--nr-cells));
       --percentage-per-cell-w-symbol: calc(var(--percentage-per-cell) * 1%);
       --missing-part: calc(var(--nr-cells) * (var(--percentage-per-cell) - var(--line-width)) / 100 * 1px);
-      height: 100%;
+
+      height: 80%;
       position: relative;
 
       /**
