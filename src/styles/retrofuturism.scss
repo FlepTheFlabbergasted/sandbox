@@ -20,6 +20,17 @@
   inherits: false;
 }
 
+@property --planet-rotation-compass-degree-left {
+  syntax: '<integer>';
+  initial-value: 140;
+  inherits: false;
+}
+@property --planet-rotation-compass-degree-right {
+  syntax: '<integer>';
+  initial-value: 220;
+  inherits: false;
+}
+
 #retrofuturism {
   --primary-color: hsl(48, 82%, 43%);
   --primary-color-op50: hsl(from var(--primary-color) h s l / 0.5);
@@ -96,7 +107,7 @@
     animation: blink 2s steps(2, start) infinite;
   }
 
-  .overlay {
+  #overlay {
     position: absolute;
     top: 0;
     left: 0;
@@ -112,6 +123,15 @@
     );
     background-size: 100% 7px;
     // animation: pan-overlay 60s infinite linear;
+
+    // @keyframes pan-overlay {
+    //   from {
+    //     background-position: 0% 0%;
+    //   }
+    //   to {
+    //     background-position: 0% -100%;
+    //   }
+    // }
   }
 
   .container {
@@ -142,8 +162,80 @@
     grid-area: left;
   }
 
-  .planet {
+  #planet {
     grid-area: planet;
+
+    #planet-footer {
+      .degrees {
+        width: 4ch;
+        animation-duration: 40s;
+        animation-iteration-count: infinite;
+        animation-timing-function: linear;
+
+        &::after {
+          content: counter(num);
+        }
+
+        &:first-of-type {
+          text-align: right;
+          counter-reset: num var(--planet-rotation-compass-degree-left);
+          animation-name: count-up;
+
+          @keyframes count-up {
+            from {
+              --planet-rotation-compass-degree-left: 140;
+            }
+            to {
+              --planet-rotation-compass-degree-left: 360;
+            }
+          }
+        }
+
+        &:last-of-type {
+          text-align: left;
+          counter-reset: num var(--planet-rotation-compass-degree-right);
+          animation-name: count-down;
+
+          @keyframes count-down {
+            from {
+              --planet-rotation-compass-degree-right: 220;
+            }
+            to {
+              --planet-rotation-compass-degree-right: 0;
+            }
+          }
+        }
+      }
+
+      #planet-rotation-compass {
+        width: 100%;
+        height: 28px;
+        border-left: 4px solid var(--primary-color);
+        border-right: 4px solid var(--primary-color);
+
+        background-image: linear-gradient(
+          90deg,
+          var(--primary-color),
+          var(--primary-color) 4px,
+          transparent 4px,
+          transparent 4px
+        );
+        background-size: 52px;
+        background-clip: content-box;
+        background-position-x: 0px;
+
+        animation: pan-x 40s infinite linear;
+
+        @keyframes pan-x {
+          from {
+            background-position: 0% 0%;
+          }
+          to {
+            background-position: -100% 0%;
+          }
+        }
+      }
+    }
   }
 
   .transmissions-n-broadcast {
@@ -468,15 +560,6 @@
       to {
         --rssi-nr: 83;
       }
-    }
-  }
-
-  @keyframes pan-overlay {
-    from {
-      background-position: 0% 0%;
-    }
-    to {
-      background-position: 0% -100%;
     }
   }
 

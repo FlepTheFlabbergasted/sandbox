@@ -1,0 +1,64 @@
+// https://primer.style/css/utilities/flexbox#example-components
+
+.d-flex         { display: flex !important; }
+.d-inline-flex  { display: inline-flex; }
+
+.flex-row            { flex-direction: row; }
+.flex-row-reverse    { flex-direction: row-reverse; }
+.flex-column         { flex-direction: column; }
+.flex-column-reverse { flex-direction: column-reverse; }
+
+.flex-wrap           { flex-wrap: wrap; }
+.flex-nowrap         { flex-wrap: nowrap; }
+.flex-wrap-reverse   { flex-wrap: wrap-reverse; }
+
+.flex-justify-start    { justify-content: flex-start; }
+.flex-justify-end      { justify-content: flex-end; }
+.flex-justify-center   { justify-content: center; }
+.flex-justify-between  { justify-content: space-between; }
+.flex-justify-around   { justify-content: space-around; }
+
+.flex-items-start      { align-items: flex-start; }
+.flex-items-end        { align-items: flex-end; }
+.flex-items-center     { align-items: center; }
+.flex-items-baseline   { align-items: baseline; }
+.flex-items-stretch    { align-items: stretch; }
+
+.flex-content-start    { align-content: flex-start; }
+.flex-content-end      { align-content: flex-end; }
+.flex-content-center   { align-content: center; }
+.flex-content-between  { align-content: space-between; }
+.flex-content-around   { align-content: space-around; }
+.flex-content-stretch  { align-content: stretch; }
+
+.flex-1        { flex: 1; }
+.flex-auto     { flex: auto; }
+.flex-grow-0   { flex-grow: 0; }
+.flex-shrink-0 { flex-shrink: 0; }
+
+.flex-self-auto        { align-self: auto; }
+.flex-self-start       { align-self: flex-start; }
+.flex-self-end         { align-self: flex-end; }
+.flex-self-center      { align-self: center; }
+.flex-self-baseline    { align-self: baseline; }
+.flex-self-stretch     { align-self: stretch; }
+
+.flex-order-1    { order: 1; }
+.flex-order-2    { order: 2; }
+.flex-order-none { order: inherit; }
+
+.gap-4  { gap: 4px; }
+.gap-8  { gap: 8px; }
+.gap-12 { gap: 12px; }
+.gap-16 { gap: 16px; }
+.gap-20 { gap: 20px; }
+.gap-24 { gap: 24px; }
+.gap-32 { gap: 32px; }
+
+.gap-xxs {gap: var(--spacing-xxs) };
+.gap-xs {gap: var(--spacing-xs) };
+.gap-sm {gap: var(--spacing-sm) };
+.gap-md {gap: var(--spacing-md) };
+.gap-lg {gap: var(--spacing-lg) };
+.gap-xl {gap: var(--spacing-xl) };
+.gap-xxl {gap: var(--spacing-xxl) };

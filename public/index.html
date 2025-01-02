@@ -592,13 +592,20 @@
 
     <!---------- Retrofuturism ---------->
     <section id="retrofuturism">
-      <div class="overlay"></div>
+      <div id="overlay"></div>
 
       <div class="container">
         <div class="banner bordered padding-xs filled vertical-center">BRT Satellite Broadcast System</div>
 
         <div class="left">
-          <div class="planet bordered padding-xs">Planet</div>
+          <div id="planet" class="bordered padding-xs with-footer">
+            Planet
+            <div id="planet-footer" class="footer padding-h-sm-sm d-flex flex-row flex-items-center gap-xs">
+              <div class="degrees"></div>
+              <div id="planet-rotation-compass" class="padding-v-xs-xs"></div>
+              <div class="degrees"></div>
+            </div>
+          </div>
           <div class="transmissions-n-broadcast">
             <div class="broadcast bordered with-footer">
               <div class="info-window-heading-1 padding-xs vertical-center">Broadcast Towers</div>
