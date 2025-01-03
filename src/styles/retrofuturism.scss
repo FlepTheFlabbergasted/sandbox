@@ -164,6 +164,47 @@
 
   #planet {
     grid-area: planet;
+    position: relative;
+
+    .ring {
+      position: absolute;
+      width: 250px;
+      height: 250px;
+      inset: 0;
+      box-shadow:
+        0px 0px 0px 0px #fff,
+        inset 0px 0px 0px 2px #fff;
+      pointer-events: none;
+
+      &:hover {
+        box-shadow:
+          0px 0px 0px 3px var(--color),
+          inset 0px 0px 0px 3px var(--color);
+        filter: drop-shadow(0 0 12px var(--color));
+      }
+
+      &:nth-child(1) {
+        border-radius: 38% 62% 63% 37% / 41% 44% 56% 59%;
+        animation: rotate 10s linear infinite;
+
+        @keyframes rotate {
+          from {
+            transform: rotateX(90deg) rotateY(0deg) rotateZ(0deg);
+          }
+          to {
+            transform: rotateX(450deg) rotateY(360deg) rotateZ(720deg);
+          }
+        }
+      }
+      // &:nth-child(2) {
+      //   border-radius: 41% 44% 56% 59%/83% 62% 36% 37%;
+      //   animation: animate 4s linear infinite;
+      // }
+      // &:nth-child(3) {
+      //   border-radius: 41% 44% 56% 43%/38% 62% 63% 61%;
+      //   animation: animate 1s linear infinite;
+      // }
+    }
 
     #planet-footer {
       .degrees {
