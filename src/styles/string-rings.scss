@@ -1,6 +1,14 @@
 // Inspired by https://codepen.io/Gogh/pen/gOqVqBx
 
 #string-rings {
+  #plus {
+    position: absolute;
+    top: 10px;
+    left: 20px;
+    font-size: 2em;
+    cursor: default;
+  }
+
   .container-rings {
     position: relative;
     width: 700px;
@@ -56,21 +64,6 @@
 
     &:hover {
       opacity: 1;
-    }
-  }
-
-  .container-sliders {
-    display: flex;
-    flex-direction: column;
-
-    .row {
-      display: flex;
-      flex-direction: row;
-      gap: 8px;
-    }
-    .column {
-      display: flex;
-      flex-direction: column;
     }
   }
 

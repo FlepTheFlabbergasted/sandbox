@@ -503,15 +503,16 @@
 
     <!---------- String Rings ---------->
     <section id="string-rings" class="center-content">
+      <div id="plus">+</div>
       <div class="container-rings center-content">
-        <i class="ring" style="--color: #1c92ff"></i>
-        <i class="ring" style="--color: #ffe345"></i>
+        <!-- <i class="ring" style="--color: #1c92ff"></i>
+        <i class="ring" style="--color: #ffe345"></i> -->
         <i class="ring" style="--color: #d705e1"></i>
 
         <div class="container-interactions">
-          <div class="container-sliders">
-            <div class="row">
-              <div class="column">
+          <div>
+            <div class="d-flex flex-row gap-xs">
+              <div class="d-flex flex-column">
                 <label for="top-left">Top left</label>
                 <input
                   data-slider-type="border-radius"
@@ -524,7 +525,7 @@
                 />
               </div>
 
-              <div class="column">
+              <div class="d-flex flex-column">
                 <label for="top-right">Top right</label>
                 <input
                   data-slider-type="border-radius"
@@ -538,8 +539,8 @@
               </div>
             </div>
 
-            <div class="row">
-              <div class="column">
+            <div class="d-flex flex-row gap-xs">
+              <div class="d-flex flex-column">
                 <label for="bottom-left">Bottom left</label>
                 <input
                   data-slider-type="border-radius"
@@ -552,7 +553,7 @@
                 />
               </div>
 
-              <div class="column">
+              <div class="d-flex flex-column">
                 <label for="bottom-right">Bottom right</label>
                 <input
                   data-slider-type="border-radius"
@@ -573,9 +574,9 @@
             <code>transform: <span id="rotation-results">rotateX(0deg) rotateY(0deg) rotateZ(360deg)</span></code>
           </div>
 
-          <div class="container-sliders">
-            <div class="row">
-              <div class="column">
+          <div>
+            <div class="d-flex flex-row gap-xs">
+              <div class="d-flex flex-column">
                 <label for="rotation-x">Rotate X</label>
                 <input
                   data-slider-type="rotation"
@@ -588,7 +589,7 @@
                 />
               </div>
 
-              <div class="column">
+              <div class="d-flex flex-column">
                 <label for="rotation-y">Rotate Y</label>
                 <input
                   data-slider-type="rotation"
@@ -601,7 +602,7 @@
                 />
               </div>
 
-              <div class="column">
+              <div class="d-flex flex-column">
                 <label for="rotation-z">Rotate Z</label>
                 <input
                   data-slider-type="rotation"
@@ -616,22 +617,20 @@
             </div>
           </div>
 
-          <div class="container-sliders">
-            <div class="row">
-              <div class="column">
-                <label for="blue-ring">Blue</label>
-                <input type="radio" id="blue-ring" name="ring-selection" value="0" checked />
-              </div>
+          <div class="d-flex flex-row gap-xs">
+            <div class="d-flex flex-column">
+              <label for="first-ring">#1c92ff</label>
+              <input type="radio" id="first-ring" name="ring-selection" value="0" checked />
+            </div>
 
-              <div class="column">
-                <label for="red-ring">Red</label>
-                <input type="radio" id="red-ring" name="ring-selection" value="1" />
-              </div>
+            <div class="d-flex flex-column">
+              <label for="second-ring">#ffe345</label>
+              <input type="radio" id="second-ring" name="ring-selection" value="1" />
+            </div>
 
-              <div class="column">
-                <label for="yellow-ring">Yellow</label>
-                <input type="radio" id="yellow-ring" name="ring-selection" value="2" />
-              </div>
+            <div class="d-flex flex-column">
+              <label for="third-ring">#d705e1</label>
+              <input type="radio" id="third-ring" name="ring-selection" value="2" />
             </div>
           </div>
         </div>
