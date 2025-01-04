@@ -4,6 +4,8 @@ import { throttle } from '../util/throttle';
 
 const sectionEl = document.getElementById('string-rings');
 
+const cornerGradientOverlay = sectionEl.querySelector('#corner-gradient-overlay');
+
 const addRingButton = sectionEl.querySelector('#add-ring-button');
 const ringsContainer = sectionEl.querySelector('#rings-container');
 const ringSelectionControlsContainer = sectionEl.querySelector('#ring-selection-controls-container');
@@ -24,56 +26,106 @@ const DRAG_DISTANCE_MODIFIER = 4;
 let selectedRingNode = undefined;
 let selectedRingControlNode = undefined;
 
+const getWhichBorderToModify = (x, y) => {
+  if (y < window.innerHeight / 2) {
+    if (x > window.innerWidth / 2) {
+      return '--border-radius-top-right';
+    } else {
+      return '--border-radius-top-left';
+    }
+  } else {
+    if (x > window.innerWidth / 2) {
+      return '--border-radius-bottom-right';
+    } else {
+      return '--border-radius-bottom-left';
+    }
+  }
+};
+
 function mouseDown(event) {
   const startX = event.clientX;
   const startY = event.clientY;
+  const borderToModify = getWhichBorderToModify(startX, startY);
   const initialBorderRadius = Number(
-    getComputedStyle(selectedRingNode).getPropertyValue('--border-radius-top-right').replace('%', '')
+    getComputedStyle(selectedRingNode).getPropertyValue(borderToModify).replace('%', '')
   );
 
-  const throttledMouseMoveFn = throttle(mouseMove, 30);
-
-  function mouseMove(event) {
+  const mouseMove = (event) => {
     const distance = Math.sqrt(Math.pow(event.clientX - startX, 2) + Math.pow(event.clientY - startY, 2));
     const modifiedDistance = Math.round(distance / DRAG_DISTANCE_MODIFIER);
 
-    console.log('Distance: ', distance);
-    console.log('Modified distance: ', modifiedDistance);
-
     if (startX > event.clientX) {
-      console.log('Going left');
+      // console.log('Going left');
     } else {
-      console.log('Going right');
+      // console.log('Going right');
     }
 
     if (startY > event.clientY) {
-      console.log('Going up');
-      console.log(initialBorderRadius - modifiedDistance);
       selectedRingNode.style.setProperty(
-        '--border-radius-top-right',
+        borderToModify,
         `${modifiedDistance > initialBorderRadius ? 0 : initialBorderRadius - modifiedDistance}%`
       );
     } else {
-      console.log('Going down');
-      console.log(initialBorderRadius + modifiedDistance);
       selectedRingNode.style.setProperty(
-        '--border-radius-top-right',
+        borderToModify,
         `${initialBorderRadius + modifiedDistance > 100 ? 100 : initialBorderRadius + modifiedDistance}%`
       );
     }
-  }
+  };
 
-  function mouseUp() {
+  const mouseUp = () => {
     this.removeEventListener('mousemove', throttledMouseMoveFn);
     this.removeEventListener('mouseup', mouseUp);
-  }
+  };
 
+  const throttledMouseMoveFn = throttle(mouseMove);
   this.addEventListener('mousemove', throttledMouseMoveFn);
   this.addEventListener('mouseup', mouseUp);
 }
 
+const setEdgeGradientOpacities = (event) => {
+  const { clientX: x, clientY: y, view } = event;
+  const { innerWidth: width, innerHeight: height } = view;
+
+  // Calculate the distances from each corner
+  const distTL = Math.sqrt(x ** 2 + y ** 2); // Top-left corner
+  const distTR = Math.sqrt((width - x) ** 2 + y ** 2); // Top-right corner
+  const distBL = Math.sqrt(x ** 2 + (height - y) ** 2); // Bottom-left corner
+  const distBR = Math.sqrt((width - x) ** 2 + (height - y) ** 2); // Bottom-right corner
+
+  // Calculate the maximum possible distance (diagonal within each quadrant)
+  const maxDist = Math.sqrt((width / 2) ** 2 + (height / 2) ** 2);
+
+  // Calculate the intensity for each corner, clamped to a maximum of 70%
+  let intensityTL = 0;
+  let intensityTR = 0;
+  let intensityBL = 0;
+  let intensityBR = 0;
+
+  // Intensity increases from 0 to 0.7 as the mouse moves closer to the corner
+  if (x <= width / 2 && y <= height / 2) {
+    intensityTL = Math.min(1 - distTL / maxDist, 0.3);
+  }
+  if (x >= width / 2 && y <= height / 2) {
+    intensityTR = Math.min(1 - distTR / maxDist, 0.3);
+  }
+  if (x <= width / 2 && y >= height / 2) {
+    intensityBL = Math.min(1 - distBL / maxDist, 0.3);
+  }
+  if (x >= width / 2 && y >= height / 2) {
+    intensityBR = Math.min(1 - distBR / maxDist, 0.3);
+  }
+
+  cornerGradientOverlay.style.setProperty('--corner-tl', intensityTL.toFixed(2) * 100);
+  cornerGradientOverlay.style.setProperty('--corner-tr', intensityTR.toFixed(2) * 100);
+  cornerGradientOverlay.style.setProperty('--corner-bl', intensityBL.toFixed(2) * 100);
+  cornerGradientOverlay.style.setProperty('--corner-br', intensityBR.toFixed(2) * 100);
+};
+
 const addEventListeners = () => {
   window.addEventListener('mousedown', mouseDown);
+
+  window.onmousemove = setEdgeGradientOpacities;
 
   addRingButton.addEventListener('click', () => {
     const id = getRandomInt(0, 100000);

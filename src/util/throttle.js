@@ -1,4 +1,4 @@
-export const throttle = (func, delay = 250) => {
+export const throttle = (func, delay = 30) => {
   let timerFlag = null;
 
   return (...args) => {
@@ -7,8 +7,6 @@ export const throttle = (func, delay = 250) => {
       timerFlag = setTimeout(() => {
         timerFlag = null;
       }, delay);
-    } else {
-      console.log('not null');
     }
   };
 };
