@@ -23,6 +23,9 @@ const ringSelectionRadioButtons = sectionEl.querySelectorAll(`input[type='radio'
 
 let ringSelectionIndex = 0;
 
+let selectedRingNode = undefined;
+let selectedRingControlNode = undefined;
+
 const addEventListeners = () => {
   plusEl.addEventListener('click', () => {
     const id = getRandomInt(0, 100000);
@@ -30,49 +33,55 @@ const addEventListeners = () => {
   });
 
   Array.from(ringSelectionRadioButtons).forEach((radioButton) =>
-    radioButton.addEventListener('input', (event) => {
-      ringSelectionIndex = Number(event.target.value);
-
-      const computedStyle = getComputedStyle(rings[ringSelectionIndex]);
-
-      sliderTopLeft.value = computedStyle.getPropertyValue('--border-radius-top-left').replace('%', '');
-      sliderTopRight.value = computedStyle.getPropertyValue('--border-radius-top-right').replace('%', '');
-      sliderBottomRight.value = computedStyle.getPropertyValue('--border-radius-bottom-left').replace('%', '');
-      sliderBottomLeft.value = computedStyle.getPropertyValue('--border-radius-bottom-right').replace('%', '');
-
-      sliderRotationX.value = computedStyle.getPropertyValue('--rotation-x');
-      sliderRotationY.value = computedStyle.getPropertyValue('--rotation-y');
-      sliderRotationZ.value = computedStyle.getPropertyValue('--rotation-z');
-    })
+    radioButton.addEventListener('input', (event) => ringControlSelectionInputEventListener(event))
   );
 
   Array.from(borderRadiusSliders).forEach((slider) =>
     slider.addEventListener('input', () => {
-      rings[ringSelectionIndex].style.setProperty('--border-radius-top-left', `${sliderTopLeft.value}%`);
-      rings[ringSelectionIndex].style.setProperty('--border-radius-top-right', `${sliderTopRight.value}%`);
-      rings[ringSelectionIndex].style.setProperty('--border-radius-bottom-left', `${sliderBottomLeft.value}%`);
-      rings[ringSelectionIndex].style.setProperty('--border-radius-bottom-right', `${sliderBottomRight.value}%`);
+      selectedRingNode.style.setProperty('--border-radius-top-left', `${sliderTopLeft.value}%`);
+      selectedRingNode.style.setProperty('--border-radius-top-right', `${sliderTopRight.value}%`);
+      selectedRingNode.style.setProperty('--border-radius-bottom-left', `${sliderBottomLeft.value}%`);
+      selectedRingNode.style.setProperty('--border-radius-bottom-right', `${sliderBottomRight.value}%`);
     })
   );
 
   Array.from(rotationSliders).forEach((slider) =>
     slider.addEventListener('input', () => {
-      rings[ringSelectionIndex].style.setProperty('--rotation-x', `${sliderRotationX.value}deg`);
-      rings[ringSelectionIndex].style.setProperty('--rotation-y', `${sliderRotationY.value}deg`);
-      rings[ringSelectionIndex].style.setProperty('--rotation-z', `${sliderRotationZ.value}deg`);
+      selectedRingNode.style.setProperty('--rotation-x', `${sliderRotationX.value}deg`);
+      selectedRingNode.style.setProperty('--rotation-y', `${sliderRotationY.value}deg`);
+      selectedRingNode.style.setProperty('--rotation-z', `${sliderRotationZ.value}deg`);
     })
   );
 };
 
 const addNewRing = (id, color = '#ffffff') => {
-  const newRingControlNode = htmlToNode(getNewRingControlHtml(id, color));
-  const newRingNode = htmlToNode(getNewRingHtml(id, color));
+  const newRingControlNode = htmlToNode(createNewRingControlHtml(id, color));
+  const newRingNode = htmlToNode(createNewRingHtml(id, color));
+
+  newRingControlNode.addEventListener('input', (event) => ringControlSelectionInputEventListener(event));
 
   ringControlsContainer.insertBefore(newRingControlNode, plusEl);
   ringsContainer.appendChild(newRingNode);
+
+  setSelectedRing(id);
 };
 
-const getNewRingControlHtml = (id, color) => {
+const ringControlSelectionInputEventListener = (event) => {
+  setSelectedRing(event.target.value);
+
+  const computedStyle = getComputedStyle(selectedRingControlNode);
+
+  sliderTopLeft.value = computedStyle.getPropertyValue('--border-radius-top-left').replace('%', '');
+  sliderTopRight.value = computedStyle.getPropertyValue('--border-radius-top-right').replace('%', '');
+  sliderBottomRight.value = computedStyle.getPropertyValue('--border-radius-bottom-left').replace('%', '');
+  sliderBottomLeft.value = computedStyle.getPropertyValue('--border-radius-bottom-right').replace('%', '');
+
+  sliderRotationX.value = computedStyle.getPropertyValue('--rotation-x');
+  sliderRotationY.value = computedStyle.getPropertyValue('--rotation-y');
+  sliderRotationZ.value = computedStyle.getPropertyValue('--rotation-z');
+};
+
+const createNewRingControlHtml = (id, color) => {
   return `
 <div class="d-flex flex-row flex-items-center gap-xxs">
   <input type="radio" id="ring-control-${id}" name="ring-selection" value="${id}" checked />
@@ -81,8 +90,21 @@ const getNewRingControlHtml = (id, color) => {
 </div>`.trim();
 };
 
-const getNewRingHtml = (id, color) => {
+const createNewRingHtml = (id, color) => {
   return `<i id="ring-${id}" class="ring" style="--color: ${color}"></i>`;
+};
+
+const getRing = (id) => {
+  return ringsContainer.querySelector(`#ring-${id}`);
+};
+
+const getRingControl = (id) => {
+  return ringControlsContainer.querySelector(`#ring-control-${id}`);
+};
+
+const setSelectedRing = (id) => {
+  selectedRingNode = getRing(id);
+  selectedRingControlNode = getRingControl(id);
 };
 
 window.addEventListener('load', () => {
