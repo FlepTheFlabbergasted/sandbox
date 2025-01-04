@@ -3,9 +3,9 @@ import { htmlToNode } from '../util/html-to-nodes';
 
 const sectionEl = document.getElementById('string-rings');
 
-const plusEl = sectionEl.querySelector('#plus');
+const addRingButton = sectionEl.querySelector('#add-ring-button');
 const ringsContainer = sectionEl.querySelector('#rings-container');
-const ringControlsContainer = sectionEl.querySelector('#ring-controls-container');
+const ringSelectionControlsContainer = sectionEl.querySelector('#ring-selection-controls-container');
 
 const borderRadiusSliders = sectionEl.querySelectorAll(`input[data-slider-type='border-radius']`);
 const sliderTopLeft = sectionEl.querySelectorAll(`input[name='top-left']`)[0];
@@ -18,23 +18,14 @@ const sliderRotationX = sectionEl.querySelectorAll(`input[name='rotation-x']`)[0
 const sliderRotationY = sectionEl.querySelectorAll(`input[name='rotation-y']`)[0];
 const sliderRotationZ = sectionEl.querySelectorAll(`input[name='rotation-z']`)[0];
 
-const rings = sectionEl.getElementsByClassName('ring');
-const ringSelectionRadioButtons = sectionEl.querySelectorAll(`input[type='radio']`);
-
-let ringSelectionIndex = 0;
-
 let selectedRingNode = undefined;
 let selectedRingControlNode = undefined;
 
 const addEventListeners = () => {
-  plusEl.addEventListener('click', () => {
+  addRingButton.addEventListener('click', () => {
     const id = getRandomInt(0, 100000);
     addNewRing(id);
   });
-
-  Array.from(ringSelectionRadioButtons).forEach((radioButton) =>
-    radioButton.addEventListener('input', (event) => ringControlSelectionInputEventListener(event))
-  );
 
   Array.from(borderRadiusSliders).forEach((slider) =>
     slider.addEventListener('input', () => {
@@ -60,7 +51,7 @@ const addNewRing = (id, color = '#ffffff') => {
 
   newRingControlNode.addEventListener('input', (event) => ringControlSelectionInputEventListener(event));
 
-  ringControlsContainer.insertBefore(newRingControlNode, plusEl);
+  ringSelectionControlsContainer.appendChild(newRingControlNode);
   ringsContainer.appendChild(newRingNode);
 
   setSelectedRing(id);
@@ -85,8 +76,8 @@ const createNewRingControlHtml = (id, color) => {
   return `
 <div class="d-flex flex-row flex-items-center gap-xxs">
   <input type="radio" id="ring-control-${id}" name="ring-selection" value="${id}" checked />
-  <label for="first-ring">${color}</label>
-  <div class="control-button">-</div>
+  <label class="ring-selection-control-label" for="first-ring">${color}</label>
+  <button class="control-button">-</button>
 </div>`.trim();
 };
 
@@ -94,20 +85,23 @@ const createNewRingHtml = (id, color) => {
   return `<i id="ring-${id}" class="ring" style="--color: ${color}"></i>`;
 };
 
-const getRing = (id) => {
-  return ringsContainer.querySelector(`#ring-${id}`);
-};
-
-const getRingControl = (id) => {
-  return ringControlsContainer.querySelector(`#ring-control-${id}`);
-};
-
 const setSelectedRing = (id) => {
   selectedRingNode = getRing(id);
   selectedRingControlNode = getRingControl(id);
 };
 
+const getRing = (id) => {
+  return ringsContainer.querySelector(`#ring-${id}`);
+};
+
+const getRingControl = (id) => {
+  return ringSelectionControlsContainer.querySelector(`#ring-control-${id}`);
+};
+
 window.addEventListener('load', () => {
   addEventListeners();
+  // #1c92ff
+  // #ffe345
+  // #d705e1
   addNewRing(0, '#d705e1');
 });
