@@ -503,13 +503,36 @@
 
     <!---------- String Rings ---------->
     <section id="string-rings" class="center-content">
-      <div id="plus">+</div>
-      <div class="container-rings center-content">
+      <div id="ring-controls-container">
+        <div class="d-flex flex-column gap-xxs">
+          <!-- <div class="d-flex flex-row flex-items-center gap-xxs">
+            <input type="radio" id="first-ring" name="ring-selection" value="0" checked />
+            <label for="first-ring">#1c92ff</label>
+            <div class="control-button">-</div>
+          </div>
+
+          <div class="d-flex flex-row flex-items-center gap-xxs">
+            <input type="radio" id="second-ring" name="ring-selection" value="1" />
+            <label for="second-ring">#ffe345</label>
+            <div class="control-button">-</div>
+          </div>
+
+          <div class="d-flex flex-row flex-items-center gap-xxs">
+            <input type="radio" id="third-ring" name="ring-selection" value="2" />
+            <label for="third-ring">#d705e1</label>
+            <div class="control-button">-</div>
+          </div> -->
+        </div>
+
+        <div id="plus" class="control-button">+</div>
+      </div>
+
+      <div id="rings-container" class="center-content">
         <!-- <i class="ring" style="--color: #1c92ff"></i>
         <i class="ring" style="--color: #ffe345"></i> -->
-        <i class="ring" style="--color: #d705e1"></i>
+        <!-- <i class="ring" style="--color: #d705e1"></i> -->
 
-        <div class="container-interactions">
+        <!-- <div class="container-interactions">
           <div>
             <div class="d-flex flex-row gap-xs">
               <div class="d-flex flex-column">
@@ -568,12 +591,6 @@
             </div>
           </div>
 
-          <div class="container-results">
-            <code>border-radius: <span id="border-radius-results">50% 50% 50% 50%</span></code>
-            <br />
-            <code>transform: <span id="rotation-results">rotateX(0deg) rotateY(0deg) rotateZ(360deg)</span></code>
-          </div>
-
           <div>
             <div class="d-flex flex-row gap-xs">
               <div class="d-flex flex-column">
@@ -616,24 +633,7 @@
               </div>
             </div>
           </div>
-
-          <div class="d-flex flex-row gap-xs">
-            <div class="d-flex flex-column">
-              <label for="first-ring">#1c92ff</label>
-              <input type="radio" id="first-ring" name="ring-selection" value="0" checked />
-            </div>
-
-            <div class="d-flex flex-column">
-              <label for="second-ring">#ffe345</label>
-              <input type="radio" id="second-ring" name="ring-selection" value="1" />
-            </div>
-
-            <div class="d-flex flex-column">
-              <label for="third-ring">#d705e1</label>
-              <input type="radio" id="third-ring" name="ring-selection" value="2" />
-            </div>
-          </div>
-        </div>
+        </div> -->
       </div>
     </section>
 

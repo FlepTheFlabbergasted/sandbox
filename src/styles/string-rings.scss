@@ -1,15 +1,25 @@
 // Inspired by https://codepen.io/Gogh/pen/gOqVqBx
 
 #string-rings {
-  #plus {
+  #ring-controls-container {
     position: absolute;
-    top: 10px;
-    left: 20px;
-    font-size: 2em;
-    cursor: default;
+    top: 15px;
+    left: 15px;
+
+    transition: all 0.5s ease-in-out;
+    // opacity: 0;
+
+    &:hover {
+      opacity: 1;
+    }
+
+    .control-button {
+      font-size: 2em;
+      cursor: default;
+    }
   }
 
-  .container-rings {
+  #rings-container {
     position: relative;
     width: 700px;
     height: 700px;
@@ -32,7 +42,7 @@
     pointer-events: none;
 
     border-radius: var(--border-radius-top-left, 50%) var(--border-radius-top-right, 50%)
-      var(--border-radius-bottom-right, 50%) var(--border-radius-bottom-left, 50%);
+      var(--border-radius-bottom-right, 50%) var(--border-radius-bottom-left, 50%) / 50% 50% 50% 50%;
     // TODO: To not have a jump to the beginning of the animation I use "infinite alternate-reverse" here, but I would like to
     // have it continue "forwards" forever instead
     animation: animate-border-rad-n-rotatation 10s linear infinite alternate-reverse;
@@ -65,12 +75,5 @@
     &:hover {
       opacity: 1;
     }
-  }
-
-  .container-results {
-    border: 1px solid #ffffff42;
-    border-radius: 6px;
-    padding: 8px 12px;
-    box-shadow: inset 0px 0px 8px #2f2f2f9e;
   }
 }
