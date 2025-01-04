@@ -1,4 +1,4 @@
-export const throttle = (func, delay = 200) => {
+export const throttle = (func, delay = 250) => {
   let timerFlag = null;
 
   return (...args) => {

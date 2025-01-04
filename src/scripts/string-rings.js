@@ -19,42 +19,64 @@ const sliderRotationX = sectionEl.querySelectorAll(`input[name='rotation-x']`)[0
 const sliderRotationY = sectionEl.querySelectorAll(`input[name='rotation-y']`)[0];
 const sliderRotationZ = sectionEl.querySelectorAll(`input[name='rotation-z']`)[0];
 
+const DRAG_DISTANCE_MODIFIER = 4;
+
 let selectedRingNode = undefined;
 let selectedRingControlNode = undefined;
 
-function dragStart(evt) {
-  const startX = evt.clientX;
-  const startY = evt.clientY;
-  let handleDragEventListener;
-  let handleDragEndEventListener;
+function mouseDown(event) {
+  console.log('mouseDown');
 
-  const handleDrag = (event) => {
+  const startX = event.clientX;
+  const startY = event.clientY;
+  const initialBorderRadius = Number(
+    getComputedStyle(selectedRingNode).getPropertyValue('--border-radius-top-right').replace('%', '')
+  );
+
+  const throttledMouseMoveFn = throttle(mouseMove);
+
+  function mouseMove(event) {
+    console.log('mouseMove');
+    const distance = Math.sqrt(Math.pow(event.clientX - startX, 2) + Math.pow(event.clientY - startY, 2));
+    const modifiedDistance = Math.round(distance / DRAG_DISTANCE_MODIFIER);
+
+    console.log('Distance: ', distance);
+    console.log('Modified distance: ', modifiedDistance);
+
     if (startX > event.clientX) {
       console.log('Going left');
     } else {
       console.log('Going right');
     }
 
-    if (startY < event.clientY) {
-      console.log('Going down');
-    } else {
+    if (startY > event.clientY) {
       console.log('Going up');
+      console.log(initialBorderRadius - modifiedDistance);
+      selectedRingNode.style.setProperty(
+        '--border-radius-top-right',
+        `${modifiedDistance > initialBorderRadius ? 0 : initialBorderRadius - modifiedDistance}%`
+      );
+    } else {
+      console.log('Going down');
+      console.log(initialBorderRadius + modifiedDistance);
+      selectedRingNode.style.setProperty(
+        '--border-radius-top-right',
+        `${initialBorderRadius + modifiedDistance > 100 ? 100 : initialBorderRadius + modifiedDistance}%`
+      );
     }
+  }
 
-    console.log(Math.round(Math.sqrt(Math.pow(event.clientX - startX, 2) + Math.pow(event.clientY - startY, 2))));
-  };
+  function mouseUp() {
+    this.removeEventListener('mousemove', throttledMouseMoveFn);
+    this.removeEventListener('mouseup', mouseUp);
+  }
 
-  const dragEnd = () => {
-    this.removeEventListener('drag', handleDragEventListener);
-    this.removeEventListener('dragend', handleDragEndEventListener);
-  };
-
-  handleDragEventListener = this.addEventListener('drag', throttle(handleDrag));
-  handleDragEndEventListener = this.addEventListener('dragend', dragEnd);
+  this.addEventListener('mousemove', throttledMouseMoveFn);
+  this.addEventListener('mouseup', mouseUp);
 }
 
 const addEventListeners = () => {
-  window.addEventListener('dragstart', dragStart);
+  window.addEventListener('mousedown', mouseDown);
 
   addRingButton.addEventListener('click', () => {
     const id = getRandomInt(0, 100000);
@@ -89,12 +111,12 @@ const addNewRing = (id, color = '#ffffff') => {
   ringsContainer.appendChild(newRingNode);
 
   setSelectedRing(id);
+
+  ringControlSelectionInputEventListener();
 };
 
-const ringControlSelectionInputEventListener = (event) => {
-  setSelectedRing(event.target.value);
-
-  const computedStyle = getComputedStyle(selectedRingControlNode);
+const ringControlSelectionInputEventListener = () => {
+  const computedStyle = getComputedStyle(selectedRingNode);
 
   sliderTopLeft.value = computedStyle.getPropertyValue('--border-radius-top-left').replace('%', '');
   sliderTopRight.value = computedStyle.getPropertyValue('--border-radius-top-right').replace('%', '');
