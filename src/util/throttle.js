@@ -7,6 +7,8 @@ export const throttle = (func, delay = 250) => {
       timerFlag = setTimeout(() => {
         timerFlag = null;
       }, delay);
+    } else {
+      console.log('not null');
     }
   };
 };

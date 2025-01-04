@@ -25,18 +25,15 @@ let selectedRingNode = undefined;
 let selectedRingControlNode = undefined;
 
 function mouseDown(event) {
-  console.log('mouseDown');
-
   const startX = event.clientX;
   const startY = event.clientY;
   const initialBorderRadius = Number(
     getComputedStyle(selectedRingNode).getPropertyValue('--border-radius-top-right').replace('%', '')
   );
 
-  const throttledMouseMoveFn = throttle(mouseMove);
+  const throttledMouseMoveFn = throttle(mouseMove, 30);
 
   function mouseMove(event) {
-    console.log('mouseMove');
     const distance = Math.sqrt(Math.pow(event.clientX - startX, 2) + Math.pow(event.clientY - startY, 2));
     const modifiedDistance = Math.round(distance / DRAG_DISTANCE_MODIFIER);
 
@@ -138,7 +135,18 @@ const createNewRingControlHtml = (id, color) => {
 };
 
 const createNewRingHtml = (id, color) => {
-  return `<i id="ring-${id}" class="ring" style="--color: ${color}"></i>`;
+  return `
+<i
+  id="ring-${id}"
+  class="ring"
+  style="--color: ${color};
+  --border-radius-top-left: 50%;
+  --border-radius-top-right: 50%;
+  --border-radius-bottom-left: 50%;
+  --border-radius-bottom-right: 50%;
+  "
+>
+</i>`.trim();
 };
 
 const setSelectedRing = (id) => {
