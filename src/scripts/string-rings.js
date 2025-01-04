@@ -1,5 +1,6 @@
 import { getRandomInt } from '../util/get-random-int';
 import { htmlToNode } from '../util/html-to-nodes';
+import { throttle } from '../util/throttle';
 
 const sectionEl = document.getElementById('string-rings');
 
@@ -21,7 +22,40 @@ const sliderRotationZ = sectionEl.querySelectorAll(`input[name='rotation-z']`)[0
 let selectedRingNode = undefined;
 let selectedRingControlNode = undefined;
 
+function dragStart(evt) {
+  const startX = evt.clientX;
+  const startY = evt.clientY;
+  let handleDragEventListener;
+  let handleDragEndEventListener;
+
+  const handleDrag = (event) => {
+    if (startX > event.clientX) {
+      console.log('Going left');
+    } else {
+      console.log('Going right');
+    }
+
+    if (startY < event.clientY) {
+      console.log('Going down');
+    } else {
+      console.log('Going up');
+    }
+
+    console.log(Math.round(Math.sqrt(Math.pow(event.clientX - startX, 2) + Math.pow(event.clientY - startY, 2))));
+  };
+
+  const dragEnd = () => {
+    this.removeEventListener('drag', handleDragEventListener);
+    this.removeEventListener('dragend', handleDragEndEventListener);
+  };
+
+  handleDragEventListener = this.addEventListener('drag', throttle(handleDrag));
+  handleDragEndEventListener = this.addEventListener('dragend', dragEnd);
+}
+
 const addEventListeners = () => {
+  window.addEventListener('dragstart', dragStart);
+
   addRingButton.addEventListener('click', () => {
     const id = getRandomInt(0, 100000);
     addNewRing(id);
@@ -49,7 +83,7 @@ const addNewRing = (id, color = '#ffffff') => {
   const newRingControlNode = htmlToNode(createNewRingControlHtml(id, color));
   const newRingNode = htmlToNode(createNewRingHtml(id, color));
 
-  newRingControlNode.addEventListener('input', (event) => ringControlSelectionInputEventListener(event));
+  newRingControlNode.addEventListener('input', ringControlSelectionInputEventListener);
 
   ringSelectionControlsContainer.appendChild(newRingControlNode);
   ringsContainer.appendChild(newRingNode);

@@ -1,0 +1,12 @@
+export const throttle = (func, delay = 200) => {
+  let timerFlag = null;
+
+  return (...args) => {
+    if (timerFlag === null) {
+      func(...args);
+      timerFlag = setTimeout(() => {
+        timerFlag = null;
+      }, delay);
+    }
+  };
+};
