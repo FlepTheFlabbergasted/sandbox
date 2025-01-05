@@ -177,8 +177,6 @@ const ringControlSelectionInputEventListener = (event) => {
   sliderRotationX.value = computedStyle.getPropertyValue('--rotation-x').replace('deg', '');
   sliderRotationY.value = computedStyle.getPropertyValue('--rotation-y').replace('deg', '');
   sliderRotationZ.value = computedStyle.getPropertyValue('--rotation-z').replace('deg', '');
-
-  console.log(sliderRotationX.value, sliderRotationY.value, sliderRotationZ.value);
 };
 
 const createNewRingControlHtml = (id, color) => {
@@ -202,7 +200,7 @@ const createNewRingHtml = (id, color) => {
   --border-radius-BR: 50%;
   --rotation-x: 0deg;
   --rotation-y: 0deg;
-  --rotation-z: 360deg;
+  --rotation-z: 120deg;
   "
 >
 </i>`.trim();
