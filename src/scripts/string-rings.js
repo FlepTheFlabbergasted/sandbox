@@ -50,6 +50,11 @@ const getDistanceToCorner = (borderRadius, x, y, width, height) => {
 };
 
 function mouseDown(event) {
+  // Don't do anything if user clicks any other element
+  if (event.target.matches('input, textarea, select')) {
+    return;
+  }
+
   const { clientX: startX, clientY: startY, view } = event;
   const { innerWidth: width, innerHeight: height } = view;
   const borderRadiusToModify = getWhichBorderRadiusToModify(startX, startY);

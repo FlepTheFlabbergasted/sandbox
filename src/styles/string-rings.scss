@@ -128,8 +128,7 @@
     transition: all 0.25s linear;
     pointer-events: none;
 
-    border-radius: var(--border-radius-TL) var(--border-radius-TR) var(--border-radius-BR) var(--border-radius-BL) / 50%
-      50% 50% 50%;
+    border-radius: var(--border-radius-TL) var(--border-radius-TR) var(--border-radius-BR) var(--border-radius-BL);
     // TODO: To not have a jump to the beginning of the animation I use "infinite alternate-reverse" here, but I would like to
     // have it continue "forwards" forever instead
     animation: animate-border-rad-n-rotatation 10s linear infinite alternate-reverse;
