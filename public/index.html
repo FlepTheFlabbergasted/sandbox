@@ -517,104 +517,28 @@
         <!-- Rings go here -->
 
         <div class="container-interactions">
-          <div>
-            <div class="d-flex flex-row gap-xs">
-              <div class="d-flex flex-column">
-                <label for="top-left">Top left</label>
-                <input
-                  data-slider-type="border-radius"
-                  type="range"
-                  name="top-left"
-                  min="0"
-                  max="100"
-                  value="50"
-                  step="1"
-                />
-              </div>
-
-              <div class="d-flex flex-column">
-                <label for="top-right">Top right</label>
-                <input
-                  data-slider-type="border-radius"
-                  type="range"
-                  name="top-right"
-                  min="0"
-                  max="100"
-                  value="50"
-                  step="1"
-                />
-              </div>
+          <div class="d-flex flex-column gap-xs">
+            <div class="d-flex flex-column">
+              <label for="rotation-x">Rotate X</label>
+              <input data-slider-type="rotation" type="range" name="rotation-x" min="0" max="360" value="0" step="1" />
             </div>
 
-            <div class="d-flex flex-row gap-xs">
-              <div class="d-flex flex-column">
-                <label for="bottom-left">Bottom left</label>
-                <input
-                  data-slider-type="border-radius"
-                  type="range"
-                  name="bottom-left"
-                  min="0"
-                  max="100"
-                  value="50"
-                  step="1"
-                />
-              </div>
-
-              <div class="d-flex flex-column">
-                <label for="bottom-right">Bottom right</label>
-                <input
-                  data-slider-type="border-radius"
-                  type="range"
-                  name="bottom-right"
-                  min="0"
-                  max="100"
-                  value="50"
-                  step="1"
-                />
-              </div>
+            <div class="d-flex flex-column">
+              <label for="rotation-y">Rotate Y</label>
+              <input data-slider-type="rotation" type="range" name="rotation-y" min="0" max="360" value="0" step="1" />
             </div>
-          </div>
 
-          <div>
-            <div class="d-flex flex-row gap-xs">
-              <div class="d-flex flex-column">
-                <label for="rotation-x">Rotate X</label>
-                <input
-                  data-slider-type="rotation"
-                  type="range"
-                  name="rotation-x"
-                  min="0"
-                  max="360"
-                  value="0"
-                  step="1"
-                />
-              </div>
-
-              <div class="d-flex flex-column">
-                <label for="rotation-y">Rotate Y</label>
-                <input
-                  data-slider-type="rotation"
-                  type="range"
-                  name="rotation-y"
-                  min="0"
-                  max="360"
-                  value="0"
-                  step="1"
-                />
-              </div>
-
-              <div class="d-flex flex-column">
-                <label for="rotation-z">Rotate Z</label>
-                <input
-                  data-slider-type="rotation"
-                  type="range"
-                  name="rotation-z"
-                  min="0"
-                  max="360"
-                  value="360"
-                  step="1"
-                />
-              </div>
+            <div class="d-flex flex-column">
+              <label for="rotation-z">Rotate Z</label>
+              <input
+                data-slider-type="rotation"
+                type="range"
+                name="rotation-z"
+                min="0"
+                max="360"
+                value="360"
+                step="1"
+              />
             </div>
           </div>
         </div>

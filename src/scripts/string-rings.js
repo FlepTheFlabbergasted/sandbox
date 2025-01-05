@@ -11,12 +11,6 @@ const addRingButton = sectionEl.querySelector('#add-ring-button');
 const ringsContainer = sectionEl.querySelector('#rings-container');
 const ringSelectionControlsContainer = sectionEl.querySelector('#ring-selection-controls-container');
 
-const borderRadiusSliders = sectionEl.querySelectorAll(`input[data-slider-type='border-radius']`);
-const sliderTopLeft = sectionEl.querySelectorAll(`input[name='top-left']`)[0];
-const sliderTopRight = sectionEl.querySelectorAll(`input[name='top-right']`)[0];
-const sliderBottomLeft = sectionEl.querySelectorAll(`input[name='bottom-left']`)[0];
-const sliderBottomRight = sectionEl.querySelectorAll(`input[name='bottom-right']`)[0];
-
 const rotationSliders = sectionEl.querySelectorAll(`input[data-slider-type='rotation']`);
 const sliderRotationX = sectionEl.querySelectorAll(`input[name='rotation-x']`)[0];
 const sliderRotationY = sectionEl.querySelectorAll(`input[name='rotation-y']`)[0];
@@ -148,15 +142,6 @@ const addEventListeners = () => {
     addNewRing(id);
   });
 
-  Array.from(borderRadiusSliders).forEach((slider) =>
-    slider.addEventListener('input', () => {
-      selectedRingNode.style.setProperty('--border-radius-TL', `${sliderTopLeft.value}%`);
-      selectedRingNode.style.setProperty('--border-radius-TR', `${sliderTopRight.value}%`);
-      selectedRingNode.style.setProperty('--border-radius-BL', `${sliderBottomLeft.value}%`);
-      selectedRingNode.style.setProperty('--border-radius-BR', `${sliderBottomRight.value}%`);
-    })
-  );
-
   Array.from(rotationSliders).forEach((slider) =>
     slider.addEventListener('input', () => {
       selectedRingNode.style.setProperty('--rotation-x', `${sliderRotationX.value}deg`);
@@ -176,21 +161,19 @@ const addNewRing = (id, color = '#ffffff') => {
   ringsContainer.appendChild(newRingNode);
 
   setSelectedRing(id);
-
-  ringControlSelectionInputEventListener();
+  ringControlSelectionInputEventListener({ target: { value: id } });
 };
 
-const ringControlSelectionInputEventListener = () => {
+// TODO: This will eventually be able to be removed
+const ringControlSelectionInputEventListener = (event) => {
+  setSelectedRing(event.target.value);
   const computedStyle = getComputedStyle(selectedRingNode);
 
-  sliderTopLeft.value = computedStyle.getPropertyValue('--border-radius-TL').replace('%', '');
-  sliderTopRight.value = computedStyle.getPropertyValue('--border-radius-TR').replace('%', '');
-  sliderBottomRight.value = computedStyle.getPropertyValue('--border-radius-BL').replace('%', '');
-  sliderBottomLeft.value = computedStyle.getPropertyValue('--border-radius-BR').replace('%', '');
+  sliderRotationX.value = computedStyle.getPropertyValue('--rotation-x').replace('deg', '');
+  sliderRotationY.value = computedStyle.getPropertyValue('--rotation-y').replace('deg', '');
+  sliderRotationZ.value = computedStyle.getPropertyValue('--rotation-z').replace('deg', '');
 
-  sliderRotationX.value = computedStyle.getPropertyValue('--rotation-x');
-  sliderRotationY.value = computedStyle.getPropertyValue('--rotation-y');
-  sliderRotationZ.value = computedStyle.getPropertyValue('--rotation-z');
+  console.log(sliderRotationX.value, sliderRotationY.value, sliderRotationZ.value);
 };
 
 const createNewRingControlHtml = (id, color) => {
@@ -212,6 +195,9 @@ const createNewRingHtml = (id, color) => {
   --border-radius-TR: 50%;
   --border-radius-BL: 50%;
   --border-radius-BR: 50%;
+  --rotation-x: 0deg;
+  --rotation-y: 0deg;
+  --rotation-z: 360deg;
   "
 >
 </i>`.trim();

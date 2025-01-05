@@ -135,14 +135,14 @@
     animation: animate-border-rad-n-rotatation 10s linear infinite alternate-reverse;
 
     // We don't animate x and y just z
-    transform: rotateX(var(--rotation-x, 0deg)) rotateY(var(--rotation-y, 0deg)) rotateZ(var(--rotation-z, 360deg));
+    transform: rotateX(var(--rotation-x)) rotateY(var(--rotation-y)) rotateZ(var(--rotation-z));
 
     @keyframes animate-border-rad-n-rotatation {
       from {
-        transform: rotateX(var(--rotation-x, 0deg)) rotateY(var(--rotation-y, 0deg)) rotateZ(0deg);
+        transform: rotateX(var(--rotation-x)) rotateY(var(--rotation-y)) rotateZ(0deg);
       }
       to {
-        transform: rotateX(var(--rotation-x, 0deg)) rotateY(var(--rotation-y, 0deg)) rotateZ(var(--rotation-z, 360deg));
+        transform: rotateX(var(--rotation-x)) rotateY(var(--rotation-y)) rotateZ(var(--rotation-z));
       }
     }
   }
