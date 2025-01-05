@@ -27,50 +27,61 @@ const DRAG_DISTANCE_MODIFIER = 4;
 let selectedRingNode = undefined;
 let selectedRingControlNode = undefined;
 
-const getWhichBorderToModify = (x, y) => {
+const getWhichBorderRadiusToModify = (x, y) => {
   if (y < window.innerHeight / 2) {
-    if (x > window.innerWidth / 2) {
-      return '--border-radius-top-right';
+    if (x < window.innerWidth / 2) {
+      return '--border-radius-TL';
     } else {
-      return '--border-radius-top-left';
+      return '--border-radius-TR';
     }
   } else {
-    if (x > window.innerWidth / 2) {
-      return '--border-radius-bottom-right';
+    if (x < window.innerWidth / 2) {
+      return '--border-radius-BL';
     } else {
-      return '--border-radius-bottom-left';
+      return '--border-radius-BR';
     }
   }
 };
 
+const getDistanceToCorner = (borderRadius, x, y, width, height) => {
+  if (borderRadius === '--border-radius-TL') {
+    return Math.sqrt(x ** 2 + y ** 2);
+  } else if (borderRadius === '--border-radius-TR') {
+    return Math.sqrt((width - x) ** 2 + y ** 2);
+  } else if (borderRadius === '--border-radius-BL') {
+    return Math.sqrt(x ** 2 + (height - y) ** 2);
+  } else if (borderRadius === '--border-radius-BR') {
+    return Math.sqrt((width - x) ** 2 + (height - y) ** 2);
+  }
+};
+
 function mouseDown(event) {
-  console.log('mouseDown');
-  const startX = event.clientX;
-  const startY = event.clientY;
-  const borderToModify = getWhichBorderToModify(startX, startY);
+  const { clientX: startX, clientY: startY, view } = event;
+  const { innerWidth: width, innerHeight: height } = view;
+  const borderRadiusToModify = getWhichBorderRadiusToModify(startX, startY);
+  const startingDistance = getDistanceToCorner(borderRadiusToModify, startX, startY, width, height);
   const initialBorderRadius = Number(
-    getComputedStyle(selectedRingNode).getPropertyValue(borderToModify).replace('%', '')
+    getComputedStyle(selectedRingNode).getPropertyValue(borderRadiusToModify).replace('%', '')
   );
 
   const mouseMove = (event) => {
-    console.log('mouseMove');
-    const distance = Math.sqrt((event.clientX - startX) ** 2 + (event.clientY - startY) ** 2);
-    const modifiedDistance = Math.round(distance / DRAG_DISTANCE_MODIFIER);
+    const { clientX: x, clientY: y } = event;
+    const currentDistance = getDistanceToCorner(borderRadiusToModify, x, y, width, height);
 
-    if (startX > event.clientX) {
-      // console.log('Going left');
-    } else {
-      // console.log('Going right');
-    }
+    if (startingDistance > currentDistance) {
+      const movedDistance = startingDistance - currentDistance;
+      const modifiedDistance = Math.round(movedDistance / DRAG_DISTANCE_MODIFIER);
 
-    if (startY > event.clientY) {
       selectedRingNode.style.setProperty(
-        borderToModify,
-        `${modifiedDistance > initialBorderRadius ? 0 : initialBorderRadius - modifiedDistance}%`
+        borderRadiusToModify,
+        `${initialBorderRadius - modifiedDistance < 0 ? 0 : initialBorderRadius - modifiedDistance}%`
       );
     } else {
+      const movedDistance = currentDistance - startingDistance;
+      const modifiedDistance = Math.round(movedDistance / DRAG_DISTANCE_MODIFIER);
+
       selectedRingNode.style.setProperty(
-        borderToModify,
+        borderRadiusToModify,
         `${initialBorderRadius + modifiedDistance > 100 ? 100 : initialBorderRadius + modifiedDistance}%`
       );
     }
@@ -90,12 +101,6 @@ const setEdgeGradientOpacities = (event) => {
   const { clientX: x, clientY: y, view } = event;
   const { innerWidth: width, innerHeight: height } = view;
 
-  // Calculate the distances from each corner
-  const distTL = Math.sqrt(x ** 2 + y ** 2); // Top-left corner
-  const distTR = Math.sqrt((width - x) ** 2 + y ** 2); // Top-right corner
-  const distBL = Math.sqrt(x ** 2 + (height - y) ** 2); // Bottom-left corner
-  const distBR = Math.sqrt((width - x) ** 2 + (height - y) ** 2); // Bottom-right corner
-
   // Calculate the maximum possible distance (diagonal within each quadrant)
   const maxDist = Math.sqrt((width / 2) ** 2 + (height / 2) ** 2);
 
@@ -109,15 +114,19 @@ const setEdgeGradientOpacities = (event) => {
   // Intensity increases from 0 to 0.4 as the mouse moves closer to the corner
   // Setting the `maxInstensity` as `outMin` flips the mapping relationship
   if (x <= width / 2 && y <= height / 2) {
+    const distTL = getDistanceToCorner('--border-radius-TL', x, y, width, height);
     opacityTL = mapValue(distTL, 0, maxDist, maxOpacity, 0);
   }
   if (x >= width / 2 && y <= height / 2) {
+    const distTR = getDistanceToCorner('--border-radius-TR', x, y, width, height);
     opacityTR = mapValue(distTR, 0, maxDist, maxOpacity, 0);
   }
   if (x <= width / 2 && y >= height / 2) {
+    const distBL = getDistanceToCorner('--border-radius-BL', x, y, width, height);
     opacityBL = mapValue(distBL, 0, maxDist, maxOpacity, 0);
   }
   if (x >= width / 2 && y >= height / 2) {
+    const distBR = getDistanceToCorner('--border-radius-BR', x, y, width, height);
     opacityBR = mapValue(distBR, 0, maxDist, maxOpacity, 0);
   }
 
@@ -141,10 +150,10 @@ const addEventListeners = () => {
 
   Array.from(borderRadiusSliders).forEach((slider) =>
     slider.addEventListener('input', () => {
-      selectedRingNode.style.setProperty('--border-radius-top-left', `${sliderTopLeft.value}%`);
-      selectedRingNode.style.setProperty('--border-radius-top-right', `${sliderTopRight.value}%`);
-      selectedRingNode.style.setProperty('--border-radius-bottom-left', `${sliderBottomLeft.value}%`);
-      selectedRingNode.style.setProperty('--border-radius-bottom-right', `${sliderBottomRight.value}%`);
+      selectedRingNode.style.setProperty('--border-radius-TL', `${sliderTopLeft.value}%`);
+      selectedRingNode.style.setProperty('--border-radius-TR', `${sliderTopRight.value}%`);
+      selectedRingNode.style.setProperty('--border-radius-BL', `${sliderBottomLeft.value}%`);
+      selectedRingNode.style.setProperty('--border-radius-BR', `${sliderBottomRight.value}%`);
     })
   );
 
@@ -174,10 +183,10 @@ const addNewRing = (id, color = '#ffffff') => {
 const ringControlSelectionInputEventListener = () => {
   const computedStyle = getComputedStyle(selectedRingNode);
 
-  sliderTopLeft.value = computedStyle.getPropertyValue('--border-radius-top-left').replace('%', '');
-  sliderTopRight.value = computedStyle.getPropertyValue('--border-radius-top-right').replace('%', '');
-  sliderBottomRight.value = computedStyle.getPropertyValue('--border-radius-bottom-left').replace('%', '');
-  sliderBottomLeft.value = computedStyle.getPropertyValue('--border-radius-bottom-right').replace('%', '');
+  sliderTopLeft.value = computedStyle.getPropertyValue('--border-radius-TL').replace('%', '');
+  sliderTopRight.value = computedStyle.getPropertyValue('--border-radius-TR').replace('%', '');
+  sliderBottomRight.value = computedStyle.getPropertyValue('--border-radius-BL').replace('%', '');
+  sliderBottomLeft.value = computedStyle.getPropertyValue('--border-radius-BR').replace('%', '');
 
   sliderRotationX.value = computedStyle.getPropertyValue('--rotation-x');
   sliderRotationY.value = computedStyle.getPropertyValue('--rotation-y');
@@ -199,10 +208,10 @@ const createNewRingHtml = (id, color) => {
   id="ring-${id}"
   class="ring"
   style="--color: ${color};
-  --border-radius-top-left: 50%;
-  --border-radius-top-right: 50%;
-  --border-radius-bottom-left: 50%;
-  --border-radius-bottom-right: 50%;
+  --border-radius-TL: 50%;
+  --border-radius-TR: 50%;
+  --border-radius-BL: 50%;
+  --border-radius-BR: 50%;
   "
 >
 </i>`.trim();
