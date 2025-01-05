@@ -45,7 +45,7 @@
 
     background: radial-gradient(
         circle at -5% -5%,
-        rgba(255, 255, 255, calc(var(--corner-gradient-opacity-tl) * 1%)) 10%,
+        rgba(128, 128, 128, calc(var(--corner-gradient-opacity-tl) * 1%)) 10%,
         transparent 50%
       ),
       radial-gradient(
@@ -155,11 +155,48 @@
     align-items: center;
     gap: 24px;
 
-    opacity: 0;
+    opacity: 1;
     transition: all 0.5s ease-in-out;
 
     &:hover {
       opacity: 1;
+    }
+  }
+
+  input[type='range'] {
+    -webkit-appearance: none;
+    appearance: none;
+    background: none;
+    outline: none;
+    height: 8px;
+    opacity: 0.7;
+
+    border: 1px solid #ffffff42;
+    border-radius: 12px;
+    box-shadow: inset 0px 0px 8px #2f2f2f9e;
+
+    transition: opacity 0.2s ease-in-out;
+
+    &:hover {
+      opacity: 1;
+    }
+
+    &::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 8px;
+      height: 20px;
+      border-radius: 10px;
+      background: rgba(225, 212, 255, 0.95);
+      cursor: pointer;
+    }
+
+    &::-moz-range-thumb {
+      width: 8px;
+      height: 20px;
+      border-radius: 10px;
+      background: rgba(225, 212, 255, 0.95);
+      cursor: pointer;
     }
   }
 }

@@ -200,7 +200,7 @@ const createNewRingHtml = (id, color) => {
   --border-radius-BR: 50%;
   --rotation-x: 0deg;
   --rotation-y: 0deg;
-  --rotation-z: 120deg;
+  --rotation-z: 360deg;
   "
 >
 </i>`.trim();
