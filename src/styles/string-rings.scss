@@ -1,21 +1,21 @@
 // Inspired by https://codepen.io/Gogh/pen/gOqVqBx
 
-@property --corner-tl {
+@property --corner-gradient-opacity-tl {
   syntax: '<integer>';
   initial-value: 0;
   inherits: false;
 }
-@property --corner-tr {
+@property --corner-gradient-opacity-tr {
   syntax: '<integer>';
   initial-value: 0;
   inherits: false;
 }
-@property --corner-bl {
+@property --corner-gradient-opacity-bl {
   syntax: '<integer>';
   initial-value: 0;
   inherits: false;
 }
-@property --corner-br {
+@property --corner-gradient-opacity-br {
   syntax: '<integer>';
   initial-value: 0;
   inherits: false;
@@ -36,21 +36,33 @@
     width: 100%;
     height: 100%;
 
-    --timing: 0.3s;
+    --timing: 100ms;
     transition:
-      --corner-tl var(--timing) ease-in,
-      --corner-tr var(--timing) ease-in,
-      --corner-bl var(--timing) ease-in,
-      --corner-br var(--timing) ease-in;
+      --corner-gradient-opacity-tl var(--timing) ease-in-out,
+      --corner-gradient-opacity-tr var(--timing) ease-in-out,
+      --corner-gradient-opacity-bl var(--timing) ease-in-out,
+      --corner-gradient-opacity-br var(--timing) ease-in-out;
 
     background: radial-gradient(
         circle at -5% -5%,
-        rgba(255, 255, 255, calc(var(--corner-tl) * 1%)) 10%,
+        rgba(255, 255, 255, calc(var(--corner-gradient-opacity-tl) * 1%)) 10%,
         transparent 50%
       ),
-      radial-gradient(circle at 105% -5%, rgba(255, 255, 255, calc(var(--corner-tr) * 1%)) 10%, transparent 50%),
-      radial-gradient(circle at -5% 105%, rgba(255, 255, 255, calc(var(--corner-bl) * 1%)) 10%, transparent 50%),
-      radial-gradient(circle at 105% 105%, rgba(255, 255, 255, calc(var(--corner-br) * 1%)) 10%, transparent 50%);
+      radial-gradient(
+        circle at 105% -5%,
+        rgba(128, 128, 128, calc(var(--corner-gradient-opacity-tr) * 1%)) 10%,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at -5% 105%,
+        rgba(128, 128, 128, calc(var(--corner-gradient-opacity-bl) * 1%)) 10%,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 105% 105%,
+        rgba(128, 128, 128, calc(var(--corner-gradient-opacity-br) * 1%)) 10%,
+        transparent 50%
+      );
     background-size: 50% 50%;
     background-position:
       -5% -5%,

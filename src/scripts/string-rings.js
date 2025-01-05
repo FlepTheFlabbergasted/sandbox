@@ -1,5 +1,6 @@
 import { getRandomInt } from '../util/get-random-int';
 import { htmlToNode } from '../util/html-to-nodes';
+import { mapValue } from '../util/map-value';
 import { throttle } from '../util/throttle';
 
 const sectionEl = document.getElementById('string-rings');
@@ -43,6 +44,7 @@ const getWhichBorderToModify = (x, y) => {
 };
 
 function mouseDown(event) {
+  console.log('mouseDown');
   const startX = event.clientX;
   const startY = event.clientY;
   const borderToModify = getWhichBorderToModify(startX, startY);
@@ -51,7 +53,8 @@ function mouseDown(event) {
   );
 
   const mouseMove = (event) => {
-    const distance = Math.sqrt(Math.pow(event.clientX - startX, 2) + Math.pow(event.clientY - startY, 2));
+    console.log('mouseMove');
+    const distance = Math.sqrt((event.clientX - startX) ** 2 + (event.clientY - startY) ** 2);
     const modifiedDistance = Math.round(distance / DRAG_DISTANCE_MODIFIER);
 
     if (startX > event.clientX) {
@@ -96,36 +99,40 @@ const setEdgeGradientOpacities = (event) => {
   // Calculate the maximum possible distance (diagonal within each quadrant)
   const maxDist = Math.sqrt((width / 2) ** 2 + (height / 2) ** 2);
 
-  // Calculate the intensity for each corner, clamped to a maximum of 70%
-  let intensityTL = 0;
-  let intensityTR = 0;
-  let intensityBL = 0;
-  let intensityBR = 0;
+  // Calculate the opacity for each corner, clamped to a maximum of 40%
+  const maxOpacity = 0.4;
+  let opacityTL = 0;
+  let opacityTR = 0;
+  let opacityBL = 0;
+  let opacityBR = 0;
 
-  // Intensity increases from 0 to 0.7 as the mouse moves closer to the corner
+  // Intensity increases from 0 to 0.4 as the mouse moves closer to the corner
+  // Setting the `maxInstensity` as `outMin` flips the mapping relationship
   if (x <= width / 2 && y <= height / 2) {
-    intensityTL = Math.min(1 - distTL / maxDist, 0.3);
+    opacityTL = mapValue(distTL, 0, maxDist, maxOpacity, 0);
   }
   if (x >= width / 2 && y <= height / 2) {
-    intensityTR = Math.min(1 - distTR / maxDist, 0.3);
+    opacityTR = mapValue(distTR, 0, maxDist, maxOpacity, 0);
   }
   if (x <= width / 2 && y >= height / 2) {
-    intensityBL = Math.min(1 - distBL / maxDist, 0.3);
+    opacityBL = mapValue(distBL, 0, maxDist, maxOpacity, 0);
   }
   if (x >= width / 2 && y >= height / 2) {
-    intensityBR = Math.min(1 - distBR / maxDist, 0.3);
+    opacityBR = mapValue(distBR, 0, maxDist, maxOpacity, 0);
   }
 
-  cornerGradientOverlay.style.setProperty('--corner-tl', intensityTL.toFixed(2) * 100);
-  cornerGradientOverlay.style.setProperty('--corner-tr', intensityTR.toFixed(2) * 100);
-  cornerGradientOverlay.style.setProperty('--corner-bl', intensityBL.toFixed(2) * 100);
-  cornerGradientOverlay.style.setProperty('--corner-br', intensityBR.toFixed(2) * 100);
+  // Explanation for '~~': https://j11y.io/cool-stuff/double-bitwise-not/
+  // https://stackoverflow.com/a/39986149/11763719
+  cornerGradientOverlay.style.setProperty('--corner-gradient-opacity-tl', ~~(opacityTL * 100));
+  cornerGradientOverlay.style.setProperty('--corner-gradient-opacity-tr', ~~(opacityTR * 100));
+  cornerGradientOverlay.style.setProperty('--corner-gradient-opacity-bl', ~~(opacityBL * 100));
+  cornerGradientOverlay.style.setProperty('--corner-gradient-opacity-br', ~~(opacityBR * 100));
 };
 
 const addEventListeners = () => {
   window.addEventListener('mousedown', mouseDown);
 
-  window.onmousemove = setEdgeGradientOpacities;
+  window.addEventListener('mousemove', setEdgeGradientOpacities);
 
   addRingButton.addEventListener('click', () => {
     const id = getRandomInt(0, 100000);
