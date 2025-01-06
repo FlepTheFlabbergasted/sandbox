@@ -257,5 +257,5 @@ window.addEventListener('load', () => {
   // #1c92ff
   // #ffe345
   // #d705e1
-  addNewRing(0, '#d705e1');
+  addNewRing(0, '#000000');
 });
