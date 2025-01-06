@@ -166,6 +166,10 @@ const addNewRing = (id, color = '#ffffff') => {
   ringColorControl.addEventListener('input', (event) => ringColorControlInputEventListener(id, event));
   ringColorControl.addEventListener('focus', () => ringsContainer.classList.add('show-ring-colors'));
   ringColorControl.addEventListener('blur', () => ringsContainer.classList.remove('show-ring-colors'));
+  getRemoveRingButton(id, newRingControlsNode).addEventListener('click', () => {
+    ringSelectionControlsContainer.removeChild(getRingControls(id));
+    ringsContainer.removeChild(getRing(id));
+  });
 
   ringSelectionControlsContainer.appendChild(newRingControlsNode);
   ringsContainer.appendChild(newRingNode);
@@ -191,13 +195,13 @@ const ringColorControlInputEventListener = (id, event) => {
 
 const createNewRingControlsHtml = (id, color) => {
   return `
-<div class="d-flex flex-row flex-items-center gap-xxs">
-  <input type="radio" id="ring-control-${id}" name="ring-selection" value="${id}" checked />
-  <label class="color-picker-wrapper" for="ring-control-${id}">
+<div id="ring-controls-${id}" class="d-flex flex-row flex-items-center gap-xxs">
+  <input type="radio" id="ring-selection-control-${id}" name="ring-selection" value="${id}" checked />
+  <label class="color-picker-wrapper" for="ring-selection-control-${id}">
     <span>${color}</span>
     <input type="color" id="ring-color-${id}" name="ring-color" value="${color}" />
   </label>
-  <button class="control-button">-</button>
+  <button class="control-button" id="remove-ring-button-${id}">-</button>
 </div>`.trim();
 };
 
@@ -228,8 +232,12 @@ const getRing = (id, container = ringsContainer) => {
   return container.querySelector(`#ring-${id}`);
 };
 
+const getRingControls = (id, container = ringSelectionControlsContainer) => {
+  return container.querySelector(`#ring-controls-${id}`);
+};
+
 const getRingSelectionControl = (id, container = ringSelectionControlsContainer) => {
-  return container.querySelector(`#ring-control-${id}`);
+  return container.querySelector(`#ring-selection-control-${id}`);
 };
 
 const getRingColorControl = (id, container = ringSelectionControlsContainer) => {
@@ -237,7 +245,11 @@ const getRingColorControl = (id, container = ringSelectionControlsContainer) => 
 };
 
 const getRingColorLabel = (id, container = ringSelectionControlsContainer) => {
-  return container.querySelector(`label[for="ring-control-${id}"] span`);
+  return container.querySelector(`label[for="ring-selection-control-${id}"] span`);
+};
+
+const getRemoveRingButton = (id, container = ringSelectionControlsContainer) => {
+  return container.querySelector(`#remove-ring-button-${id}`);
 };
 
 window.addEventListener('load', () => {
