@@ -18,8 +18,8 @@ const sliderRotationZ = sectionEl.querySelectorAll(`input[name='rotation-z']`)[0
 
 const DRAG_DISTANCE_MODIFIER = 4;
 
-let selectedRingNode = undefined;
-let selectedRingControlNode = undefined;
+let selectedRing = undefined;
+let selectedRingSelectionControl = undefined;
 
 const getWhichBorderRadiusToModify = (x, y) => {
   if (y < window.innerHeight / 2) {
@@ -60,7 +60,7 @@ function mouseDown(event) {
   const borderRadiusToModify = getWhichBorderRadiusToModify(startX, startY);
   const startingDistance = getDistanceToCorner(borderRadiusToModify, startX, startY, width, height);
   const initialBorderRadius = Number(
-    getComputedStyle(selectedRingNode).getPropertyValue(borderRadiusToModify).replace('%', '')
+    getComputedStyle(selectedRing).getPropertyValue(borderRadiusToModify).replace('%', '')
   );
 
   const mouseMove = (event) => {
@@ -71,7 +71,7 @@ function mouseDown(event) {
       const movedDistance = startingDistance - currentDistance;
       const modifiedDistance = Math.round(movedDistance / DRAG_DISTANCE_MODIFIER);
 
-      selectedRingNode.style.setProperty(
+      selectedRing.style.setProperty(
         borderRadiusToModify,
         `${initialBorderRadius - modifiedDistance < 0 ? 0 : initialBorderRadius - modifiedDistance}%`
       );
@@ -79,7 +79,7 @@ function mouseDown(event) {
       const movedDistance = currentDistance - startingDistance;
       const modifiedDistance = Math.round(movedDistance / DRAG_DISTANCE_MODIFIER);
 
-      selectedRingNode.style.setProperty(
+      selectedRing.style.setProperty(
         borderRadiusToModify,
         `${initialBorderRadius + modifiedDistance > 100 ? 100 : initialBorderRadius + modifiedDistance}%`
       );
@@ -149,41 +149,54 @@ const addEventListeners = () => {
 
   Array.from(rotationSliders).forEach((slider) =>
     slider.addEventListener('input', () => {
-      selectedRingNode.style.setProperty('--rotation-x', `${sliderRotationX.value}deg`);
-      selectedRingNode.style.setProperty('--rotation-y', `${sliderRotationY.value}deg`);
-      selectedRingNode.style.setProperty('--rotation-z', `${sliderRotationZ.value}deg`);
+      selectedRing.style.setProperty('--rotation-x', `${sliderRotationX.value}deg`);
+      selectedRing.style.setProperty('--rotation-y', `${sliderRotationY.value}deg`);
+      selectedRing.style.setProperty('--rotation-z', `${sliderRotationZ.value}deg`);
     })
   );
 };
 
 const addNewRing = (id, color = '#ffffff') => {
-  const newRingControlNode = htmlToNode(createNewRingControlHtml(id, color));
+  const newRingControlsNode = htmlToNode(createNewRingControlsHtml(id, color));
   const newRingNode = htmlToNode(createNewRingHtml(id, color));
 
-  newRingControlNode.addEventListener('input', ringControlSelectionInputEventListener);
+  getRingSelectionControl(id, newRingControlsNode).addEventListener('input', ringSelectionControlInputEventListener);
 
-  ringSelectionControlsContainer.appendChild(newRingControlNode);
+  const ringColorControl = getRingColorControl(id, newRingControlsNode);
+  ringColorControl.addEventListener('input', (event) => ringColorControlInputEventListener(id, event));
+  ringColorControl.addEventListener('focus', () => ringsContainer.classList.add('show-ring-colors'));
+  ringColorControl.addEventListener('blur', () => ringsContainer.classList.remove('show-ring-colors'));
+
+  ringSelectionControlsContainer.appendChild(newRingControlsNode);
   ringsContainer.appendChild(newRingNode);
 
   setSelectedRing(id);
-  ringControlSelectionInputEventListener({ target: { value: id } });
+  ringSelectionControlInputEventListener({ target: { value: id } });
 };
 
 // TODO: This will eventually be able to be removed
-const ringControlSelectionInputEventListener = (event) => {
+const ringSelectionControlInputEventListener = (event) => {
   setSelectedRing(event.target.value);
-  const computedStyle = getComputedStyle(selectedRingNode);
+  const computedStyle = getComputedStyle(selectedRing);
 
   sliderRotationX.value = computedStyle.getPropertyValue('--rotation-x').replace('deg', '');
   sliderRotationY.value = computedStyle.getPropertyValue('--rotation-y').replace('deg', '');
   sliderRotationZ.value = computedStyle.getPropertyValue('--rotation-z').replace('deg', '');
 };
 
-const createNewRingControlHtml = (id, color) => {
+const ringColorControlInputEventListener = (id, event) => {
+  getRingColorLabel(id).textContent = event.target.value;
+  getRing(id).style.setProperty('--color', event.target.value);
+};
+
+const createNewRingControlsHtml = (id, color) => {
   return `
 <div class="d-flex flex-row flex-items-center gap-xxs">
   <input type="radio" id="ring-control-${id}" name="ring-selection" value="${id}" checked />
-  <label class="ring-selection-control-label" for="first-ring">${color}</label>
+  <label class="color-picker-wrapper" for="ring-control-${id}">
+    <span>${color}</span>
+    <input type="color" id="ring-color-${id}" name="ring-color" value="${color}" />
+  </label>
   <button class="control-button">-</button>
 </div>`.trim();
 };
@@ -207,16 +220,24 @@ const createNewRingHtml = (id, color) => {
 };
 
 const setSelectedRing = (id) => {
-  selectedRingNode = getRing(id);
-  selectedRingControlNode = getRingControl(id);
+  selectedRing = getRing(id);
+  selectedRingSelectionControl = getRingSelectionControl(id);
 };
 
-const getRing = (id) => {
-  return ringsContainer.querySelector(`#ring-${id}`);
+const getRing = (id, container = ringsContainer) => {
+  return container.querySelector(`#ring-${id}`);
 };
 
-const getRingControl = (id) => {
-  return ringSelectionControlsContainer.querySelector(`#ring-control-${id}`);
+const getRingSelectionControl = (id, container = ringSelectionControlsContainer) => {
+  return container.querySelector(`#ring-control-${id}`);
+};
+
+const getRingColorControl = (id, container = ringSelectionControlsContainer) => {
+  return container.querySelector(`#ring-color-${id}`);
+};
+
+const getRingColorLabel = (id, container = ringSelectionControlsContainer) => {
+  return container.querySelector(`label[for="ring-control-${id}"] span`);
 };
 
 window.addEventListener('load', () => {
