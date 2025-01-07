@@ -171,12 +171,36 @@
 
       .planet {
         aspect-ratio: 1 / 1;
-        width: 50%;
+        height: 80%;
         border-radius: 50%;
+        position: relative;
 
         background-image: url('../public/images/retrofuterism-planet.png');
         background-size: 200% 100%;
         animation: rotate-planet 40s linear infinite;
+
+        &::after,
+        &::before {
+          content: '';
+          width: 5px;
+          height: 5px;
+          background: var(--primary-color);
+          position: absolute;
+          transform-origin: 1000% 1000%;
+          top: -10%;
+          left: 50%;
+
+          animation: stuff 10s linear infinite;
+
+          @keyframes stuff {
+            from {
+              transform: rotate(0deg);
+            }
+            to {
+              transform: rotate(360deg);
+            }
+          }
+        }
 
         @keyframes rotate-planet {
           from {
