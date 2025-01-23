@@ -219,15 +219,15 @@
 
       #planet {
         aspect-ratio: 1 / 1;
-        height: 80%;
+        height: 75%;
         border-radius: 50%;
         position: relative;
 
         background-image: url('../public/images/retrofuterism-planet.png');
         background-size: 200% 100%;
-        // animation: rotate-planet 40s linear infinite;
+        animation: rotate-planet 40s linear infinite;
 
-        .test {
+        &::before {
           content: '';
           // Arrow to the right
           border-top: 8px solid transparent;
@@ -236,12 +236,12 @@
 
           position: absolute;
           top: 50%;
-          left: 0%;
+          left: 0;
 
           transform: translateX(calc(-100% - 20px)) translateY(-50%) rotate(0deg);
-          transform-origin: calc(((1px * var(--planet-radius-px, 150px)) + 100% + 20px)) 50%;
-
-          animation: rotate-around-planet-1 15s linear infinite forwards;
+          // TODO: IDFK why "17px" and not 20px works here
+          transform-origin: calc(1px * var(--planet-radius-px) + 100% + 17px) 50%;
+          animation: rotate-around-planet-1 20s linear infinite forwards;
 
           @keyframes rotate-around-planet-1 {
             0% {
@@ -251,62 +251,33 @@
               transform: translateX(calc(-100% - 20px)) translateY(-50%) rotate(360deg);
             }
           }
-
-          span {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            transform: scale(0.001);
-            transform-origin: inherit;
-          }
-
-          span::after {
-            content: '';
-            display: block;
-            width: 10px;
-            height: 10px;
-            border-radius: 100%;
-            background: rgba(255, 0, 0, 0.76);
-            transform: scale(1000);
-          }
         }
 
-        // .test2 {
-        //   position: relative;
-        //   margin: 100px;
-        //   width: 40px;
-        //   height: 30px;
-        //   background: #ccc;
-        //   transform-origin: 200% 250%;
-        //   animation: rotate 5s linear infinite;
+        &::after {
+          content: '';
+          // Arrow to the left
+          border-top: 8px solid transparent;
+          border-bottom: 8px solid transparent;
+          border-right: 12px solid var(--primary-color);
 
-        //   span {
-        //     position: absolute;
-        //     width: 100%;
-        //     height: 100%;
-        //     transform: scale(0.001);
-        //     transform-origin: inherit;
-        //   }
+          position: absolute;
+          top: 50%;
+          left: 100%;
 
-        //   span::after {
-        //     content: '';
-        //     display: block;
-        //     width: 10px;
-        //     height: 10px;
-        //     border-radius: 100%;
-        //     background: rgba(255, 0, 0, 0.76);
-        //     transform: scale(1000);
-        //   }
+          transform: translateX(20px) translateY(-50%) rotate(0deg);
+          // TODO: IDFK why "17px" and not 20px works here
+          transform-origin: calc((-1px * var(--planet-radius-px)) - 17px) 50%;
+          animation: rotate-around-planet-2 20s linear infinite forwards;
 
-        //   @keyframes rotate {
-        //     0% {
-        //       transform: rotate(0deg);
-        //     }
-        //     100% {
-        //       transform: rotate(360deg);
-        //     }
-        //   }
-        // }
+          @keyframes rotate-around-planet-2 {
+            0% {
+              transform: translateX(20px) translateY(-50%) rotate(0deg);
+            }
+            100% {
+              transform: translateX(20px) translateY(-50%) rotate(360deg);
+            }
+          }
+        }
 
         @keyframes rotate-planet {
           from {
@@ -726,6 +697,55 @@
   @keyframes squeegee {
     to {
       left: calc(100% - 4px);
+    }
+  }
+
+  // ================= Helpers =================
+  .test {
+    // To show origin point
+    // <div class='test'>
+    //   <span class="origin"></span>
+    // </div>
+    .origin {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      transform: scale(0.001);
+      transform-origin: inherit;
+
+      &::after {
+        content: '';
+        display: block;
+        width: 10px;
+        height: 10px;
+        border-radius: 100%;
+        background: rgba(255, 0, 0, 0.76);
+        transform: scale(1000);
+      }
+    }
+
+    // <span class="x-axis"></span>
+    // <span class="y-axis"></span>
+    .y-axis {
+      content: '';
+      position: absolute;
+      width: 4px;
+      height: 100%;
+      top: 0;
+      left: 50%;
+      background: rgba(255, 128, 128, 0.75);
+      transform: translateX(-50%);
+    }
+
+    .x-axis {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 4px;
+      top: 50%;
+      left: 0;
+      background: rgba(128, 128, 255, 0.75);
+      transform: translateY(-50%);
     }
   }
 }
