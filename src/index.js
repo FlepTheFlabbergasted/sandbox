@@ -2,6 +2,7 @@ import PanelSnap from 'panelsnap';
 import './scripts/infinite-well';
 import './scripts/retrofuturism/broadcast-towers-percentage';
 import './scripts/retrofuturism/loading-bar';
+import './scripts/retrofuturism/planet';
 import './scripts/retrofuturism/reactors';
 import './scripts/retrofuturism/sat-data-link-console';
 import './scripts/retrofuturism/sat-data-link-status';

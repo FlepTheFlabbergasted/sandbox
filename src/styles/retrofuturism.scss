@@ -31,6 +31,11 @@
   inherits: false;
 }
 
+@property --test-nr {
+  syntax: '<percentage>';
+  initial-value: 1%;
+}
+
 #retrofuturism {
   --primary-color: hsl(48, 82%, 43%);
   --primary-color-op50: hsl(from var(--primary-color) h s l / 0.5);
@@ -212,41 +217,96 @@
       width: 100%;
       height: 100%;
 
-      .planet {
+      #planet {
         aspect-ratio: 1 / 1;
-        height: 370px;
-        --radius: calc(80% / 2 * 1px);
+        height: 80%;
         border-radius: 50%;
         position: relative;
 
         background-image: url('../public/images/retrofuterism-planet.png');
         background-size: 200% 100%;
-        animation: rotate-planet 40s linear infinite;
+        // animation: rotate-planet 40s linear infinite;
 
-        &::after,
-        &::before {
+        .test {
           content: '';
-          width: 16px;
-          height: 16px;
-          background: var(--primary-color);
+          // Arrow to the right
+          border-top: 8px solid transparent;
+          border-bottom: 8px solid transparent;
+          border-left: 12px solid var(--primary-color);
 
           position: absolute;
           top: 50%;
           left: 0%;
-          transform: translateX(-100%) translateY(-50%) rotate(0deg);
-          transform-origin: calc(100% + 370 / 2 * 1px) 50%;
 
-          animation: spin-back 4s linear infinite forwards;
+          transform: translateX(calc(-100% - 20px)) translateY(-50%) rotate(0deg);
+          transform-origin: calc(((1px * var(--planet-radius-px, 150px)) + 100% + 20px)) 50%;
 
-          @keyframes spin-back {
+          animation: rotate-around-planet-1 15s linear infinite forwards;
+
+          @keyframes rotate-around-planet-1 {
             0% {
-              transform: translateX(-100%) translateY(-50%) rotate(0deg);
+              transform: translateX(calc(-100% - 20px)) translateY(-50%) rotate(0deg);
             }
             100% {
-              transform: translateX(-100%) translateY(-50%) rotate(360deg);
+              transform: translateX(calc(-100% - 20px)) translateY(-50%) rotate(360deg);
             }
           }
+
+          span {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transform: scale(0.001);
+            transform-origin: inherit;
+          }
+
+          span::after {
+            content: '';
+            display: block;
+            width: 10px;
+            height: 10px;
+            border-radius: 100%;
+            background: rgba(255, 0, 0, 0.76);
+            transform: scale(1000);
+          }
         }
+
+        // .test2 {
+        //   position: relative;
+        //   margin: 100px;
+        //   width: 40px;
+        //   height: 30px;
+        //   background: #ccc;
+        //   transform-origin: 200% 250%;
+        //   animation: rotate 5s linear infinite;
+
+        //   span {
+        //     position: absolute;
+        //     width: 100%;
+        //     height: 100%;
+        //     transform: scale(0.001);
+        //     transform-origin: inherit;
+        //   }
+
+        //   span::after {
+        //     content: '';
+        //     display: block;
+        //     width: 10px;
+        //     height: 10px;
+        //     border-radius: 100%;
+        //     background: rgba(255, 0, 0, 0.76);
+        //     transform: scale(1000);
+        //   }
+
+        //   @keyframes rotate {
+        //     0% {
+        //       transform: rotate(0deg);
+        //     }
+        //     100% {
+        //       transform: rotate(360deg);
+        //     }
+        //   }
+        // }
 
         @keyframes rotate-planet {
           from {
