@@ -351,6 +351,55 @@
 
         animation: pan-x 40s infinite linear;
 
+        #current-broadcast-tower {
+          width: min-content;
+          white-space: nowrap;
+          background: var(--color-background);
+
+          &::after {
+            content: '';
+            width: 100%;
+            height: 100%;
+            animation: current-broadcast-tower-anim 40s infinite linear;
+          }
+
+          @keyframes current-broadcast-tower-anim {
+            0% {
+              content: 'QAX-BIR';
+            }
+            10% {
+              content: 'MEP-DOV';
+            }
+            20% {
+              content: 'ZUR-TIX';
+            }
+            30% {
+              content: 'FEL-WRO';
+            }
+            40% {
+              content: 'PAS-KYU';
+            }
+            50% {
+              content: 'VEJ-LUM';
+            }
+            60% {
+              content: 'TOS-RAD';
+            }
+            70% {
+              content: 'YEX-SUM';
+            }
+            80% {
+              content: 'LUX-BIR';
+            }
+            90% {
+              content: 'FAS-LIM';
+            }
+            100% {
+              content: 'TOL-DEX';
+            }
+          }
+        }
+
         @keyframes pan-x {
           from {
             background-position: 0% 0%;
