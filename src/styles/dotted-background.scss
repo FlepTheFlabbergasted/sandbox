@@ -1,0 +1,36 @@
+// https://css-irl.info/css-halftone-patterns/
+
+#dotted-background {
+  background: linear-gradient(45deg, red, blue);
+
+  .dots {
+    --stop1: 0.06rem;
+    --stop2: 0.95rem;
+    --bgSize: 1.5rem;
+    --bgPosition: calc(var(--bgSize) / 2);
+
+    width: 50%;
+    height: 50%;
+    border-radius: 32px;
+    overflow: hidden;
+    position: relative;
+
+    background: white;
+    filter: contrast(100);
+    mix-blend-mode: multiply;
+    box-shadow: 0px 0px 50px 20px gray;
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle at center, #000000 var(--stop1), transparent var(--stop2)),
+        radial-gradient(circle at center, #000000 var(--stop1), transparent var(--stop2));
+      background-size: var(--bgSize) var(--bgSize);
+      background-position:
+        0 0,
+        var(--bgPosition) var(--bgPosition);
+      mask-image: linear-gradient(135deg, rgb(121 45 45 / 87%), rgba(0, 0, 0, 0.5));
+    }
+  }
+}
