@@ -1,0 +1,43 @@
+#two-titles-with-a-line-between-them {
+  .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    &:hover {
+      .container-above .title,
+      .container-below .title {
+        transform: translate(0, 0);
+      }
+    }
+
+    .container-above,
+    .container-below {
+      overflow: hidden;
+      cursor: default;
+      text-align: center;
+    }
+
+    .title {
+      transition: transform 0.5s ease-out;
+    }
+
+    .container-above {
+      .title {
+        font-size: 5em;
+        transform: translate(0, 100%);
+      }
+    }
+
+    .container-below {
+      width: calc(100% + 16px);
+      border-top: 3px solid white;
+
+      .title {
+        font-size: 4em;
+        transform: translate(0, -100%);
+      }
+    }
+  }
+}
