@@ -1,4 +1,5 @@
 import PanelSnap from 'panelsnap';
+import './scripts/closest-color';
 import './scripts/infinite-well';
 import './scripts/retrofuturism/broadcast-towers-percentage';
 import './scripts/retrofuturism/loading-bar';

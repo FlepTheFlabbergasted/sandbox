@@ -1,0 +1,31 @@
+#closest-color {
+  .container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 32px;
+  }
+
+  .file-input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    canvas {
+      object-fit: contain;
+      border: 1px solid #d3d3d3;
+    }
+
+    .color-cell-container {
+      display: flex;
+      gap: 12px;
+
+      .color-cell {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        border: 1px solid #d3d3d3;
+      }
+    }
+  }
+}
