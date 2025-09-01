@@ -4,36 +4,6 @@ const inputElements = sectionEl.querySelectorAll('input[type=file]');
 const canvasElements = sectionEl.querySelectorAll('canvas');
 const colorCellsContainers = sectionEl.querySelectorAll('.color-cell-container');
 
-const stuffLeft = {
-  canvasEl: canvasElements[0],
-  canvasCtx: canvasElements[0].getContext('2d'),
-  colorCellsContainer: colorCellsContainers[0],
-  mouseMoveEventListener: undefined,
-  mouseLeaveEventListener: undefined,
-  clickEventListener: undefined,
-  imgObj: undefined,
-  currentPickerCanvasPosIndex: 0,
-  pickerCanvasPositions: [
-    { x: 0, y: 0 },
-    { x: 0, y: 0 },
-  ],
-};
-
-const stuffRight = {
-  canvasEl: canvasElements[1],
-  canvasCtx: canvasElements[1].getContext('2d'),
-  colorCellsContainer: colorCellsContainers[1],
-  mouseMoveEventListener: undefined,
-  mouseLeaveEventListener: undefined,
-  clickEventListener: undefined,
-  imgObj: undefined,
-  currentPickerCanvasPosIndex: 0,
-  pickerCanvasPositions: [
-    { x: 0, y: 0 },
-    { x: 0, y: 0 },
-  ],
-};
-
 const onFileChange = (event, stuff) => {
   if (event.target.files.length !== 1) {
     return;
@@ -206,6 +176,35 @@ const pickColor = (canvasEl, colorCellsContainer, currentPickerCanvasPosIndex, c
 };
 
 window.addEventListener('load', () => {
-  inputElements[0].addEventListener('change', (event) => onFileChange(event, stuffLeft));
-  inputElements[1].addEventListener('change', (event) => onFileChange(event, stuffRight));
+  const defaultStuff = {
+    mouseMoveEventListener: undefined,
+    mouseLeaveEventListener: undefined,
+    clickEventListener: undefined,
+    imgObj: undefined,
+    currentPickerCanvasPosIndex: 0,
+    pickerCanvasPositions: [
+      { x: 0, y: 0 },
+      { x: 0, y: 0 },
+    ],
+  };
+
+  // Left
+  inputElements[0].addEventListener('change', (event) =>
+    onFileChange(event, {
+      ...defaultStuff,
+      canvasEl: canvasElements[0],
+      canvasCtx: canvasElements[0].getContext('2d'),
+      colorCellsContainer: colorCellsContainers[0],
+    })
+  );
+
+  // Right
+  inputElements[1].addEventListener('change', (event) =>
+    onFileChange(event, {
+      ...defaultStuff,
+      canvasEl: canvasElements[1],
+      canvasCtx: canvasElements[1].getContext('2d'),
+      colorCellsContainer: colorCellsContainers[1],
+    })
+  );
 });
