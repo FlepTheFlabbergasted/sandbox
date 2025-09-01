@@ -8,13 +8,12 @@ const stuffLeft = {
   canvasEl: canvasElements[0],
   canvasCtx: canvasElements[0].getContext('2d'),
   colorCellsContainer: colorCellsContainers[0],
-  shouldSetFirstColorCell: true,
   mouseMoveEventListener: undefined,
   mouseLeaveEventListener: undefined,
   clickEventListener: undefined,
   imgObj: undefined,
-  // Relative to canvas
-  pickerPositions: [
+  currentPickerCanvasPosIndex: 0,
+  pickerCanvasPositions: [
     { x: 0, y: 0 },
     { x: 0, y: 0 },
   ],
@@ -24,13 +23,12 @@ const stuffRight = {
   canvasEl: canvasElements[1],
   canvasCtx: canvasElements[1].getContext('2d'),
   colorCellsContainer: colorCellsContainers[1],
-  shouldSetFirstColorCell: true,
   mouseMoveEventListener: undefined,
   mouseLeaveEventListener: undefined,
   clickEventListener: undefined,
   imgObj: undefined,
-  // Relative to canvas
-  pickerPositions: [
+  currentPickerCanvasPosIndex: 0,
+  pickerCanvasPositions: [
     { x: 0, y: 0 },
     { x: 0, y: 0 },
   ],
@@ -72,17 +70,18 @@ const onImageObjHasLoaded = (stuff, fileObjectUrl) => {
 
 const onMouseClick = (event, stuff) => {
   const { canvasX, canvasY } = getMousePosRelativeToCanvas(stuff.canvasEl, event.clientX, event.clientY);
-  pickColor(stuff.canvasEl, stuff.colorCellsContainer, stuff.shouldSetFirstColorCell, canvasX, canvasY);
+  pickColor(stuff.canvasEl, stuff.colorCellsContainer, stuff.currentPickerCanvasPosIndex, canvasX, canvasY);
 
   // Save mouse position
-  stuff.pickerPositions[stuff.shouldSetFirstColorCell ? 0 : 1] = { x: canvasX, y: canvasY };
+  stuff.pickerCanvasPositions[stuff.currentPickerCanvasPosIndex] = { x: canvasX, y: canvasY };
 
-  stuff.shouldSetFirstColorCell = !stuff.shouldSetFirstColorCell;
+  // Flip between index 0 and 1
+  stuff.currentPickerCanvasPosIndex = stuff.currentPickerCanvasPosIndex === 0 ? 1 : 0;
 };
 
 const onMouseMove = (event, stuff) => {
   // Notice flipped 0 and 1 from ususal
-  const pickerPosNotSelecting = stuff.pickerPositions[stuff.shouldSetFirstColorCell ? 1 : 0];
+  const pickerCanvasPosNotSelecting = stuff.pickerCanvasPositions[stuff.currentPickerCanvasPosIndex === 0 ? 1 : 0];
   const { canvasX, canvasY } = getMousePosRelativeToCanvas(stuff.canvasEl, event.clientX, event.clientY);
 
   stuff.canvasCtx.clearRect(0, 0, stuff.canvasEl.width, stuff.canvasEl.height);
@@ -91,31 +90,31 @@ const onMouseMove = (event, stuff) => {
   // Draw a rect where the mouse is right now
   drawPickerRect(stuff, canvasX, canvasY);
   // Draw the saved rect, from saved pos, that we are not currently using to select a color
-  drawPickerRect(stuff, pickerPosNotSelecting.x, pickerPosNotSelecting.y);
+  drawPickerRect(stuff, pickerCanvasPosNotSelecting.x, pickerCanvasPosNotSelecting.y);
 
-  pickColor(stuff.canvasEl, stuff.colorCellsContainer, stuff.shouldSetFirstColorCell, canvasX, canvasY);
+  pickColor(stuff.canvasEl, stuff.colorCellsContainer, stuff.currentPickerCanvasPosIndex, canvasX, canvasY);
 };
 
 const onMouseLeave = (stuff) => {
   stuff.canvasCtx.clearRect(0, 0, stuff.canvasEl.width, stuff.canvasEl.height);
 
   drawCanvasImage(stuff);
-  drawPickerRect(stuff, stuff.pickerPositions[0].x, stuff.pickerPositions[0].y);
-  drawPickerRect(stuff, stuff.pickerPositions[1].x, stuff.pickerPositions[1].y);
+  drawPickerRect(stuff, stuff.pickerCanvasPositions[0].x, stuff.pickerCanvasPositions[0].y);
+  drawPickerRect(stuff, stuff.pickerCanvasPositions[1].x, stuff.pickerCanvasPositions[1].y);
 
   pickColor(
     stuff.canvasEl,
     stuff.colorCellsContainer,
-    stuff.shouldSetFirstColorCell,
-    stuff.pickerPositions[0].x,
-    stuff.pickerPositions[0].y
+    stuff.currentPickerCanvasPosIndex,
+    stuff.pickerCanvasPositions[0].x,
+    stuff.pickerCanvasPositions[0].y
   );
   pickColor(
     stuff.canvasEl,
     stuff.colorCellsContainer,
-    !stuff.shouldSetFirstColorCell,
-    stuff.pickerPositions[1].x,
-    stuff.pickerPositions[1].y
+    !stuff.currentPickerCanvasPosIndex,
+    stuff.pickerCanvasPositions[1].x,
+    stuff.pickerCanvasPositions[1].y
   );
 };
 
@@ -194,13 +193,16 @@ const drawCanvasImage = (stuff) => {
 };
 
 // Code from https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Pixel_manipulation_with_canvas#creating_a_color_picker
-const pickColor = (canvasEl, colorCellsContainer, shouldSetFirstColorCell, canvasX, canvasY) => {
+const pickColor = (canvasEl, colorCellsContainer, currentPickerCanvasPosIndex, canvasX, canvasY) => {
   const pixel = canvasEl.getContext('2d').getImageData(canvasX, canvasY, 1, 1);
   const pixelData = pixel.data;
 
   const rgbColor = `rgb(${pixelData[0]} ${pixelData[1]} ${pixelData[2]} / ${pixelData[3] / 255})`;
 
-  colorCellsContainer.style.setProperty(shouldSetFirstColorCell ? '--color-left-cell' : '--color-right-cell', rgbColor);
+  colorCellsContainer.style.setProperty(
+    currentPickerCanvasPosIndex === 0 ? '--color-left-cell' : '--color-right-cell',
+    rgbColor
+  );
 };
 
 window.addEventListener('load', () => {
