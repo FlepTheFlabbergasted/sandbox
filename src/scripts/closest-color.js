@@ -17,9 +17,9 @@ const onFileChange = (event, stuff) => {
     { x: undefined, y: undefined },
     { x: undefined, y: undefined },
   ];
-  // Reset colors
-  stuff.colorCellsContainer.style.setProperty('--color-left-cell', 0);
-  stuff.colorCellsContainer.style.setProperty('--color-right-cell', 0);
+  // Reset cell colors
+  stuff.colorCellsContainer.style.removeProperty('--color-left-cell');
+  stuff.colorCellsContainer.style.removeProperty('--color-right-cell');
   // Reset canvas size
   setCanvasSize(stuff.canvasEl, INITIAL_CANVAS_WIDTH_PX, INITIAL_CANVAS_HEIGHT_PX);
 
