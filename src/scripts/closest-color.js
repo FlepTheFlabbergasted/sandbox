@@ -12,14 +12,16 @@ const onFileChange = (event, stuff) => {
     return;
   }
 
+  // Reset current picker index
+  stuff.currentPickerCanvasPosIndex = 0;
   // Reset picker positions for new images
   stuff.pickerCanvasPositions = [
     { x: undefined, y: undefined },
     { x: undefined, y: undefined },
   ];
   // Reset cell colors
-  stuff.colorCellsContainer.style.removeProperty('--color-left-cell');
-  stuff.colorCellsContainer.style.removeProperty('--color-right-cell');
+  resetColorsCellsContainerColorProperty(stuff.colorCellsContainer, 0);
+  resetColorsCellsContainerColorProperty(stuff.colorCellsContainer, 1);
   // Reset canvas size
   setCanvasSize(stuff.canvasEl, INITIAL_CANVAS_WIDTH_PX, INITIAL_CANVAS_HEIGHT_PX);
 
@@ -30,19 +32,6 @@ const onFileChange = (event, stuff) => {
   imgObj.addEventListener('load', () => {
     setCanvasSizeToImgSize(stuff.canvasEl, imgObj);
     drawCanvasImage(stuff.canvasEl, stuff.canvasCtx, imgObj);
-
-    stuff.canvasEl.removeEventListener('mousemove', stuff.mouseMoveEventListener);
-    stuff.canvasEl.removeEventListener('mouseleave', stuff.mouseLeaveEventListener);
-    stuff.canvasEl.removeEventListener('click', stuff.clickEventListener);
-
-    stuff.mouseMoveEventListener = (event) => onMouseMove(event, stuff);
-    stuff.mouseLeaveEventListener = () => onMouseLeave(stuff);
-    stuff.clickEventListener = (event) => onMouseClick(event, stuff);
-
-    stuff.canvasEl.addEventListener('mousemove', stuff.mouseMoveEventListener);
-    stuff.canvasEl.addEventListener('mouseleave', stuff.mouseLeaveEventListener);
-    stuff.canvasEl.addEventListener('click', stuff.clickEventListener);
-
     URL.revokeObjectURL(fileObjectUrl);
   });
 
@@ -99,6 +88,8 @@ const onMouseLeave = (stuff) => {
       0,
       getCanvasPixelColor(stuff.canvasCtx, stuff.pickerCanvasPositions[0].x, stuff.pickerCanvasPositions[0].y)
     );
+  } else {
+    resetColorsCellsContainerColorProperty(stuff.colorCellsContainer, 0);
   }
 
   if (stuff.pickerCanvasPositions[1].x !== undefined && stuff.pickerCanvasPositions[1].y !== undefined) {
@@ -108,6 +99,8 @@ const onMouseLeave = (stuff) => {
       1,
       getCanvasPixelColor(stuff.canvasCtx, stuff.pickerCanvasPositions[1].x, stuff.pickerCanvasPositions[1].y)
     );
+  } else {
+    resetColorsCellsContainerColorProperty(stuff.colorCellsContainer, 1);
   }
 };
 
@@ -188,20 +181,39 @@ const getCanvasPixelColor = (canvasCtx, canvasX, canvasY) => {
   return rgbColorStr;
 };
 
-const setColorCellsContainerColorProperty = (colorCellsContainer, currentPickerCanvasPosIndex, rgbColorStr) => {
+const setColorCellsContainerColorProperty = (colorCellsContainer, pickerCanvasPosIndex, rgbColorStr) => {
   colorCellsContainer.style.setProperty(
-    currentPickerCanvasPosIndex === 0 ? '--color-left-cell' : '--color-right-cell',
+    pickerCanvasPosIndex === 0 ? '--color-left-cell' : '--color-right-cell',
     rgbColorStr
   );
+};
+
+const resetColorsCellsContainerColorProperty = (colorCellsContainer, pickerCanvasPosIndex) => {
+  colorCellsContainer.style.removeProperty(pickerCanvasPosIndex === 0 ? '--color-left-cell' : '--color-right-cell');
+};
+
+const registerMouseAndClickEventListeners = (stuff) => {
+  stuff.canvasEl.addEventListener('mousemove', (event) => {
+    if (stuff.imgObj) {
+      onMouseMove(event, stuff);
+    }
+  });
+  stuff.canvasEl.addEventListener('mouseleave', () => {
+    if (stuff.imgObj) {
+      onMouseLeave(stuff);
+    }
+  });
+  stuff.canvasEl.addEventListener('click', (event) => {
+    if (stuff.imgObj) {
+      onMouseClick(event, stuff);
+    }
+  });
 };
 
 window.addEventListener('load', () => {
   canvasElements.forEach((canvasEl) => setCanvasSize(canvasEl, INITIAL_CANVAS_WIDTH_PX, INITIAL_CANVAS_HEIGHT_PX));
 
   const defaultStuff = {
-    mouseMoveEventListener: undefined,
-    mouseLeaveEventListener: undefined,
-    clickEventListener: undefined,
     imgObj: undefined,
     currentPickerCanvasPosIndex: 0,
     pickerCanvasPositions: [
@@ -210,23 +222,22 @@ window.addEventListener('load', () => {
     ],
   };
 
-  // Left
-  inputElements[0].addEventListener('change', (event) =>
-    onFileChange(event, {
-      ...defaultStuff,
-      canvasEl: canvasElements[0],
-      canvasCtx: canvasElements[0].getContext('2d'),
-      colorCellsContainer: colorCellsContainers[0],
-    })
-  );
+  const leftStuff = {
+    ...defaultStuff,
+    canvasEl: canvasElements[0],
+    canvasCtx: canvasElements[0].getContext('2d'),
+    colorCellsContainer: colorCellsContainers[0],
+  };
+  const rightStuff = {
+    ...defaultStuff,
+    canvasEl: canvasElements[1],
+    canvasCtx: canvasElements[1].getContext('2d'),
+    colorCellsContainer: colorCellsContainers[1],
+  };
 
-  // Right
-  inputElements[1].addEventListener('change', (event) =>
-    onFileChange(event, {
-      ...defaultStuff,
-      canvasEl: canvasElements[1],
-      canvasCtx: canvasElements[1].getContext('2d'),
-      colorCellsContainer: colorCellsContainers[1],
-    })
-  );
+  registerMouseAndClickEventListeners(leftStuff);
+  registerMouseAndClickEventListeners(rightStuff);
+
+  inputElements[0].addEventListener('change', (event) => onFileChange(event, leftStuff));
+  inputElements[1].addEventListener('change', (event) => onFileChange(event, rightStuff));
 });
