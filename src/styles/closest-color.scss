@@ -12,15 +12,30 @@
     gap: 12px;
     height: 100%;
 
+    .custom-file-upload {
+      input[type='file'] {
+        display: none;
+      }
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.1em;
+      text-shadow:
+        0px 0px 4px black,
+        0px 0px 8px black,
+        0px 0px 16px black;
+      border: 1px solid #d3d3d3;
+      cursor: pointer;
+    }
+
     canvas {
-      width: 100%;
-      height: 100%;
       border: 1px solid #d3d3d3;
     }
 
     .color-cell-container {
       position: relative;
-      height: 30px;
+      height: 40px;
 
       // TODO: Animate color change?
       // TODO: Should have gradients start after the color-cell for more accurate representation
@@ -32,20 +47,20 @@
 
       .color-cell {
         position: absolute;
-        width: 30px;
-        height: 30px;
+        width: 42px;
+        height: 42px;
         border: 2px solid #d3d3d3;
         box-shadow:
-          inset 0 0 6px 0px rgba(0, 0, 0, 0.5),
-          0 0 6px 0px rgba(0, 0, 0, 0.5);
-        top: 0;
-      }
+          inset 0 0 6px 0px rgba(0, 0, 0, 0.7),
+          0 0 6px 0px rgba(0, 0, 0, 0.7);
+        top: -2px;
 
-      .color-cell:nth-child(0) {
-        left: 0;
-      }
-      .color-cell:nth-child(1) {
-        right: 0;
+        &:nth-of-type(1) {
+          left: -2px;
+        }
+        &:nth-of-type(2) {
+          right: -2px;
+        }
       }
     }
   }
