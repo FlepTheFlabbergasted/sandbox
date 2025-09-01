@@ -13,34 +13,36 @@ const onFileChange = (event, stuff) => {
   const fileObjectUrl = URL.createObjectURL(file);
   const imgObj = new Image();
 
-  imgObj.addEventListener('load', () => onImageObjHasLoaded(stuff, fileObjectUrl));
+  imgObj.addEventListener('load', () => {
+    setCanvasSizeToImgSize(stuff.canvasEl, imgObj);
+    drawCanvasImage(stuff.canvasEl, stuff.canvasCtx, imgObj);
+
+    stuff.canvasEl.removeEventListener('mousemove', stuff.mouseMoveEventListener);
+    stuff.canvasEl.removeEventListener('mouseleave', stuff.mouseLeaveEventListener);
+    stuff.canvasEl.removeEventListener('click', stuff.clickEventListener);
+
+    stuff.mouseMoveEventListener = (event) => onMouseMove(event, stuff);
+    stuff.mouseLeaveEventListener = () => onMouseLeave(stuff);
+    stuff.clickEventListener = (event) => onMouseClick(event, stuff);
+
+    stuff.canvasEl.addEventListener('mousemove', stuff.mouseMoveEventListener);
+    stuff.canvasEl.addEventListener('mouseleave', stuff.mouseLeaveEventListener);
+    stuff.canvasEl.addEventListener('click', stuff.clickEventListener);
+
+    URL.revokeObjectURL(fileObjectUrl);
+  });
 
   imgObj.src = fileObjectUrl;
   stuff.imgObj = imgObj;
 };
 
-const onImageObjHasLoaded = (stuff, fileObjectUrl) => {
-  setCanvasSizeToImgSize(stuff);
-  drawCanvasImage(stuff);
-
-  stuff.canvasEl.removeEventListener('mousemove', stuff.mouseMoveEventListener);
-  stuff.canvasEl.removeEventListener('mouseleave', stuff.mouseLeaveEventListener);
-  stuff.canvasEl.removeEventListener('click', stuff.clickEventListener);
-
-  stuff.mouseMoveEventListener = (event) => onMouseMove(event, stuff);
-  stuff.mouseLeaveEventListener = () => onMouseLeave(stuff);
-  stuff.clickEventListener = (event) => onMouseClick(event, stuff);
-
-  stuff.canvasEl.addEventListener('mousemove', stuff.mouseMoveEventListener);
-  stuff.canvasEl.addEventListener('mouseleave', stuff.mouseLeaveEventListener);
-  stuff.canvasEl.addEventListener('click', stuff.clickEventListener);
-
-  URL.revokeObjectURL(fileObjectUrl);
-};
-
 const onMouseClick = (event, stuff) => {
   const { canvasX, canvasY } = getMousePosRelativeToCanvas(stuff.canvasEl, event.clientX, event.clientY);
-  pickColor(stuff.canvasEl, stuff.colorCellsContainer, stuff.currentPickerCanvasPosIndex, canvasX, canvasY);
+  setColorCellsContainerColorProperty(
+    stuff.colorCellsContainer,
+    stuff.currentPickerCanvasPosIndex,
+    getCanvasPixelColor(stuff.canvasCtx, canvasX, canvasY)
+  );
 
   // Save mouse position
   stuff.pickerCanvasPositions[stuff.currentPickerCanvasPosIndex] = { x: canvasX, y: canvasY };
@@ -50,51 +52,50 @@ const onMouseClick = (event, stuff) => {
 };
 
 const onMouseMove = (event, stuff) => {
-  // Notice flipped 0 and 1 from ususal
+  // Notice flipped logic for 0 and 1 from ususal
   const pickerCanvasPosNotSelecting = stuff.pickerCanvasPositions[stuff.currentPickerCanvasPosIndex === 0 ? 1 : 0];
   const { canvasX, canvasY } = getMousePosRelativeToCanvas(stuff.canvasEl, event.clientX, event.clientY);
 
   stuff.canvasCtx.clearRect(0, 0, stuff.canvasEl.width, stuff.canvasEl.height);
-  drawCanvasImage(stuff);
+  drawCanvasImage(stuff.canvasEl, stuff.canvasCtx, stuff.imgObj);
 
   // Draw a rect where the mouse is right now
-  drawPickerRect(stuff, canvasX, canvasY);
+  drawPickerRect(stuff.canvasCtx, canvasX, canvasY);
   // Draw the saved rect, from saved pos, that we are not currently using to select a color
-  drawPickerRect(stuff, pickerCanvasPosNotSelecting.x, pickerCanvasPosNotSelecting.y);
+  drawPickerRect(stuff.canvasCtx, pickerCanvasPosNotSelecting.x, pickerCanvasPosNotSelecting.y);
 
-  pickColor(stuff.canvasEl, stuff.colorCellsContainer, stuff.currentPickerCanvasPosIndex, canvasX, canvasY);
+  setColorCellsContainerColorProperty(
+    stuff.colorCellsContainer,
+    stuff.currentPickerCanvasPosIndex,
+    getCanvasPixelColor(stuff.canvasCtx, canvasX, canvasY)
+  );
 };
 
 const onMouseLeave = (stuff) => {
   stuff.canvasCtx.clearRect(0, 0, stuff.canvasEl.width, stuff.canvasEl.height);
 
-  drawCanvasImage(stuff);
-  drawPickerRect(stuff, stuff.pickerCanvasPositions[0].x, stuff.pickerCanvasPositions[0].y);
-  drawPickerRect(stuff, stuff.pickerCanvasPositions[1].x, stuff.pickerCanvasPositions[1].y);
+  drawCanvasImage(stuff.canvasEl, stuff.canvasCtx, stuff.imgObj);
+  drawPickerRect(stuff.canvasCtx, stuff.pickerCanvasPositions[0].x, stuff.pickerCanvasPositions[0].y);
+  drawPickerRect(stuff.canvasCtx, stuff.pickerCanvasPositions[1].x, stuff.pickerCanvasPositions[1].y);
 
-  pickColor(
-    stuff.canvasEl,
+  setColorCellsContainerColorProperty(
     stuff.colorCellsContainer,
-    stuff.currentPickerCanvasPosIndex,
-    stuff.pickerCanvasPositions[0].x,
-    stuff.pickerCanvasPositions[0].y
+    0,
+    getCanvasPixelColor(stuff.canvasCtx, stuff.pickerCanvasPositions[0].x, stuff.pickerCanvasPositions[0].y)
   );
-  pickColor(
-    stuff.canvasEl,
+  setColorCellsContainerColorProperty(
     stuff.colorCellsContainer,
-    !stuff.currentPickerCanvasPosIndex,
-    stuff.pickerCanvasPositions[1].x,
-    stuff.pickerCanvasPositions[1].y
+    1,
+    getCanvasPixelColor(stuff.canvasCtx, stuff.pickerCanvasPositions[1].x, stuff.pickerCanvasPositions[1].y)
   );
 };
 
-const drawPickerRect = (stuff, pickerCanvasX, pickerCanvasY) => {
-  const ctx = stuff.canvasCtx;
-  ctx.beginPath();
-  ctx.rect(pickerCanvasX - 5, pickerCanvasY - 5, 10, 10);
-  ctx.lineWidth = 2;
-  ctx.strokeStyle = 'white';
-  ctx.stroke();
+const drawPickerRect = (canvasCtx, pickerCanvasX, pickerCanvasY) => {
+  canvasCtx.beginPath();
+  canvasCtx.rect(pickerCanvasX - 5, pickerCanvasY - 5, 10, 10);
+  canvasCtx.lineWidth = 2;
+  canvasCtx.strokeStyle = 'white';
+  canvasCtx.stroke();
 };
 
 const getMousePosRelativeToCanvas = (canvasEl, mouseX, mouseY) => {
@@ -110,20 +111,20 @@ const getMousePosRelativeToCanvas = (canvasEl, mouseX, mouseY) => {
  *
  * @see https://stackoverflow.com/a/38773017/11763719
  */
-const setCanvasSizeToImgSize = (stuff) => {
-  let imgNatWidth = stuff.imgObj.naturalWidth;
-  let imgNatHeight = stuff.imgObj.naturalHeight;
+const setCanvasSizeToImgSize = (canvasEl, imgObj) => {
+  let imgNatWidth = imgObj.naturalWidth;
+  let imgNatHeight = imgObj.naturalHeight;
   let scaleX = 1;
   let scaleY = 1;
   let scaledCanvasAndImgWidth = 0;
   let scaledCanvasAndImgHeight = 0;
 
-  if (imgNatWidth > stuff.canvasEl.clientWidth) {
-    scaleX = stuff.canvasEl.clientWidth / imgNatWidth;
+  if (imgNatWidth > canvasEl.clientWidth) {
+    scaleX = canvasEl.clientWidth / imgNatWidth;
   }
 
-  if (imgNatHeight > stuff.canvasEl.height) {
-    scaleY = stuff.canvasEl.height / imgNatHeight;
+  if (imgNatHeight > canvasEl.height) {
+    scaleY = canvasEl.height / imgNatHeight;
   }
 
   let scale = scaleY;
@@ -142,36 +143,30 @@ const setCanvasSizeToImgSize = (stuff) => {
    *
    * @see https://medium.com/@banksysan_10088/webgl-canvas-size-confusion-fde3e360f4e9
    */
-  stuff.canvasEl.width = scaledCanvasAndImgWidth;
-  stuff.canvasEl.style.width = `${scaledCanvasAndImgWidth}px`;
-  stuff.canvasEl.height = scaledCanvasAndImgHeight;
-  stuff.canvasEl.style.height = `${scaledCanvasAndImgHeight}px`;
+  canvasEl.width = scaledCanvasAndImgWidth;
+  canvasEl.style.width = `${scaledCanvasAndImgWidth}px`;
+  canvasEl.height = scaledCanvasAndImgHeight;
+  canvasEl.style.height = `${scaledCanvasAndImgHeight}px`;
 };
 
-const drawCanvasImage = (stuff) => {
-  stuff.canvasCtx.drawImage(
-    stuff.imgObj,
-    0,
-    0,
-    stuff.imgObj.naturalWidth,
-    stuff.imgObj.naturalHeight,
-    0,
-    0,
-    stuff.canvasEl.width,
-    stuff.canvasEl.height
-  );
+const drawCanvasImage = (canvasEl, canvasCtx, imgObj) => {
+  canvasCtx.drawImage(imgObj, 0, 0, imgObj.naturalWidth, imgObj.naturalHeight, 0, 0, canvasEl.width, canvasEl.height);
 };
 
 // Code from https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Pixel_manipulation_with_canvas#creating_a_color_picker
-const pickColor = (canvasEl, colorCellsContainer, currentPickerCanvasPosIndex, canvasX, canvasY) => {
-  const pixel = canvasEl.getContext('2d').getImageData(canvasX, canvasY, 1, 1);
+const getCanvasPixelColor = (canvasCtx, canvasX, canvasY) => {
+  const pixel = canvasCtx.getImageData(canvasX, canvasY, 1, 1);
   const pixelData = pixel.data;
 
-  const rgbColor = `rgb(${pixelData[0]} ${pixelData[1]} ${pixelData[2]} / ${pixelData[3] / 255})`;
+  const rgbColorStr = `rgb(${pixelData[0]} ${pixelData[1]} ${pixelData[2]} / ${pixelData[3] / 255})`;
 
+  return rgbColorStr;
+};
+
+const setColorCellsContainerColorProperty = (colorCellsContainer, currentPickerCanvasPosIndex, rgbColorStr) => {
   colorCellsContainer.style.setProperty(
     currentPickerCanvasPosIndex === 0 ? '--color-left-cell' : '--color-right-cell',
-    rgbColor
+    rgbColorStr
   );
 };
 
