@@ -1,5 +1,8 @@
 const sectionEl = document.getElementById('closest-color');
 
+const INITIAL_CANVAS_WIDTH_PX = 600;
+const INITIAL_CANVAS_HEIGHT_PX = 370;
+
 const inputElements = sectionEl.querySelectorAll('input[type=file]');
 const canvasElements = sectionEl.querySelectorAll('canvas');
 const colorCellsContainers = sectionEl.querySelectorAll('.color-cell-container');
@@ -8,6 +11,17 @@ const onFileChange = (event, stuff) => {
   if (event.target.files.length !== 1) {
     return;
   }
+
+  // Reset picker positions for new images
+  stuff.pickerCanvasPositions = [
+    { x: undefined, y: undefined },
+    { x: undefined, y: undefined },
+  ];
+  // Reset colors
+  stuff.colorCellsContainer.style.setProperty('--color-left-cell', 0);
+  stuff.colorCellsContainer.style.setProperty('--color-right-cell', 0);
+  // Reset canvas size
+  setCanvasSize(stuff.canvasEl, INITIAL_CANVAS_WIDTH_PX, INITIAL_CANVAS_HEIGHT_PX);
 
   const file = event.target.files[0];
   const fileObjectUrl = URL.createObjectURL(file);
@@ -61,6 +75,7 @@ const onMouseMove = (event, stuff) => {
 
   // Draw a rect where the mouse is right now
   drawPickerRect(stuff.canvasCtx, canvasX, canvasY);
+
   // Draw the saved rect, from saved pos, that we are not currently using to select a color
   if (pickerCanvasPosNotSelecting.x !== undefined && pickerCanvasPosNotSelecting.y !== undefined) {
     drawPickerRect(stuff.canvasCtx, pickerCanvasPosNotSelecting.x, pickerCanvasPosNotSelecting.y);
@@ -75,21 +90,25 @@ const onMouseMove = (event, stuff) => {
 
 const onMouseLeave = (stuff) => {
   stuff.canvasCtx.clearRect(0, 0, stuff.canvasEl.width, stuff.canvasEl.height);
-
   drawCanvasImage(stuff.canvasEl, stuff.canvasCtx, stuff.imgObj);
-  drawPickerRect(stuff.canvasCtx, stuff.pickerCanvasPositions[0].x, stuff.pickerCanvasPositions[0].y);
-  drawPickerRect(stuff.canvasCtx, stuff.pickerCanvasPositions[1].x, stuff.pickerCanvasPositions[1].y);
 
-  setColorCellsContainerColorProperty(
-    stuff.colorCellsContainer,
-    0,
-    getCanvasPixelColor(stuff.canvasCtx, stuff.pickerCanvasPositions[0].x, stuff.pickerCanvasPositions[0].y)
-  );
-  setColorCellsContainerColorProperty(
-    stuff.colorCellsContainer,
-    1,
-    getCanvasPixelColor(stuff.canvasCtx, stuff.pickerCanvasPositions[1].x, stuff.pickerCanvasPositions[1].y)
-  );
+  if (stuff.pickerCanvasPositions[0].x !== undefined && stuff.pickerCanvasPositions[0].y !== undefined) {
+    drawPickerRect(stuff.canvasCtx, stuff.pickerCanvasPositions[0].x, stuff.pickerCanvasPositions[0].y);
+    setColorCellsContainerColorProperty(
+      stuff.colorCellsContainer,
+      0,
+      getCanvasPixelColor(stuff.canvasCtx, stuff.pickerCanvasPositions[0].x, stuff.pickerCanvasPositions[0].y)
+    );
+  }
+
+  if (stuff.pickerCanvasPositions[1].x !== undefined && stuff.pickerCanvasPositions[1].y !== undefined) {
+    drawPickerRect(stuff.canvasCtx, stuff.pickerCanvasPositions[1].x, stuff.pickerCanvasPositions[1].y);
+    setColorCellsContainerColorProperty(
+      stuff.colorCellsContainer,
+      1,
+      getCanvasPixelColor(stuff.canvasCtx, stuff.pickerCanvasPositions[1].x, stuff.pickerCanvasPositions[1].y)
+    );
+  }
 };
 
 const drawPickerRect = (canvasCtx, pickerCanvasX, pickerCanvasY) => {
@@ -140,15 +159,19 @@ const setCanvasSizeToImgSize = (canvasEl, imgObj) => {
     scaledCanvasAndImgHeight = Math.ceil(imgNatHeight * scale);
   }
 
-  /**
-   * Need to set both attribute and CSS
-   *
-   * @see https://medium.com/@banksysan_10088/webgl-canvas-size-confusion-fde3e360f4e9
-   */
-  canvasEl.width = scaledCanvasAndImgWidth;
-  canvasEl.style.width = `${scaledCanvasAndImgWidth}px`;
-  canvasEl.height = scaledCanvasAndImgHeight;
-  canvasEl.style.height = `${scaledCanvasAndImgHeight}px`;
+  setCanvasSize(canvasEl, scaledCanvasAndImgWidth, scaledCanvasAndImgHeight);
+};
+
+/**
+ * Need to set both attribute and CSS
+ *
+ * @see https://medium.com/@banksysan_10088/webgl-canvas-size-confusion-fde3e360f4e9
+ */
+const setCanvasSize = (canvasEl, width, height) => {
+  canvasEl.width = width;
+  canvasEl.style.width = `${width}px`;
+  canvasEl.height = height;
+  canvasEl.style.height = `${height}px`;
 };
 
 const drawCanvasImage = (canvasEl, canvasCtx, imgObj) => {
@@ -173,6 +196,8 @@ const setColorCellsContainerColorProperty = (colorCellsContainer, currentPickerC
 };
 
 window.addEventListener('load', () => {
+  canvasElements.forEach((canvasEl) => setCanvasSize(canvasEl, INITIAL_CANVAS_WIDTH_PX, INITIAL_CANVAS_HEIGHT_PX));
+
   const defaultStuff = {
     mouseMoveEventListener: undefined,
     mouseLeaveEventListener: undefined,
