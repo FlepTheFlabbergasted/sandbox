@@ -62,7 +62,9 @@ const onMouseMove = (event, stuff) => {
   // Draw a rect where the mouse is right now
   drawPickerRect(stuff.canvasCtx, canvasX, canvasY);
   // Draw the saved rect, from saved pos, that we are not currently using to select a color
-  drawPickerRect(stuff.canvasCtx, pickerCanvasPosNotSelecting.x, pickerCanvasPosNotSelecting.y);
+  if (pickerCanvasPosNotSelecting.x !== undefined && pickerCanvasPosNotSelecting.y !== undefined) {
+    drawPickerRect(stuff.canvasCtx, pickerCanvasPosNotSelecting.x, pickerCanvasPosNotSelecting.y);
+  }
 
   setColorCellsContainerColorProperty(
     stuff.colorCellsContainer,
@@ -178,8 +180,8 @@ window.addEventListener('load', () => {
     imgObj: undefined,
     currentPickerCanvasPosIndex: 0,
     pickerCanvasPositions: [
-      { x: 0, y: 0 },
-      { x: 0, y: 0 },
+      { x: undefined, y: undefined },
+      { x: undefined, y: undefined },
     ],
   };
 
