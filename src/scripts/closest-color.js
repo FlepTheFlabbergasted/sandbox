@@ -106,7 +106,7 @@ const onMouseLeave = (stuff) => {
 
 const drawPickerRect = (canvasCtx, pickerCanvasX, pickerCanvasY) => {
   canvasCtx.beginPath();
-  canvasCtx.rect(pickerCanvasX - 5, pickerCanvasY - 5, 10, 10);
+  canvasCtx.rect(pickerCanvasX - 7, pickerCanvasY - 7, 14, 14);
   canvasCtx.lineWidth = 2;
   canvasCtx.strokeStyle = 'white';
   canvasCtx.stroke();
