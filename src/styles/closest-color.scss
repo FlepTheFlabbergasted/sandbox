@@ -1,3 +1,9 @@
+@property --input-button-background-alpha {
+  syntax: '<integer>';
+  initial-value: 100;
+  inherits: false;
+}
+
 #closest-color {
   .container {
     display: flex;
@@ -34,17 +40,37 @@
     }
 
     .color-cell-container {
+      counter-reset: num var(--input-button-background-alpha);
+      animation: none;
+
       position: relative;
       height: 40px;
 
-      // TODO: Animate color change?
-      // TODO: Should have gradients start after the color-cell for more accurate representation
+      // TODO: Animate color change as the user moves mouse?
       background: linear-gradient(
         90deg,
-        var(--color-left-cell, var(--color-background)),
-        var(--color-right-cell, var(--color-background))
+        rgba(
+          from var(--color-left-cell, rgba(92, 92, 221, 0.795)) r g b / calc(var(--input-button-background-alpha) / 100)
+        ),
+        rgba(
+          from var(--color-right-cell, var(--color-background)) r g b / calc(var(--input-button-background-alpha) / 100)
+        )
       );
 
+      &:hover {
+        animation: lower-alpha 0.2s forwards ease-in-out;
+      }
+
+      @keyframes lower-alpha {
+        from {
+          --input-button-background-alpha: 100;
+        }
+        to {
+          --input-button-background-alpha: 80;
+        }
+      }
+
+      // TODO: Should have gradients start after the color-cell for more accurate representation
       .color-cell {
         position: absolute;
         width: 42px;
