@@ -1,18 +1,18 @@
 import PanelSnap from 'panelsnap';
-import './scripts/closest-color';
-import './scripts/infinite-well';
-import './scripts/retrofuturism/broadcast-towers-percentage';
-import './scripts/retrofuturism/loading-bar';
-import './scripts/retrofuturism/planet';
-import './scripts/retrofuturism/reactors';
-import './scripts/retrofuturism/sat-data-link-console';
-import './scripts/retrofuturism/sat-data-link-status';
-import './scripts/retrofuturism/sat-data-link-upload-speed';
-import './scripts/retrofuturism/tiles';
-import './scripts/retrofuturism/transmission-1-khz';
-import './scripts/retrofuturism/transmission-2-scan';
-import './scripts/side-menu';
-import './scripts/string-rings';
+import './scripts/closest-color.js';
+import './scripts/infinite-well.js';
+import './scripts/retrofuturism/broadcast-towers-percentage.js';
+import './scripts/retrofuturism/loading-bar.js';
+import './scripts/retrofuturism/planet.js';
+import './scripts/retrofuturism/reactors.js';
+import './scripts/retrofuturism/sat-data-link-console.js';
+import './scripts/retrofuturism/sat-data-link-status.js';
+import './scripts/retrofuturism/sat-data-link-upload-speed.js';
+import './scripts/retrofuturism/tiles.js';
+import './scripts/retrofuturism/transmission-1-khz.js';
+import './scripts/retrofuturism/transmission-2-scan.js';
+import './scripts/side-menu.js';
+import './scripts/string-rings.js';
 
 window.addEventListener('load', () => {
   const panelSnap = new PanelSnap({

@@ -1,8 +1,9 @@
-const path = require('path');
+import path from 'path';
 
+const __dirname = import.meta.dirname;
 const devMode = process.env.NODE_ENV !== 'production';
 
-module.exports = {
+export default {
   entry: [__dirname + '/src/index.js', __dirname + '/src/index.scss'],
   output: {
     path: path.resolve(__dirname, 'dist'),

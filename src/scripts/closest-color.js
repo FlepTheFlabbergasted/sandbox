@@ -6,6 +6,7 @@ const INITIAL_CANVAS_HEIGHT_PX = 370;
 const inputElements = sectionEl.querySelectorAll('input[type=file]');
 const canvasElements = sectionEl.querySelectorAll('canvas');
 const colorCellsContainers = sectionEl.querySelectorAll('.color-cell-container');
+const calculationsContainers = sectionEl.querySelectorAll('.calculations-container');
 
 const onFileChange = (event, stuff) => {
   if (event.target.files.length !== 1) {
@@ -14,10 +15,14 @@ const onFileChange = (event, stuff) => {
 
   // Reset current picker index
   stuff.currentPickerCanvasPosIndex = 0;
-  // Reset picker positions for new images
+  // Reset picker positions and rgb numbers for new images
   stuff.pickerCanvasPositions = [
     { x: undefined, y: undefined },
     { x: undefined, y: undefined },
+  ];
+  stuff.rgbs = [
+    { r: 0, g: 0, b: 0 },
+    { r: 0, g: 0, b: 0 },
   ];
   // Reset cell colors
   resetColorsCellsContainerColorProperty(stuff.colorCellsContainer, 0);
@@ -44,14 +49,32 @@ const onMouseClick = (event, stuff) => {
   setColorCellsContainerColorProperty(
     stuff.colorCellsContainer,
     stuff.currentPickerCanvasPosIndex,
-    getCanvasPixelColor(stuff.canvasCtx, canvasX, canvasY)
+    getCanvasPixelRgbStr(stuff.canvasCtx, canvasX, canvasY)
   );
 
   // Save mouse position
   stuff.pickerCanvasPositions[stuff.currentPickerCanvasPosIndex] = { x: canvasX, y: canvasY };
 
+  // Save rgb for this index
+  stuff.rgbs[stuff.currentPickerCanvasPosIndex] = getCanvasPixelRgb(stuff.canvasCtx, canvasX, canvasY);
+
   // Flip between index 0 and 1
   stuff.currentPickerCanvasPosIndex = stuff.currentPickerCanvasPosIndex === 0 ? 1 : 0;
+
+  console.log(stuff.pickerCanvasPositions[stuff.currentPickerCanvasPosIndex]);
+  // if (
+  //   stuff.pickerCanvasPositions[0].x &&
+  //   stuff.pickerCanvasPositions[0].y &&
+  //   stuff.pickerCanvasPositions[1].x &&
+  //   stuff.pickerCanvasPositions[1].y
+  // ) {
+  //   displayColorCalculations(stuff);
+  // }
+};
+
+const displayColorCalculations = (stuff) => {
+  console.log(`sfsdf`);
+  calculationsContainers[0].textContent = `${getCanvasPixelRgbStr(stuff.canvasCtx, canvasX, canvasY)}`;
 };
 
 const onMouseMove = (event, stuff) => {
@@ -73,7 +96,7 @@ const onMouseMove = (event, stuff) => {
   setColorCellsContainerColorProperty(
     stuff.colorCellsContainer,
     stuff.currentPickerCanvasPosIndex,
-    getCanvasPixelColor(stuff.canvasCtx, canvasX, canvasY)
+    getCanvasPixelRgbStr(stuff.canvasCtx, canvasX, canvasY)
   );
 };
 
@@ -86,7 +109,7 @@ const onMouseLeave = (stuff) => {
     setColorCellsContainerColorProperty(
       stuff.colorCellsContainer,
       0,
-      getCanvasPixelColor(stuff.canvasCtx, stuff.pickerCanvasPositions[0].x, stuff.pickerCanvasPositions[0].y)
+      getCanvasPixelRgbStr(stuff.canvasCtx, stuff.pickerCanvasPositions[0].x, stuff.pickerCanvasPositions[0].y)
     );
   } else {
     resetColorsCellsContainerColorProperty(stuff.colorCellsContainer, 0);
@@ -97,7 +120,7 @@ const onMouseLeave = (stuff) => {
     setColorCellsContainerColorProperty(
       stuff.colorCellsContainer,
       1,
-      getCanvasPixelColor(stuff.canvasCtx, stuff.pickerCanvasPositions[1].x, stuff.pickerCanvasPositions[1].y)
+      getCanvasPixelRgbStr(stuff.canvasCtx, stuff.pickerCanvasPositions[1].x, stuff.pickerCanvasPositions[1].y)
     );
   } else {
     resetColorsCellsContainerColorProperty(stuff.colorCellsContainer, 1);
@@ -172,13 +195,18 @@ const drawCanvasImage = (canvasEl, canvasCtx, imgObj) => {
 };
 
 // Code from https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Pixel_manipulation_with_canvas#creating_a_color_picker
-const getCanvasPixelColor = (canvasCtx, canvasX, canvasY) => {
+const getCanvasPixelRgbStr = (canvasCtx, canvasX, canvasY) => {
+  const { r, g, b } = getCanvasPixelRgb(canvasCtx, canvasX, canvasY);
+  return `rgb(${r}, ${g}, ${b})`;
+};
+
+const getCanvasPixelRgb = (canvasCtx, canvasX, canvasY) => {
   const pixel = canvasCtx.getImageData(canvasX, canvasY, 1, 1);
   const pixelData = pixel.data;
 
-  const rgbColorStr = `rgb(${pixelData[0]} ${pixelData[1]} ${pixelData[2]} / ${pixelData[3] / 255})`;
+  // const rgbColorStr = `rgb(${pixelData[0]} ${pixelData[1]} ${pixelData[2]} / ${pixelData[3] / 255})`;
 
-  return rgbColorStr;
+  return { r: pixelData[0], g: pixelData[1], b: pixelData[2] };
 };
 
 const setColorCellsContainerColorProperty = (colorCellsContainer, pickerCanvasPosIndex, rgbColorStr) => {
@@ -219,6 +247,10 @@ window.addEventListener('load', () => {
     pickerCanvasPositions: [
       { x: undefined, y: undefined },
       { x: undefined, y: undefined },
+    ],
+    rgbs: [
+      { r: 0, g: 0, b: 0 },
+      { r: 0, g: 0, b: 0 },
     ],
   };
 

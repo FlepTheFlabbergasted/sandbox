@@ -1,4 +1,4 @@
-import { getRandomInt } from '../../util/get-random-int';
+import { getRandomInt } from '../../util/get-random-int.js';
 
 const CHANGE_INTERVAL_MS = 500;
 const CHANGE_AMOUNT_MIN = 5;

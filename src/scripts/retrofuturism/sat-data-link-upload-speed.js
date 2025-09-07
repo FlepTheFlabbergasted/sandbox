@@ -1,4 +1,4 @@
-import { EventTypes } from './consts';
+import { EventTypes } from './consts.js';
 
 const sectionEl = document.getElementById('retrofuturism');
 const satDataLinkUploadSpeedDiv = sectionEl.querySelector('#sat-data-link-upload-speed');

@@ -1,5 +1,5 @@
-import { getRandomInt } from '../../util/get-random-int';
-import { EventTypes } from './consts';
+import { getRandomInt } from '../../util/get-random-int.js';
+import { EventTypes } from './consts.js';
 
 const sectionEl = document.getElementById('retrofuturism');
 const satDataLinkConsoleDiv = sectionEl.querySelector('#sat-data-link-console');

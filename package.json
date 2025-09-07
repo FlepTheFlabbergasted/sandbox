@@ -6,12 +6,15 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --config webpack.config.js --mode production",
-    "serve": "webpack serve --config webpack.config.js --mode development --port 5200"
+    "serve": "webpack serve --config webpack.config.js --mode development --port 5200",
+    "create-section": "node ./create-section.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "type": "module",
   "devDependencies": {
+    "commander": "^14.0.0",
     "css-loader": "^6.8.1",
     "file-loader": "^6.2.0",
     "prettier": "^3.0.1",
