@@ -764,9 +764,14 @@
     </section>
 
     <!-- Closest color -->
-    <section id="closest-color" class="center-content">
-      <div class="container">
-        <div class="left-right-container">
+    <section id="closest-color" class="center-content--column">
+      <p class="margin-v-x-md">
+        Uses <a target="_blank" href="https://zschuessler.github.io/DeltaE/learn/">Delta E</a> to show difference
+        between two points in an image.
+      </p>
+
+      <div class="d-flex flex-row flex-wrap gap-lg">
+        <div class="d-flex flex-column gap-sm">
           <canvas></canvas>
           <label class="custom-file-upload color-cell-container">
             <input type="file" accept="image/*" />
@@ -777,7 +782,7 @@
           <div class="color-delta-container">Delta E (ΔE): <span class="delta-e">0.0</span></div>
         </div>
 
-        <div class="left-right-container">
+        <div class="d-flex flex-column gap-sm">
           <canvas></canvas>
           <label class="custom-file-upload color-cell-container">
             <input type="file" accept="image/*" />

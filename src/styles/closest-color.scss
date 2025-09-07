@@ -5,104 +5,103 @@
 }
 
 #closest-color {
-  .container {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 32px;
+  --rand-default-color: rgba(92, 92, 221, 0.795);
+
+  a,
+  a:visited {
+    font-weight: 500;
+    text-decoration: none;
+    color: var(--rand-default-color);
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 
-  .left-right-container {
+  .custom-file-upload {
+    input[type='file'] {
+      display: none;
+    }
+
     display: flex;
-    flex-direction: column;
-    gap: 12px;
-    height: 100%;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.1em;
+    text-shadow:
+      0px 0px 4px black,
+      0px 0px 8px black,
+      0px 0px 16px black;
+    border: 1px solid #d3d3d3;
+    cursor: pointer;
+  }
 
-    .custom-file-upload {
-      input[type='file'] {
-        display: none;
-      }
+  canvas {
+    border: 1px solid #d3d3d3;
+  }
 
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 1.1em;
-      text-shadow:
-        0px 0px 4px black,
-        0px 0px 8px black,
-        0px 0px 16px black;
-      border: 1px solid #d3d3d3;
-      cursor: pointer;
+  .color-cell-container {
+    counter-reset: num var(--input-button-background-alpha);
+    animation: none;
+
+    position: relative;
+    height: 40px;
+
+    // TODO: Animate color change as the user moves mouse?
+    background: linear-gradient(
+      90deg,
+      rgba(
+        from var(--color-left-cell, var(--rand-default-color)) r g b / calc(var(--input-button-background-alpha) / 100)
+      ),
+      rgba(
+        from var(--color-right-cell, var(--color-background)) r g b / calc(var(--input-button-background-alpha) / 100)
+      )
+    );
+
+    &:hover {
+      animation: lower-alpha 0.2s forwards ease-in-out;
     }
 
-    canvas {
-      border: 1px solid #d3d3d3;
-    }
-
-    .color-cell-container {
-      counter-reset: num var(--input-button-background-alpha);
-      animation: none;
-
-      position: relative;
-      height: 40px;
-
-      // TODO: Animate color change as the user moves mouse?
-      background: linear-gradient(
-        90deg,
-        rgba(
-          from var(--color-left-cell, rgba(92, 92, 221, 0.795)) r g b / calc(var(--input-button-background-alpha) / 100)
-        ),
-        rgba(
-          from var(--color-right-cell, var(--color-background)) r g b / calc(var(--input-button-background-alpha) / 100)
-        )
-      );
-
-      &:hover {
-        animation: lower-alpha 0.2s forwards ease-in-out;
+    @keyframes lower-alpha {
+      from {
+        --input-button-background-alpha: 100;
       }
-
-      @keyframes lower-alpha {
-        from {
-          --input-button-background-alpha: 100;
-        }
-        to {
-          --input-button-background-alpha: 80;
-        }
-      }
-
-      // TODO: Should have gradients start after the color-cell for more accurate representation
-      .color-cell {
-        position: absolute;
-        width: 42px;
-        height: 42px;
-        border: 2px solid #d3d3d3;
-        box-shadow:
-          inset 0 0 6px 0px rgba(0, 0, 0, 0.7),
-          0 0 6px 0px rgba(0, 0, 0, 0.7);
-        top: -2px;
-
-        &:nth-of-type(1) {
-          left: -2px;
-        }
-        &:nth-of-type(2) {
-          right: -2px;
-        }
+      to {
+        --input-button-background-alpha: 80;
       }
     }
 
-    .color-delta-container {
-      width: max-content;
-      margin: auto;
-      margin-top: 12px;
-      font-size: 1.2em;
-      border: 1px solid #d3d3d3;
-      padding: 12px;
+    // TODO: Should have gradients start after the color-cell for more accurate representation
+    .color-cell {
+      position: absolute;
+      width: 42px;
+      height: 42px;
+      border: 2px solid #d3d3d3;
+      box-shadow:
+        inset 0 0 6px 0px rgba(0, 0, 0, 0.7),
+        0 0 6px 0px rgba(0, 0, 0, 0.7);
+      top: -2px;
 
-      .delta-e {
-        display: inline-block;
-        width: 3ch;
-        text-align: center;
+      &:nth-of-type(1) {
+        left: -2px;
       }
+      &:nth-of-type(2) {
+        right: -2px;
+      }
+    }
+  }
+
+  .color-delta-container {
+    width: max-content;
+    margin: auto;
+    margin-top: 12px;
+    font-size: 1.2em;
+    border: 1px solid #d3d3d3;
+    padding: 12px;
+
+    .delta-e {
+      display: inline-block;
+      width: 3ch;
+      text-align: center;
     }
   }
 }
