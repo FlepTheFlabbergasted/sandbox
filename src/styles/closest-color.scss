@@ -12,7 +12,7 @@
     gap: 32px;
   }
 
-  .file-input-container {
+  .left-right-container {
     display: flex;
     flex-direction: column;
     gap: 12px;
@@ -87,6 +87,21 @@
         &:nth-of-type(2) {
           right: -2px;
         }
+      }
+    }
+
+    .color-delta-container {
+      width: max-content;
+      margin: auto;
+      margin-top: 12px;
+      font-size: 1.2em;
+      border: 1px solid #d3d3d3;
+      padding: 12px;
+
+      .delta-e {
+        display: inline-block;
+        width: 3ch;
+        text-align: center;
       }
     }
   }

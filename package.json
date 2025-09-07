@@ -26,6 +26,8 @@
     "webpack-dev-server": "^4.15.1"
   },
   "dependencies": {
+    "@fantasy-color/rgb-to-lab": "^2.1.0",
+    "delta-e": "^0.0.8",
     "panelsnap": "^1.3.0",
     "sass": "^1.83.0"
   }

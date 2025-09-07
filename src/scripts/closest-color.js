@@ -1,3 +1,6 @@
+import rgbToLab from '@fantasy-color/rgb-to-lab';
+import DeltaE from 'delta-e';
+
 const sectionEl = document.getElementById('closest-color');
 
 const INITIAL_CANVAS_WIDTH_PX = 600;
@@ -6,7 +9,7 @@ const INITIAL_CANVAS_HEIGHT_PX = 370;
 const inputElements = sectionEl.querySelectorAll('input[type=file]');
 const canvasElements = sectionEl.querySelectorAll('canvas');
 const colorCellsContainers = sectionEl.querySelectorAll('.color-cell-container');
-const calculationsContainers = sectionEl.querySelectorAll('.calculations-container');
+const deltaESpans = sectionEl.querySelectorAll('.delta-e');
 
 const onFileChange = (event, stuff) => {
   if (event.target.files.length !== 1) {
@@ -21,14 +24,16 @@ const onFileChange = (event, stuff) => {
     { x: undefined, y: undefined },
   ];
   stuff.rgbs = [
-    { r: 0, g: 0, b: 0 },
-    { r: 0, g: 0, b: 0 },
+    { red: 0, green: 0, blue: 0 },
+    { red: 0, green: 0, blue: 0 },
   ];
   // Reset cell colors
   resetColorsCellsContainerColorProperty(stuff.colorCellsContainer, 0);
   resetColorsCellsContainerColorProperty(stuff.colorCellsContainer, 1);
   // Reset canvas size
   setCanvasSize(stuff.canvasEl, INITIAL_CANVAS_WIDTH_PX, INITIAL_CANVAS_HEIGHT_PX);
+  // Remove previous delta value
+  resetColorDelta(stuff.deltaESpan);
 
   const file = event.target.files[0];
   const fileObjectUrl = URL.createObjectURL(file);
@@ -61,20 +66,26 @@ const onMouseClick = (event, stuff) => {
   // Flip between index 0 and 1
   stuff.currentPickerCanvasPosIndex = stuff.currentPickerCanvasPosIndex === 0 ? 1 : 0;
 
-  console.log(stuff.pickerCanvasPositions[stuff.currentPickerCanvasPosIndex]);
-  // if (
-  //   stuff.pickerCanvasPositions[0].x &&
-  //   stuff.pickerCanvasPositions[0].y &&
-  //   stuff.pickerCanvasPositions[1].x &&
-  //   stuff.pickerCanvasPositions[1].y
-  // ) {
-  //   displayColorCalculations(stuff);
-  // }
+  // If both colors are set, display the diff
+  if (stuff.rgbs[0]?.red && stuff.rgbs[1]?.red) {
+    displayColorDelta(stuff.deltaESpan, stuff.rgbs[0], stuff.rgbs[1]);
+  }
 };
 
-const displayColorCalculations = (stuff) => {
-  console.log(`sfsdf`);
-  calculationsContainers[0].textContent = `${getCanvasPixelRgbStr(stuff.canvasCtx, canvasX, canvasY)}`;
+const displayColorDelta = (deltaESpan, rgb1, rgb2) => {
+  const lab1 = rgbToLab({ ...rgb1 });
+  const lab2 = rgbToLab({ ...rgb2 });
+
+  const colorDiff = DeltaE.getDeltaE00(
+    { L: lab1.luminance, A: lab1.a, B: lab1.b },
+    { L: lab2.luminance, A: lab2.a, B: lab2.b }
+  ).toFixed(1);
+
+  deltaESpan.textContent = colorDiff;
+};
+
+const resetColorDelta = (deltaESpan) => {
+  deltaESpan.textContent = 0.0;
 };
 
 const onMouseMove = (event, stuff) => {
@@ -196,8 +207,8 @@ const drawCanvasImage = (canvasEl, canvasCtx, imgObj) => {
 
 // Code from https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Pixel_manipulation_with_canvas#creating_a_color_picker
 const getCanvasPixelRgbStr = (canvasCtx, canvasX, canvasY) => {
-  const { r, g, b } = getCanvasPixelRgb(canvasCtx, canvasX, canvasY);
-  return `rgb(${r}, ${g}, ${b})`;
+  const { red, green, blue } = getCanvasPixelRgb(canvasCtx, canvasX, canvasY);
+  return `rgb(${red}, ${green}, ${blue})`;
 };
 
 const getCanvasPixelRgb = (canvasCtx, canvasX, canvasY) => {
@@ -206,7 +217,7 @@ const getCanvasPixelRgb = (canvasCtx, canvasX, canvasY) => {
 
   // const rgbColorStr = `rgb(${pixelData[0]} ${pixelData[1]} ${pixelData[2]} / ${pixelData[3] / 255})`;
 
-  return { r: pixelData[0], g: pixelData[1], b: pixelData[2] };
+  return { red: pixelData[0], green: pixelData[1], blue: pixelData[2] };
 };
 
 const setColorCellsContainerColorProperty = (colorCellsContainer, pickerCanvasPosIndex, rgbColorStr) => {
@@ -249,8 +260,8 @@ window.addEventListener('load', () => {
       { x: undefined, y: undefined },
     ],
     rgbs: [
-      { r: 0, g: 0, b: 0 },
-      { r: 0, g: 0, b: 0 },
+      { red: 0, green: 0, blue: 0 },
+      { red: 0, green: 0, blue: 0 },
     ],
   };
 
@@ -259,12 +270,14 @@ window.addEventListener('load', () => {
     canvasEl: canvasElements[0],
     canvasCtx: canvasElements[0].getContext('2d'),
     colorCellsContainer: colorCellsContainers[0],
+    deltaESpan: deltaESpans[0],
   };
   const rightStuff = {
     ...defaultStuff,
     canvasEl: canvasElements[1],
     canvasCtx: canvasElements[1].getContext('2d'),
     colorCellsContainer: colorCellsContainers[1],
+    deltaESpan: deltaESpans[1],
   };
 
   registerMouseAndClickEventListeners(leftStuff);
