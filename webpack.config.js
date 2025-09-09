@@ -1,3 +1,4 @@
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import path from 'path';
 
 const __dirname = import.meta.dirname;
@@ -7,8 +8,16 @@ export default {
   entry: [__dirname + '/src/index.js', __dirname + '/src/index.scss'],
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'index.min.js',
+    filename: 'bundle.min.js',
+    publicPath: '/public/',
   },
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: 'bundle.min.css',
+      chunkFilename: '[name].css',
+      linkType: 'text/css',
+    }),
+  ],
   module: {
     rules: [
       {
@@ -20,13 +29,15 @@ export default {
         test: /\.scss$/,
         exclude: /node_modules/,
         use: [
-          devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
-          {
-            loader: 'css-loader',
-          },
-          {
-            loader: 'sass-loader',
-          },
+          devMode
+            ? // Creates `style` nodes from JS strings
+              'style-loader'
+            : // Extracts CSS into separate files (for prod)
+              MiniCssExtractPlugin.loader,
+          // Translates CSS into CommonJS
+          'css-loader',
+          // Compiles Sass to CSS
+          'sass-loader',
         ],
       },
     ],

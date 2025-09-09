@@ -5,7 +5,8 @@
   "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --config webpack.config.js --mode production",
+    "prebuild": "rm dist/*",
+    "build": "cross-env NODE_ENV=production webpack --config webpack.config.js --mode production",
     "serve": "webpack serve --config webpack.config.js --mode development --port 5200",
     "create-section": "node ./create-section.js"
   },
@@ -15,8 +16,10 @@
   "type": "module",
   "devDependencies": {
     "commander": "^14.0.0",
+    "cross-env": "^10.0.0",
     "css-loader": "^6.8.1",
     "file-loader": "^6.2.0",
+    "mini-css-extract-plugin": "^2.9.4",
     "prettier": "^3.0.1",
     "sass-embedded": "^1.83.0",
     "sass-loader": "^16.0.4",

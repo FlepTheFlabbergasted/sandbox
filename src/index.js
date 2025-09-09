@@ -1,5 +1,5 @@
 import PanelSnap from 'panelsnap';
-import './scripts/closest-color.js';
+import './scripts/compare-image-delta-e.js';
 import './scripts/infinite-well.js';
 import './scripts/retrofuturism/broadcast-towers-percentage.js';
 import './scripts/retrofuturism/loading-bar.js';

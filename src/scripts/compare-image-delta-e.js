@@ -1,7 +1,7 @@
 import rgbToLab from '@fantasy-color/rgb-to-lab';
 import DeltaE from 'delta-e';
 
-const sectionEl = document.getElementById('closest-color');
+const sectionEl = document.getElementById('compare-image-delta-e');
 
 const INITIAL_CANVAS_WIDTH_PX = 600;
 const INITIAL_CANVAS_HEIGHT_PX = 370;
