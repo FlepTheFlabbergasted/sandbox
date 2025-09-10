@@ -33,7 +33,13 @@ export default {
             ? // Creates `style` nodes from JS strings
               'style-loader'
             : // Extracts CSS into separate files (for prod)
-              MiniCssExtractPlugin.loader,
+              {
+                loader: MiniCssExtractPlugin.loader,
+                options: {
+                  publicPath: '/public/',
+                },
+              },
+          ,
           // Translates CSS into CommonJS
           'css-loader',
           // Compiles Sass to CSS

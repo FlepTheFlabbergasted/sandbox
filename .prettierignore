@@ -1,4 +1,5 @@
 node_modules/
-dist/
+
+# public/dist/
 
 src/styles/_flex-utility-classes.scss
