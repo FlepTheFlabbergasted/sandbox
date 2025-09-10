@@ -11,6 +11,7 @@ export default {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.min.js',
     publicPath: '', // keep paths relative so GH Pages works
+    publicPath: process.env.PUBLIC_URL || '/',
   },
   plugins: [
     new MiniCssExtractPlugin({
@@ -19,6 +20,7 @@ export default {
     new HtmlWebpackPlugin({
       template: './public/index.html',
       inject: 'body', // will auto inject <script> before </body>
+      base: process.env.PUBLIC_URL || '/',
     }),
   ],
   module: {
