@@ -28,8 +28,6 @@ const onFileChange = (event, stuff) => {
     { red: 0, green: 0, blue: 0 },
   ];
 
-  console.log(`sdfsdf bajsss dfsadadsdf`);
-
   // Reset cell colors
   resetColorsCellsContainerColorProperty(stuff.colorCellsContainer, 0);
   resetColorsCellsContainerColorProperty(stuff.colorCellsContainer, 1);

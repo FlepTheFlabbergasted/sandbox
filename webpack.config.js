@@ -10,7 +10,7 @@ export default {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.min.js',
-    publicPath: './public/',
+    publicPath: '', // keep paths relative so GH Pages works
   },
   plugins: [
     new MiniCssExtractPlugin({
@@ -18,6 +18,7 @@ export default {
     }),
     new HtmlWebpackPlugin({
       template: './public/index.html',
+      inject: 'body', // will auto inject <script> before </body>
     }),
   ],
   module: {
@@ -35,12 +36,7 @@ export default {
             ? // Creates `style` nodes from JS strings
               'style-loader'
             : // Extracts CSS into separate files (for prod)
-              {
-                loader: MiniCssExtractPlugin.loader,
-                options: {
-                  publicPath: './public/',
-                },
-              },
+              MiniCssExtractPlugin.loader,
           ,
           // Translates CSS into CommonJS
           'css-loader',
