@@ -1,3 +1,4 @@
+import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import path from 'path';
 
@@ -9,13 +10,14 @@ export default {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.min.js',
-    publicPath: '/public/',
+    publicPath: './public/',
   },
   plugins: [
     new MiniCssExtractPlugin({
       filename: 'bundle.min.css',
-      chunkFilename: '[name].css',
-      linkType: 'text/css',
+    }),
+    new HtmlWebpackPlugin({
+      template: './public/index.html',
     }),
   ],
   module: {
@@ -36,7 +38,7 @@ export default {
               {
                 loader: MiniCssExtractPlugin.loader,
                 options: {
-                  publicPath: '/public/',
+                  publicPath: './public/',
                 },
               },
           ,
@@ -44,6 +46,8 @@ export default {
           'css-loader',
           // Compiles Sass to CSS
           'sass-loader',
+
+          // TODO: CSS after stuff
         ],
       },
     ],
