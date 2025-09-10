@@ -5,9 +5,10 @@
   "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "prebuild": "rm -rf dist/",
     "build": "cross-env NODE_ENV=production webpack --config webpack.config.js --mode production",
     "serve": "webpack serve --config webpack.config.js --mode development --port 5200",
-    "create-section": "node ./create-section.js"
+    "create-section": "node create-section.js"
   },
   "keywords": [],
   "author": "",
@@ -15,9 +16,11 @@
   "type": "module",
   "devDependencies": {
     "commander": "^14.0.0",
+    "copy-webpack-plugin": "^13.0.1",
     "cross-env": "^10.0.0",
     "css-loader": "^6.8.1",
     "file-loader": "^6.2.0",
+    "html-loader": "^5.1.0",
     "html-webpack-plugin": "^5.6.4",
     "mini-css-extract-plugin": "^2.9.4",
     "prettier": "^3.0.1",

@@ -48,11 +48,28 @@ export default {
           // TODO: CSS after stuff
         ],
       },
+      // {
+      //   test: /\.(woff2?|eot|ttf|otf)$/i,
+      //   type: 'asset/resource',
+      //   generator: {
+      //     filename: 'fonts/[name][ext][query]',
+      //   },
+      // },
       {
-        test: /\.(woff2?|eot|ttf|otf)$/i,
-        type: 'asset/resource',
-        generator: {
-          filename: 'fonts/[name][ext][query]',
+        test: /\.html$/i,
+        loader: 'html-loader',
+        options: {
+          sources: {
+            list: [
+              // Default rules, plus handle <img src=...>
+              '...',
+              {
+                tag: 'img',
+                attribute: 'src',
+                type: 'src',
+              },
+            ],
+          },
         },
       },
     ],
