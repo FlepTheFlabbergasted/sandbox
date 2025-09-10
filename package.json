@@ -16,7 +16,6 @@
   "type": "module",
   "devDependencies": {
     "commander": "^14.0.0",
-    "copy-webpack-plugin": "^13.0.1",
     "cross-env": "^10.0.0",
     "css-loader": "^6.8.1",
     "file-loader": "^6.2.0",

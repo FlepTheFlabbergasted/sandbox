@@ -10,7 +10,7 @@ export default {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.min.js',
-    publicPath: '', // keep paths relative so GH Pages works
+    publicPath: '',
     publicPath: process.env.PUBLIC_URL || '/',
   },
   plugins: [
@@ -19,7 +19,8 @@ export default {
     }),
     new HtmlWebpackPlugin({
       template: './public/index.html',
-      inject: 'body', // will auto inject <script> before </body>
+      // Will auto inject <script> before </body> and makes it possible to process src="..." to hash filenames
+      inject: 'body',
       base: process.env.PUBLIC_URL || '/',
     }),
   ],
@@ -48,21 +49,16 @@ export default {
           // TODO: CSS after stuff
         ],
       },
-      // {
-      //   test: /\.(woff2?|eot|ttf|otf)$/i,
-      //   type: 'asset/resource',
-      //   generator: {
-      //     filename: 'fonts/[name][ext][query]',
-      //   },
-      // },
+
       {
         test: /\.html$/i,
         loader: 'html-loader',
         options: {
           sources: {
             list: [
-              // Default rules, plus handle <img src=...>
+              // Default rules
               '...',
+              // Rewrite <img src="..."> to the hashed filename
               {
                 tag: 'img',
                 attribute: 'src',
