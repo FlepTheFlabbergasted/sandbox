@@ -269,14 +269,14 @@ window.addEventListener('load', () => {
   const leftStuff = {
     ...defaultStuff,
     canvasEl: canvasElements[0],
-    canvasCtx: canvasElements[0].getContext('2d'),
+    canvasCtx: canvasElements[0].getContext('2d', { willReadFrequently: true }),
     colorCellsContainer: colorCellsContainers[0],
     deltaESpan: deltaESpans[0],
   };
   const rightStuff = {
     ...defaultStuff,
     canvasEl: canvasElements[1],
-    canvasCtx: canvasElements[1].getContext('2d'),
+    canvasCtx: canvasElements[1].getContext('2d', { willReadFrequently: true }),
     colorCellsContainer: colorCellsContainers[1],
     deltaESpan: deltaESpans[1],
   };
