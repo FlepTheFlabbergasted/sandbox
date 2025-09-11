@@ -12,12 +12,12 @@ export default {
   entry: [path.resolve(__dirname, 'src/index.js'), path.resolve(__dirname, 'src/index.scss')],
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.min.js', // JS bundle filename
+    filename: 'bundle-[hash].min.js', // JS bundle filename
     publicPath, // Ensures assets resolve correctly for GH Pages
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: 'bundle.min.css',
+      filename: 'bundle-[hash].min.css',
     }),
 
     // Generates index.html and injects JS/CSS automatically
