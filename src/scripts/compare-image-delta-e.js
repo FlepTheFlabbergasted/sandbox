@@ -3,8 +3,8 @@ import DeltaE from 'delta-e';
 
 const sectionEl = document.getElementById('compare-image-delta-e');
 
-const INITIAL_CANVAS_WIDTH_PX = 600;
-const INITIAL_CANVAS_HEIGHT_PX = 370;
+const INITIAL_CANVAS_WIDTH_PX = 500;
+const INITIAL_CANVAS_HEIGHT_PX = 309;
 
 const inputElements = sectionEl.querySelectorAll('input[type=file]');
 const canvasElements = sectionEl.querySelectorAll('canvas');

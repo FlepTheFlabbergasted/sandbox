@@ -13,6 +13,10 @@
     <script src="https://kit.fontawesome.com/324425dc68.js" crossorigin="anonymous"></script>
   </head>
   <body class="font-quicksand-thin">
+    <a id="github-link" target="_blank" href="https://github.com/FlepTheFlabbergasted/sandbox"
+      ><img src="./images/github-mark-white.png"
+    /></a>
+
     <!---------- Infinite Well ---------->
     <section id="infinite-well">
       <div class="layer"></div>
@@ -759,34 +763,36 @@
       </div>
     </section>
 
-    <!-- Closest color -->
+    <!-- Compare Image Delta E -->
     <section id="compare-image-delta-e" class="center-content--column">
-      <p class="margin-v-x-md">
-        Uses <a target="_blank" href="https://zschuessler.github.io/DeltaE/learn/">Delta E</a> to show difference
-        between two points in an image. test test
+      <p class="margin-v-x-xxs">
+        Uses <a target="_blank" href="https://zschuessler.github.io/DeltaE/learn/">Delta E (ΔE)</a> to show the percived
+        visual difference between two points (colors) in an image.
       </p>
+
+      <p class="margin-v-x-md">The higher the value, the more difference between the colors.</p>
 
       <div class="d-flex flex-row flex-wrap gap-lg">
         <div class="d-flex flex-column gap-sm">
-          <canvas></canvas>
+          <canvas width="500" height="309"></canvas>
           <label class="custom-file-upload color-cell-container">
             <input type="file" accept="image/*" />
             Choose an image
             <div class="color-cell"></div>
             <div class="color-cell"></div>
           </label>
-          <div class="color-delta-container">Delta E (ΔE): <span class="delta-e">0.0</span></div>
+          <div class="color-delta-container">Delta E: <span class="delta-e">0.0</span></div>
         </div>
 
         <div class="d-flex flex-column gap-sm">
-          <canvas></canvas>
+          <canvas width="500" height="309"></canvas>
           <label class="custom-file-upload color-cell-container">
             <input type="file" accept="image/*" />
             Choose an image
             <div class="color-cell"></div>
             <div class="color-cell"></div>
           </label>
-          <div class="color-delta-container">Delta E (ΔE): <span class="delta-e">0.0</span></div>
+          <div class="color-delta-container">Delta E: <span class="delta-e">0.0</span></div>
         </div>
       </div>
     </section>

@@ -91,7 +91,6 @@ li {
 
 body {
   position: relative;
-
   background-color: var(--color-background);
   color: var(--color-text);
 }
@@ -118,4 +117,10 @@ body {
 /*         Specific styling         */
 /* -------------------------------- */
 
-//...
+#github-link {
+  position: fixed;
+  right: 12px;
+  bottom: 12px;
+  width: 20px;
+  z-index: 999;
+}

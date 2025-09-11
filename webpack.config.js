@@ -90,6 +90,7 @@ export default {
     port: 5200,
     hot: true,
     open: true,
+    watchFiles: ['public/**/*.html'],
   },
 
   // Source maps for dev mode
