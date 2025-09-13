@@ -1,4 +1,4 @@
-import { getRandomInt } from '../../util/get-random-int.js';
+import { getRandomInt } from '../util/get-random-int.js';
 
 const sectionEl = document.getElementById('retrofuturism');
 const loadingBarDiv = sectionEl.querySelector('#loading-bar');

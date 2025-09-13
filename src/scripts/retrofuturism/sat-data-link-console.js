@@ -1,4 +1,4 @@
-import { getRandomInt } from '../../util/get-random-int.js';
+import { getRandomInt } from '../util/get-random-int.js';
 import { EventTypes } from './consts.js';
 
 const sectionEl = document.getElementById('retrofuturism');

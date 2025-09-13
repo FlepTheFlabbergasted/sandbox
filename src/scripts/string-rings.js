@@ -1,7 +1,7 @@
-import { getRandomInt } from '../util/get-random-int.js';
-import { htmlToNode } from '../util/html-to-nodes.js';
-import { mapValue } from '../util/map-value.js';
-import { throttle } from '../util/throttle.js';
+import { getRandomInt } from './util/get-random-int.js';
+import { htmlToNode } from './util/html-to-nodes.js';
+import { mapValue } from './util/map-value.js';
+import { throttle } from './util/throttle.js';
 
 const sectionEl = document.getElementById('string-rings');
 

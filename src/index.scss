@@ -11,11 +11,14 @@
 @use 'styles/retrofuturism.scss';
 @use 'styles/helldivers-2-alerts.scss';
 @use 'styles/dotted-background.scss';
-@use 'styles/spacings';
-@use 'styles/flex-utility-classes';
 @use 'styles/two-titles-with-a-line-between-them';
 @use 'styles/test';
 @use 'styles/compare-image-delta-e';
+
+// Util style sheets
+@use 'styles/util/flex-utility-classes';
+@use 'styles/util/spacings';
+@use 'styles/util/mixin-breakpoint';
 
 /* -------------------------------- */
 /*            Variables             */
