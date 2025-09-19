@@ -1,3 +1,4 @@
+import './scripts/filter-table.js;';
 import PanelSnap from 'panelsnap';
 import './scripts/compare-image-delta-e.js';
 import './scripts/infinite-well.js';

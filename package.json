@@ -8,7 +8,8 @@
     "prebuild": "rm -rf dist/",
     "build": "cross-env NODE_ENV=production webpack --config webpack.config.js --mode production",
     "serve": "webpack serve --config webpack.config.js --mode development --port 5200",
-    "create-section": "node create-section.js"
+    "create-section": "node create-section.js",
+    "postcreate-section": "npx prettier . --write"
   },
   "keywords": [],
   "author": "",
