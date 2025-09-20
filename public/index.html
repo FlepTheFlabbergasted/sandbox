@@ -324,7 +324,7 @@
     </section>
 
     <!---------- Phone Scroll ---------->
-    <section class="center-content" id="phone-scroll">
+    <section class="d-flex flex-row flex-justify-center flex-items-center" id="phone-scroll">
       <!-- https://www.plantcss.com/blog/how-to-make-rounded-corners-when-using-css-clip-path -->
       <svg class="svg-rounded-corners">
         <defs>
@@ -357,7 +357,7 @@
     </section>
 
     <!---------- Tinder Template ---------->
-    <section class="center-content" id="tinder-template">
+    <section class="d-flex flex-row flex-justify-center flex-items-center" id="tinder-template">
       <div class="app-window">
         <div class="fade-out-wrapper"></div>
         <div class="banner heading box">
@@ -415,7 +415,7 @@
     </section>
 
     <!---------- Border Animation ---------->
-    <section class="center-content" id="border-animation">
+    <section class="d-flex flex-row flex-justify-center flex-items-center" id="border-animation">
       <div class="card">
         <!-- <div class="debug-line-1"></div>
         <div class="debug-line-2"></div>
@@ -447,10 +447,10 @@
         </div>
       </div>
 
-      <div class="content-container center-content">
-        <div class="content-card center-content">
+      <div class="content-container d-flex flex-row flex-justify-center flex-items-center">
+        <div class="content-card d-flex flex-row flex-justify-center flex-items-center">
           <div class="cover-up">
-            <div id="content" class="center-content">
+            <div id="content" class="d-flex flex-row flex-justify-center flex-items-center">
               <h2>- Content goes here -</h2>
             </div>
           </div>
@@ -464,8 +464,8 @@
     </section>
 
     <!---------- Hexagons ---------->
-    <section id="hexagons" class="center-content">
-      <div class="container center-content">
+    <section id="hexagons" class="d-flex flex-row flex-justify-center flex-items-center">
+      <div class="container d-flex flex-row flex-justify-center flex-items-center">
         <div
           class="hexagon"
           style="background-image: url('https://assets.codepen.io/1506195/unsplash-music-0.avif')"
@@ -502,7 +502,7 @@
     </section>
 
     <!---------- String Rings ---------->
-    <section id="string-rings" class="center-content">
+    <section id="string-rings" class="d-flex flex-row flex-justify-center flex-items-center">
       <div id="corner-gradient-overlay"></div>
 
       <div id="ring-controls-container">
@@ -513,7 +513,7 @@
         <button id="add-ring-button" class="control-button">+</button>
       </div>
 
-      <div id="rings-container" class="center-content">
+      <div id="rings-container" class="d-flex flex-row flex-justify-center flex-items-center">
         <!-- Rings go here -->
 
         <div class="container-interactions">
@@ -546,7 +546,7 @@
     </section>
 
     <!---------- Neumorphism ---------->
-    <section id="neumorphism" class="center-content">
+    <section id="neumorphism" class="d-flex flex-row flex-justify-center flex-items-center">
       <!-- <div class="grid">
         <div class="circle"></div>
         <div class="circle"></div>
@@ -584,7 +584,10 @@
             </div>
             <div id="planet-footer" class="footer padding-h-sm-sm d-flex flex-row flex-items-center gap-xs">
               <div class="degrees"></div>
-              <div id="planet-rotation-compass" class="padding-v-xs-xs center-content">
+              <div
+                id="planet-rotation-compass"
+                class="padding-v-xs-xs d-flex flex-row flex-justify-center flex-items-center"
+              >
                 <span id="current-broadcast-tower" class="bordered padding-xxs-xs"></span>
               </div>
               <div class="degrees"></div>
@@ -734,7 +737,7 @@
     </section>
 
     <!-- Helldivers 2 Alerts -->
-    <section id="helldivers-2-alerts" class="center-content--column gap--48">
+    <section id="helldivers-2-alerts" class="d-flex flex-column flex-justify-center flex-items-center gap--48">
       <div class="alert__container yellow">
         <div contenteditable class="alert__title">Space</div>
         <div contenteditable class="alert__message">It's pretty cool</div>
@@ -747,12 +750,12 @@
     </section>
 
     <!-- Dotted Background -->
-    <section id="dotted-background" class="center-content">
+    <section id="dotted-background" class="d-flex flex-row flex-justify-center flex-items-center">
       <div class="dots"></div>
     </section>
 
     <!-- Two titles with a line between them -->
-    <section id="two-titles-with-a-line-between-them" class="center-content">
+    <section id="two-titles-with-a-line-between-them" class="d-flex flex-row flex-justify-center flex-items-center">
       <div class="container">
         <div class="container-above">
           <div class="title">Boo!</div>
@@ -764,7 +767,7 @@
     </section>
 
     <!-- Compare Image Delta E -->
-    <section id="compare-image-delta-e" class="center-content--column">
+    <section id="compare-image-delta-e" class="d-flex flex-column flex-justify-center flex-items-center">
       <p class="margin-v-x-xxs">
         Uses <a target="_blank" href="https://zschuessler.github.io/DeltaE/learn/">Delta E (ΔE)</a> to show the percived
         visual difference between two points (colors) in an image.
@@ -829,6 +832,39 @@
       </div>
     </section>
 
-    <section id="filter-table" class="center-content"></section>
+    <section id="filter-table" class="d-flex flex-column flex-justify-center flex-items-center">
+      <label for="pet-select"
+        >Choose a pet:
+
+        <select name="pets" id="pet-select">
+          <option value="" disabled>--Please choose an option--</option>
+          <option value="dog">First</option>
+          <option value="cat">Second</option>
+          <option value="hamster">Third</option>
+        </select>
+      </label>
+      <table>
+        <tr>
+          <th>Header One</th>
+          <th>Header Two</th>
+          <th>Header Three</th>
+        </tr>
+        <tr>
+          <td>First row</td>
+          <td>First row</td>
+          <td>First row</td>
+        </tr>
+        <tr>
+          <td>Second row</td>
+          <td>Second row</td>
+          <td>Second row</td>
+        </tr>
+        <tr>
+          <td>Third row</td>
+          <td>Third row</td>
+          <td>Third row</td>
+        </tr>
+      </table>
+    </section>
   </body>
 </html>

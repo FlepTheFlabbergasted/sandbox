@@ -18,7 +18,7 @@ const createScriptFile = (name) => {
 };
 
 const addScriptFileImport = (name) => {
-  const importStatement = `import './scripts/${name}.js;'\n`;
+  const importStatement = `import './scripts/${name}.js';\n`;
   prependFileWithContent(`./src/index.js`, importStatement);
 };
 
@@ -34,7 +34,7 @@ const addStyleFileImport = (name) => {
 
 const addSectionToHtmlFile = (name) => {
   const filefilePath = './public/index.html';
-  const content = `\n<section id="${name}" class="center-content"></section>\n`;
+  const content = `\n<section id="${name}" class="d-flex flex-row flex-justify-center flex-items-center"></section>\n`;
 
   const currentFileContent = fs.readFileSync(filefilePath, { encoding: 'utf8' });
   const lastIndexOfClosingBodyTag = currentFileContent.lastIndexOf('</body>');

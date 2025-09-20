@@ -1,4 +1,3 @@
-import './scripts/filter-table.js;';
 import PanelSnap from 'panelsnap';
 import './scripts/compare-image-delta-e.js';
 import './scripts/infinite-well.js';
@@ -14,7 +13,6 @@ import './scripts/retrofuturism/transmission-1-khz.js';
 import './scripts/retrofuturism/transmission-2-scan.js';
 import './scripts/side-menu.js';
 import './scripts/string-rings.js';
-
 window.addEventListener('load', () => {
   const panelSnap = new PanelSnap({
     container: document.body,

@@ -1,25 +1,24 @@
-@use 'styles/filter-table.scss';
-@use 'styles/sections.scss';
-@use 'styles/infinite-well.scss';
-@use 'styles/fancy-cards.scss';
-@use 'styles/phone-scroll.scss';
-@use 'styles/tinder-template.scss';
 @use 'styles/border-animation.scss';
-@use 'styles/side-menu.scss';
-@use 'styles/hexagons.scss';
-@use 'styles/string-rings.scss';
-@use 'styles/neumorphism.scss';
-@use 'styles/retrofuturism.scss';
-@use 'styles/helldivers-2-alerts.scss';
-@use 'styles/dotted-background.scss';
-@use 'styles/two-titles-with-a-line-between-them';
-@use 'styles/test';
 @use 'styles/compare-image-delta-e';
+@use 'styles/dotted-background.scss';
+@use 'styles/fancy-cards.scss';
+@use 'styles/helldivers-2-alerts.scss';
+@use 'styles/hexagons.scss';
+@use 'styles/infinite-well.scss';
+@use 'styles/neumorphism.scss';
+@use 'styles/phone-scroll.scss';
+@use 'styles/retrofuturism.scss';
+@use 'styles/sections.scss';
+@use 'styles/side-menu.scss';
+@use 'styles/string-rings.scss';
+@use 'styles/test';
+@use 'styles/tinder-template.scss';
+@use 'styles/two-titles-with-a-line-between-them';
 
 // Util style sheets
 @use 'styles/util/flex-utility-classes';
-@use 'styles/util/spacings';
 @use 'styles/util/mixin-breakpoint';
+@use 'styles/util/spacings';
 
 /* -------------------------------- */
 /*            Variables             */
