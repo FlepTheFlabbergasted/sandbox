@@ -25,7 +25,6 @@ export default {
       template: './public/index.html',
       inject: 'body', // Inject scripts before </body>
       base: publicPath, // <base> tag for GH Pages routing
-      filename: 'index-[hash].html',
     }),
   ],
   module: {
