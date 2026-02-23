@@ -13,6 +13,8 @@ import './scripts/retrofuturism/transmission-1-khz.js';
 import './scripts/retrofuturism/transmission-2-scan.js';
 import './scripts/side-menu.js';
 import './scripts/string-rings.js';
+import './scripts/text-shape-highlight.js';
+
 window.addEventListener('load', () => {
   const panelSnap = new PanelSnap({
     container: document.body,

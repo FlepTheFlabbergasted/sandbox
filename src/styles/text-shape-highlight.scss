@@ -1,0 +1,13 @@
+#text-shape-highlight {
+  #text-container {
+    max-width: 500px;
+    word-break: break-all;
+    line-height: 1.3em;
+  }
+
+  .highlighted {
+    color: #c8a414;
+    font-weight: bold;
+    text-shadow: 0 0 1px black;
+  }
+}

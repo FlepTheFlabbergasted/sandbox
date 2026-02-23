@@ -1,3 +1,4 @@
+@use 'styles/text-shape-highlight.scss';
 @use 'styles/border-animation.scss';
 @use 'styles/compare-image-delta-e';
 @use 'styles/dotted-background.scss';
@@ -102,13 +103,16 @@ body {
 /*             Fonts                */
 /* -------------------------------- */
 
+.font-roboto-mono {
+  font-family: 'Roboto Mono', monospace;
+  font-weight: 400;
+  font-style: normal;
+}
 .font-roboto-regular {
   font-family: 'Roboto', sans-serif;
   font-weight: 400;
   font-style: normal;
 }
-// <uniquifier>: Use a unique and descriptive class name
-// <weight>: Use a value from 300 to 700
 .font-quicksand-thin {
   font-family: 'Quicksand', sans-serif;
   font-optical-sizing: auto;
