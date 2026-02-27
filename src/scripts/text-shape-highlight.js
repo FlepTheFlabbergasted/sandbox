@@ -1,3 +1,5 @@
+import { getElementPropertyValue } from './util/get-element-property-value.js';
+
 const sectionEl = document.getElementById('text-shape-highlight');
 const textContainer = sectionEl.querySelector('#text-container');
 
@@ -10,16 +12,6 @@ const DRAW_SHAPE = `
 - - -
 - -
 - -`;
-
-/**
- * Requires the line-height CSS attribute to be set to a number value
- * E.g. 'line-height' can't be set to 'normal'
- */
-const getPropertyValue = (element, property) => {
-  let propertyStr = window.getComputedStyle(element).getPropertyValue(property);
-  console.log(`${property}: ${propertyStr}`);
-  return parseFloat(propertyStr);
-};
 
 const getRandomChars = (length) => {
   let result = '';
@@ -44,8 +36,8 @@ window.addEventListener('load', () => {
   const randomSymbols = getRandomChars(INITIAL_NR_CHARS);
   textContainer.innerHTML = wrap(randomSymbols, 4, 10, '<span class="highlighted">', '</span>');
 
-  const fontSize = getPropertyValue(textContainer, 'font-size');
-  const lineHeight = Math.floor(getPropertyValue(textContainer, 'line-height'));
+  const fontSize = getElementPropertyValue(textContainer, 'font-size');
+  const lineHeight = Math.floor(getElementPropertyValue(textContainer, 'line-height'));
 
   const { width, height } = textContainer.getBoundingClientRect();
   const nrColumns = Math.floor(width / fontSize);

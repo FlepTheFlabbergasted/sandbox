@@ -1,0 +1,164 @@
+@use 'sass:string';
+@use 'sass:color';
+
+// https://www.youtube.com/watch?v=7KDlPgRUm6w&list=PLDCHtNttcDy8-TyJw6uyimX0pzeaWCiIA&index=8&ab_channel=TinSleeves
+
+@font-face {
+  font-family: ocr-a-extended;
+  src: url('../public/fonts/OCR-A-EXT.ttf') format('opentype');
+}
+
+#cv-retrofuterism {
+  --primary-color: hsl(48, 82%, 43%);
+  --primary-color-op50: hsl(from var(--primary-color) h s l / 0.5);
+
+  --container-spacing: 16px;
+  --container-padding: 8px;
+  --border: 4px solid var(--primary-color);
+
+  color: var(--primary-color);
+  font-family: 'ocr-a-extended';
+  font-weight: bold;
+  font-size: 13px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: var(--container-spacing);
+
+  padding: var(--container-spacing);
+
+  .container {
+    display: flex;
+    flex-direction: column;
+
+    &__heading {
+      padding: var(--container-padding);
+      border-bottom: var(--border);
+
+      &--filled {
+        @extend .filled;
+        border: none;
+      }
+    }
+
+    &__content {
+      flex-grow: 1;
+      padding-top: var(--container-padding);
+      padding-bottom: var(--container-padding);
+    }
+
+    &--bordered {
+      border: var(--border);
+
+      .container__content {
+        overflow: hidden;
+        padding: var(--container-padding);
+      }
+    }
+  }
+
+  .filled {
+    color: var(--color-background) !important;
+    background: var(--primary-color) !important;
+
+    &--pale {
+      color: var(--color-background) !important;
+      background: var(--primary-color-op50) !important;
+    }
+  }
+
+  #left,
+  #system {
+    max-width: 250px;
+  }
+
+  #left {
+    display: flex;
+    flex-direction: column;
+    gap: var(--container-spacing);
+  }
+
+  #console-container {
+    width: 100%;
+    max-width: 50dvw;
+
+    #console {
+      height: 100%;
+
+      overflow-y: scroll;
+      scrollbar-width: none; // Firefox, Safari 18.2+, Chromium 121+
+      &::-webkit-scrollbar {
+        display: none; // Older Safari and Chromium
+      }
+
+      .console-text {
+        overflow: hidden;
+        white-space: pre;
+        animation: typing calc(var(--anim-time) * 1ms) steps(var(--nr-chars), end);
+
+        &:empty {
+          height: 1em;
+        }
+
+        @keyframes typing {
+          from {
+            width: 0;
+          }
+          to {
+            // Works because the OCR-A font is monospaced
+            width: calc(var(--nr-chars) * 1ch);
+          }
+        }
+      }
+    }
+  }
+
+  #lines-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 2;
+
+    background: linear-gradient(
+      hsl(from var(--primary-color) h s l / 0.08),
+      hsl(from var(--primary-color) h s l / 0.08) 3px,
+      transparent 3px,
+      transparent 9px
+    );
+    background-size: 100% 7px;
+    // animation: pan-overlay 60s infinite linear;
+
+    // @keyframes pan-overlay {
+    //   from {
+    //     background-position: 0% 0%;
+    //   }
+    //   to {
+    //     background-position: 0% -100%;
+    //   }
+    // }
+  }
+
+  #noise-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 3;
+
+    opacity: 0.05;
+    // Instead of making your own screen dirty with sand and mud, this grainy dirty texture simulates it
+    background:
+      radial-gradient(circle at 0% 0%, var(--primary-color), transparent 30%),
+      radial-gradient(circle at 100% 0%, var(--primary-color), transparent 30%),
+      radial-gradient(circle at 0% 100%, var(--primary-color), transparent 30%),
+      radial-gradient(circle at 100% 100%, var(--primary-color), transparent 30%),
+      // https://www.svgbackgrounds.com/tools/svg-to-css/
+      url('data:image/svg+xml, <svg id="noise-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" results="turbulence" baseFrequency="5.38" numOctaves="5" stitchTiles="stitch" /><feDisplacementMap in2="turbulence" in="SourceGraphic" scale="200" xChannelSelector="R" yChannelSelector="G" /></filter><rect width="100%" height="100%" filter="url(%23noiseFilter)" /></svg>');
+  }
+}
