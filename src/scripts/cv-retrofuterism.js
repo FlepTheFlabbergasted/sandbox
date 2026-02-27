@@ -7,7 +7,7 @@ const ANIM_TIME_PER_CHAR_MS = 10;
 const TIME_BETWEEN_TEXT_BLOCKS_MIN_MS = 500;
 const TIME_BETWEEN_TEXT_BLOCKS_MAX_MS = 2000;
 
-export const EventTypes = {
+const EventTypes = {
   SatDataLinkUp: 'sat-data-link-up',
 };
 const EVENT_TRIGGER_SAT_DATA_LINK_UP_STR = '   Connection status: Secure';
@@ -21,6 +21,8 @@ const EVENTS = [
   },
 ];
 
+const PROMPT = 'fstrand_mainframe:~> <span contenteditable="plaintext-only">';
+
 export const STARTUP_TEXT_BLOCKS = [
   ['FSTRAN AG-31 Systems, BIOs v2.7', ''],
   [
@@ -29,39 +31,39 @@ export const STARTUP_TEXT_BLOCKS = [
     'Storage: 21 PB M2-SSD, 69 PB Free',
     '',
   ],
-  [
-    'Checking system integrity',
-    '  Core processor status ............ OK',
-    '  Communications array ............. OK',
-    '  Power distribution network ....... OK',
-    '',
-    'System hardware checks complete',
-    EVENT_TRIGGER_SAT_DATA_LINK_UP_STR,
-    '',
-  ],
-  [
-    'Data storage and network systems',
-    '  Data storage modules ............. OK',
-    '  Network connection status ........ OK',
-    '  Data encryption system ........... OK',
-    '',
-    'Data and network checks complete',
-    '',
-    'All systems online',
-    '',
-  ],
-  ['Initiating network modules...'],
-  ['Starting network scan...'],
-  ['Searching for suitable subject...', ''],
-  [
-    'Optimal subject found',
-    '',
-    '  STRANDBERG, FILIP',
-    '  Lead Frontend Developer',
-    '  Builder of systems. Breaker of bugs',
-    '',
-  ],
-  ['', "Type 'help' to explore available modules.", ''],
+  // [
+  //   'Checking system integrity',
+  //   '  Core processor status ............ OK',
+  //   '  Communications array ............. OK',
+  //   '  Power distribution network ....... OK',
+  //   '',
+  //   'System hardware checks complete',
+  //   EVENT_TRIGGER_SAT_DATA_LINK_UP_STR,
+  //   '',
+  // ],
+  // [
+  //   'Data storage and network systems',
+  //   '  Data storage modules ............. OK',
+  //   '  Network connection status ........ OK',
+  //   '  Data encryption system ........... OK',
+  //   '',
+  //   'Data and network checks complete',
+  //   '',
+  //   'All systems online',
+  //   '',
+  // ],
+  // ['Initiating network modules...'],
+  // ['Starting network scan...'],
+  // ['Searching for suitable subject...', ''],
+  // [
+  //   'Optimal subject found',
+  //   '',
+  //   '  STRANDBERG, FILIP',
+  //   '  Lead Frontend Developer',
+  //   '  Builder of systems. Breaker of bugs',
+  //   '',
+  // ],
+  // ['', "Type 'help' to explore available modules.", ''],
 ];
 
 export const commands = [
@@ -185,46 +187,37 @@ export const commands = [
   },
 ];
 
-const createSpanEl = (content, animTime) => {
+const createConsoleTextDiv = (text, animTime) => {
   const divEl = document.createElement('div');
 
   divEl.classList.add('console-text');
-  divEl.style.setProperty('--nr-chars', content.length);
+  divEl.style.setProperty('--nr-chars', text.length);
   divEl.style.setProperty('--anim-time', animTime);
-  divEl.innerHTML = content;
+  divEl.innerHTML = text;
 
   return divEl;
 };
 
-const appendTextRows = async (container, textRows, completeCallbackFn) => {
-  if (!textRows.length) {
-    completeCallbackFn();
-    return;
+const appendTextRows = async (container, textRows) => {
+  for (let i = 0; i < textRows.length; i++) {
+    const text = textRows[i];
+    const animTime = textRows[i].length * ANIM_TIME_PER_CHAR_MS;
+    container.appendChild(createConsoleTextDiv(text, animTime));
+
+    await timeout(animTime);
+
+    const event = EVENTS.find((event) => event.trigger === text);
+    if (event) {
+      window.dispatchEvent(new Event(event.name));
+    }
   }
-
-  const text = textRows[0];
-  const animTime = textRows[0].length * ANIM_TIME_PER_CHAR_MS;
-  container.appendChild(createSpanEl(text, animTime));
-
-  await timeout(animTime);
-
-  const event = EVENTS.find((event) => event.trigger === text);
-  if (event) {
-    window.dispatchEvent(new Event(event.name));
-  }
-
-  appendTextRows(container, textRows.slice(1), completeCallbackFn);
 };
 
 const appendTextBlocks = async (container, textBlocks) => {
-  if (!textBlocks.length) {
-    return;
+  for (let i = 0; i < textBlocks.length; i++) {
+    await appendTextRows(container, textBlocks[i]);
+    await timeout(getRandomInt(TIME_BETWEEN_TEXT_BLOCKS_MIN_MS, TIME_BETWEEN_TEXT_BLOCKS_MAX_MS));
   }
-
-  await new Promise((resolveFn) => appendTextRows(container, textBlocks[0], resolveFn));
-  await timeout(getRandomInt(TIME_BETWEEN_TEXT_BLOCKS_MIN_MS, TIME_BETWEEN_TEXT_BLOCKS_MAX_MS));
-
-  appendTextBlocks(container, textBlocks.slice(1));
 };
 
 const timeout = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -239,11 +232,23 @@ const registerEvents = (events) => {
   });
 };
 
-window.addEventListener('load', () => {
+window.addEventListener('load', async () => {
   const observer = new MutationObserver(() => scrollToBottomOfContainer(consoleDiv));
   observer.observe(consoleDiv, { childList: true });
 
   registerEvents(EVENTS);
 
-  appendTextBlocks(consoleDiv, STARTUP_TEXT_BLOCKS);
+  await appendTextBlocks(consoleDiv, STARTUP_TEXT_BLOCKS);
+
+  const promptDiv = createConsoleTextDiv(PROMPT, 0);
+  promptDiv.classList.add('prompt');
+  consoleDiv.appendChild(promptDiv);
+  const writingSpan = promptDiv.querySelector('span');
+  writingSpan.focus();
+  writingSpan.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      console.log('You wrote: ', writingSpan.innerHTML);
+    }
+  });
 });
