@@ -4,24 +4,20 @@ const sectionEl = document.getElementById('cv-retrofuterism');
 const consoleDiv = sectionEl.querySelector('#console');
 
 const ANIM_TIME_PER_CHAR_MS = 10;
-const TIME_BETWEEN_TEXT_BLOCKS_MIN_MS = 500;
-const TIME_BETWEEN_TEXT_BLOCKS_MAX_MS = 2000;
+const TIME_BETWEEN_TEXT_BLOCKS_MIN_MS = 250;
+const TIME_BETWEEN_TEXT_BLOCKS_MAX_MS = 1000;
 
-const EventTypes = {
-  SatDataLinkUp: 'sat-data-link-up',
-};
-const EVENT_TRIGGER_SAT_DATA_LINK_UP_STR = '   Connection status: Secure';
-const EVENTS = [
-  {
-    name: EventTypes.SatDataLinkUp,
-    trigger: EVENT_TRIGGER_SAT_DATA_LINK_UP_STR,
+const EVENTS_MAP = {
+  optimalSubjectFound: {
+    id: 'optimalSubjectFound',
+    trigger: 'Optimal subject found',
     callBack: () => {
       console.log('TRIGGERED');
     },
   },
-];
+};
 
-const PROMPT = 'fstrand_mainframe:~> <span contenteditable="plaintext-only">';
+const PROMPT = 'fstrand_mainframe:~> <span contenteditable="plaintext-only"></span>';
 
 export const STARTUP_TEXT_BLOCKS = [
   ['FSTRAN AG-31 Systems, BIOs v2.7', ''],
@@ -66,124 +62,158 @@ export const STARTUP_TEXT_BLOCKS = [
   // ['', "Type 'help' to explore available modules.", ''],
 ];
 
-export const commands = [
+export const COMMANDS = [
   {
-    command: 'help',
+    name: 'help',
     aliases: ['menu', 'ls'],
     response: [
-      'Available modules:',
-      '',
-      '> employment',
-      '> education',
-      '> skills',
-      '> freetime',
-      '> about',
-      '',
-      'Type a command to continue.',
+      [
+        '',
+        'Available modules:',
+        '',
+        '> employment',
+        '> education',
+        '> skills',
+        '> freetime',
+        '> about',
+        '',
+        'Type a command to continue',
+        '',
+      ],
     ],
   },
   {
-    command: 'employment',
+    name: 'employment',
     aliases: ['work', 'experience'],
     response: [
-      'Accessing employment archive...',
-      '',
-      '> hyph',
-      '> swedbank',
-      '> tieto',
-      '',
-      "Run 'open <company>' to inspect a record.",
+      [
+        '',
+        'Accessing employment archive...',
+        '',
+        '> hyph',
+        '> swedbank',
+        '> tieto',
+        '',
+        "Run 'open <company>' to inspect a record",
+        '',
+      ],
     ],
   },
   {
-    command: 'education',
+    name: 'education',
     aliases: ['studies'],
-    response: ['Loading academic records...', '', '> bachelors', '> thesis', '', "Run 'open <record>' to inspect."],
+    response: [
+      ['', 'Loading academic records...', '', '> bachelors', '> thesis', '', "Run 'open <record>' to inspect", ''],
+    ],
   },
   {
-    command: 'skills',
+    name: 'skills',
     aliases: [],
     response: [
-      'Decrypting skill matrix...',
-      '',
-      '> languages',
-      '> frameworks',
-      '> testing',
-      '> devops',
-      '> cloud',
-      '> design',
-      '',
-      "Run 'open <category>' to expand.",
+      [
+        '',
+        'Decrypting skill matrix...',
+        '',
+        '> languages',
+        '> frameworks',
+        '> testing',
+        '> devops',
+        '> cloud',
+        '> design',
+        '',
+        "Run 'open <category>' to expand",
+        '',
+      ],
     ],
   },
   {
-    command: 'freetime',
+    name: 'freetime',
     aliases: ['extracurricular'],
     response: [
-      'Loading extracurricular modules...',
-      '',
-      '> theater.exe',
-      '> creative_collab.sys',
-      '> absurd_humor.dll',
-      '',
-      'Because engineers contain multitudes.',
+      [
+        '',
+        'Loading extracurricular modules...',
+        '',
+        '> theater.exe',
+        '> creative_collab.sys',
+        '> absurd_humor.dll',
+        '',
+        'Because engineers contain multitudes',
+        '',
+      ],
     ],
   },
   {
-    command: 'about',
+    name: 'about',
     aliases: ['whoami'],
     response: [
-      'Querying personality core...',
-      '',
-      'Problem solver.',
-      'Systems thinker.',
-      'Calm under pressure.',
-      'Curious by default.',
-      '',
-      'Currently building the future, one deploy at a time.',
+      [
+        '',
+        'Querying personality core...',
+        '',
+        'Problem solver.',
+        'Systems thinker.',
+        'Calm under pressure.',
+        'Curious by default.',
+        '',
+        'Currently building the future, one deploy at a time',
+        '',
+      ],
     ],
   },
   {
-    command: 'contact',
+    name: 'contact',
     aliases: ['ping', 'connect'],
     response: [
-      'Opening communication channels...',
-      '',
-      'LinkedIn: <your-link>',
-      'GitHub: <your-link>',
-      'Email: <your-email>',
-      '',
-      'Awaiting transmission.',
+      [
+        '',
+        'Opening communication channels...',
+        '',
+        'LinkedIn: <your-link>',
+        'GitHub: <your-link>',
+        'Email: <your-email>',
+        '',
+        'Awaiting transmission',
+        '',
+      ],
     ],
   },
   {
-    command: 'sudo hire filip',
+    name: 'sudo hire filip',
     aliases: ['hire'],
     response: [
-      'Permission granted.',
-      '',
-      'Welcome aboard.',
-      'Initiating legendary mode...',
-      '',
-      'Productivity boost: +300%',
+      [
+        '',
+        'Permission granted.',
+        '',
+        'Welcome aboard.',
+        'Initiating legendary mode...',
+        '',
+        'Productivity boost: +300%',
+        '',
+      ],
     ],
   },
   {
-    command: 'coffee --boost',
+    name: 'coffee --boost',
     aliases: ['coffee'],
     response: [
-      'Injecting caffeine...',
-      '',
-      'Focus increased.',
-      'Debugging speed improved.',
-      '',
-      'Warning: May refactor entire codebase.',
+      [
+        '',
+        'Injecting caffeine...',
+        '',
+        'Focus increased.',
+        'Debugging speed improved.',
+        '',
+        'Warning: May refactor entire codebase.',
+        '',
+      ],
     ],
   },
   {
-    command: 'konami',
+    name: 'konami',
     aliases: [],
-    response: ['↑ ↑ ↓ ↓ ← → ← → B A', '', '🚀 RETROFUTURE MODE ACTIVATED', '', 'Neon levels: MAXIMUM'],
+    response: [['', '↑ ↑ ↓ ↓ ← → ← → B A', '', '🚀 RETROFUTURE MODE ACTIVATED', '', 'Neon levels: MAXIMUM', '']],
   },
 ];
 
@@ -206,7 +236,7 @@ const appendTextRows = async (container, textRows) => {
 
     await timeout(animTime);
 
-    const event = EVENTS.find((event) => event.trigger === text);
+    const event = Object.entries(EVENTS_MAP).find((_key, { trigger }) => trigger === text);
     if (event) {
       window.dispatchEvent(new Event(event.name));
     }
@@ -220,14 +250,66 @@ const appendTextBlocks = async (container, textBlocks) => {
   }
 };
 
+const printPrompt = () => {
+  const promptDiv = createConsoleTextDiv(PROMPT, 0);
+  promptDiv.classList.add('prompt');
+  consoleDiv.appendChild(promptDiv);
+  const writingSpan = promptDiv.querySelector('span');
+  writingSpan.focus();
+
+  const keyDownEventFn = async (event) => {
+    switch (event.key) {
+      case 'Enter':
+        event.preventDefault();
+        // TODO: Add to history
+        const text = writingSpan.innerHTML;
+
+        if (!text) {
+          // TODO: Print prompt again
+          console.log('asdsdfdsf');
+          writingSpan.removeEventListener('keydown', keyDownEventFn);
+          printPrompt();
+          return;
+        }
+
+        console.log('You wrote: ', text);
+        writingSpan.setAttribute('contenteditable', false);
+        const command = COMMANDS.find(
+          (command) => command.name === text || command.aliases.find((alias) => alias === text)
+        );
+
+        if (command) {
+          writingSpan.removeEventListener('keydown', keyDownEventFn);
+          await appendTextBlocks(consoleDiv, command.response);
+          printPrompt();
+        } else {
+          console.log('nope');
+          writingSpan.removeEventListener('keydown', keyDownEventFn);
+          printPrompt();
+        }
+        break;
+      case 'ArrowUp':
+        event.preventDefault();
+        // TODO: History back
+        break;
+      case 'ArrowDown':
+        event.preventDefault();
+        // TODO: History forward
+        break;
+    }
+  };
+
+  writingSpan.addEventListener('keydown', keyDownEventFn);
+};
+
 const timeout = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const scrollToBottomOfContainer = (container) => {
   container.scrollTop = container.scrollHeight - container.clientHeight;
 };
 
-const registerEvents = (events) => {
-  events.forEach((event) => {
+const registerEvents = (eventsMap) => {
+  Object.values(eventsMap).forEach((event) => {
     window.addEventListener(event.name, event.callBack);
   });
 };
@@ -236,19 +318,9 @@ window.addEventListener('load', async () => {
   const observer = new MutationObserver(() => scrollToBottomOfContainer(consoleDiv));
   observer.observe(consoleDiv, { childList: true });
 
-  registerEvents(EVENTS);
+  registerEvents(EVENTS_MAP);
 
   await appendTextBlocks(consoleDiv, STARTUP_TEXT_BLOCKS);
 
-  const promptDiv = createConsoleTextDiv(PROMPT, 0);
-  promptDiv.classList.add('prompt');
-  consoleDiv.appendChild(promptDiv);
-  const writingSpan = promptDiv.querySelector('span');
-  writingSpan.focus();
-  writingSpan.addEventListener('keydown', (event) => {
-    if (event.key === 'Enter') {
-      event.preventDefault();
-      console.log('You wrote: ', writingSpan.innerHTML);
-    }
-  });
+  printPrompt();
 });

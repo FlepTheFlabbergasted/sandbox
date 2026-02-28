@@ -45,8 +45,8 @@ window.addEventListener('load', () => {
 
   const howManyCharsIsLeftToFillTheLastLine = INITIAL_NR_CHARS - nrColumns * nrRows;
 
-  console.log({ fontSize, lineHeight, nrColumns, nrRows });
-  console.log({ howManyCharsShouldBeAbleToFitOnOneLine: howManyCharsIsLeftToFillTheLastLine });
+  // console.log({ fontSize, lineHeight, nrColumns, nrRows });
+  // console.log({ howManyCharsShouldBeAbleToFitOnOneLine: howManyCharsIsLeftToFillTheLastLine });
 });
 
 window.addEventListener('resize', () => {
