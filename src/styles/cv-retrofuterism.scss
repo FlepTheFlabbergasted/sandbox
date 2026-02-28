@@ -102,7 +102,11 @@
         }
 
         &.prompt {
+          white-space: normal;
+
           [contenteditable='plaintext-only'] {
+            line-break: anywhere;
+
             caret-color: var(--primary-color);
             caret-shape: block;
             border: none;

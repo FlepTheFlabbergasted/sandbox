@@ -250,56 +250,64 @@ const appendTextBlocks = async (container, textBlocks) => {
   }
 };
 
-const printPrompt = () => {
-  const promptDiv = createConsoleTextDiv(PROMPT, 0);
+const printPrompt = async (container) => {
+  const animTime = 20 * ANIM_TIME_PER_CHAR_MS;
+  const promptDiv = createConsoleTextDiv(PROMPT, animTime);
+
   promptDiv.classList.add('prompt');
-  consoleDiv.appendChild(promptDiv);
+  container.appendChild(promptDiv);
+
   const writingSpan = promptDiv.querySelector('span');
+  writingSpan.addEventListener('keydown', (event) => onPromptKeyDownEventFn(event, container, writingSpan));
+
+  await timeout(animTime);
   writingSpan.focus();
+};
 
-  const keyDownEventFn = async (event) => {
-    switch (event.key) {
-      case 'Enter':
-        event.preventDefault();
-        // TODO: Add to history
-        const text = writingSpan.innerHTML;
+const completePrompt = (element) => {
+  element.setAttribute('contenteditable', false);
+  element.removeEventListener('keydown', onPromptKeyDownEventFn);
+};
 
-        if (!text) {
-          // TODO: Print prompt again
-          console.log('asdsdfdsf');
-          writingSpan.removeEventListener('keydown', keyDownEventFn);
-          printPrompt();
-          return;
-        }
+const onPromptKeyDownEventFn = async (event, container, element) => {
+  switch (event.key) {
+    case 'Enter':
+      event.preventDefault();
+      // TODO: Add to history
+      const text = element.innerText;
 
-        console.log('You wrote: ', text);
-        writingSpan.setAttribute('contenteditable', false);
-        const command = COMMANDS.find(
-          (command) => command.name === text || command.aliases.find((alias) => alias === text)
-        );
+      if (!text) {
+        completePrompt(element);
+        printPrompt(container);
+        return;
+      }
 
-        if (command) {
-          writingSpan.removeEventListener('keydown', keyDownEventFn);
-          await appendTextBlocks(consoleDiv, command.response);
-          printPrompt();
-        } else {
-          console.log('nope');
-          writingSpan.removeEventListener('keydown', keyDownEventFn);
-          printPrompt();
-        }
-        break;
-      case 'ArrowUp':
-        event.preventDefault();
-        // TODO: History back
-        break;
-      case 'ArrowDown':
-        event.preventDefault();
-        // TODO: History forward
-        break;
-    }
-  };
+      console.log('You wrote: ', text);
+      completePrompt(element);
 
-  writingSpan.addEventListener('keydown', keyDownEventFn);
+      const command = COMMANDS.find(
+        (command) => command.name === text || command.aliases.find((alias) => alias === text)
+      );
+
+      if (command) {
+        completePrompt(element);
+        await appendTextBlocks(consoleDiv, command.response);
+        printPrompt(container);
+      } else {
+        console.log('nope');
+        completePrompt(element);
+        printPrompt(container);
+      }
+      break;
+    case 'ArrowUp':
+      event.preventDefault();
+      // TODO: History back
+      break;
+    case 'ArrowDown':
+      event.preventDefault();
+      // TODO: History forward
+      break;
+  }
 };
 
 const timeout = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -320,7 +328,16 @@ window.addEventListener('load', async () => {
 
   registerEvents(EVENTS_MAP);
 
+  consoleDiv.addEventListener('click', (event) => {
+    event.stopPropagation();
+
+    if (!window.getSelection()?.toString()) {
+      const writingSpan = consoleDiv.querySelector('span[contenteditable="plaintext-only"]');
+      writingSpan?.focus();
+    }
+  });
+
   await appendTextBlocks(consoleDiv, STARTUP_TEXT_BLOCKS);
 
-  printPrompt();
+  printPrompt(consoleDiv);
 });
