@@ -92,32 +92,36 @@
     height: 100%;
 
     // ========= No Scroll =========
-    // overflow: hidden;
-    // scrollbar-width: none; // Firefox, Safari 18.2+, Chromium 121+
-    // &::-webkit-scrollbar {
-    //   display: none; // Older Safari and Chromium
-    // }
+    overflow: hidden;
+    scrollbar-width: none; // Firefox, Safari 18.2+, Chromium 121+
+    &::-webkit-scrollbar {
+      display: none; // Older Safari and Chromium
+    }
     // =========================
 
     // ========= Scroll =========
-    overflow-y: auto;
-    overflow-x: hidden;
-    &::-webkit-scrollbar {
-      width: 8px;
-      height: 8px;
-      background-color: transparent;
-      border-top: 2px solid var(--primary-color);
-      border-bottom: 2px solid var(--primary-color);
-    }
-    &::-webkit-scrollbar-track-piece {
-      background-color: var(--primary-color);
-      border: 3px solid transparent;
-      background-clip: content-box;
-      border-top: 1px solid var(--primary-color);
-      border-bottom: 1px solid var(--primary-color);
-    }
-    &::-webkit-scrollbar-thumb {
-      background-color: var(--primary-color);
+    @supports selector(::-webkit-scrollbar) {
+      scrollbar-width: auto;
+      overflow: hidden auto;
+
+      &::-webkit-scrollbar {
+        display: block;
+        width: 8px;
+        height: 8px;
+        background-color: transparent;
+        border-top: 2px solid var(--primary-color);
+        border-bottom: 2px solid var(--primary-color);
+      }
+      &::-webkit-scrollbar-track-piece {
+        background-color: var(--primary-color);
+        border: 3px solid transparent;
+        background-clip: content-box;
+        border-top: 1px solid var(--primary-color);
+        border-bottom: 1px solid var(--primary-color);
+      }
+      &::-webkit-scrollbar-thumb {
+        background-color: var(--primary-color);
+      }
     }
     // =========================
 
