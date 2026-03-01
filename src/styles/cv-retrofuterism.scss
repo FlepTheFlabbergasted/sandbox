@@ -79,50 +79,78 @@
     gap: var(--container-spacing);
   }
 
-  #console-container {
+  #subject-data-container {
+    display: none;
+  }
+
+  #main-console-container {
     width: 100%;
     max-width: 50dvw;
+  }
 
-    #console {
-      height: 100%;
+  .console {
+    height: 100%;
 
-      overflow-y: scroll;
-      scrollbar-width: none; // Firefox, Safari 18.2+, Chromium 121+
-      &::-webkit-scrollbar {
-        display: none; // Older Safari and Chromium
+    // ========= No Scroll =========
+    // overflow: hidden;
+    // scrollbar-width: none; // Firefox, Safari 18.2+, Chromium 121+
+    // &::-webkit-scrollbar {
+    //   display: none; // Older Safari and Chromium
+    // }
+    // =========================
+
+    // ========= Scroll =========
+    overflow-y: auto;
+    overflow-x: hidden;
+    &::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+      background-color: transparent;
+      border-top: 2px solid var(--primary-color);
+      border-bottom: 2px solid var(--primary-color);
+    }
+    &::-webkit-scrollbar-track-piece {
+      background-color: var(--primary-color);
+      border: 3px solid transparent;
+      background-clip: content-box;
+      border-top: 1px solid var(--primary-color);
+      border-bottom: 1px solid var(--primary-color);
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: var(--primary-color);
+    }
+    // =========================
+
+    .console-text {
+      overflow: hidden;
+      white-space: pre;
+      animation: typing calc(var(--anim-time) * 1ms) steps(var(--nr-chars), end);
+
+      &:empty {
+        height: 1em;
       }
 
-      .console-text {
-        overflow: hidden;
-        white-space: pre;
-        animation: typing calc(var(--anim-time) * 1ms) steps(var(--nr-chars), end);
+      &.prompt {
+        white-space: normal;
 
-        &:empty {
-          height: 1em;
+        [contenteditable='plaintext-only'] {
+          line-break: anywhere;
+
+          caret-color: var(--primary-color);
+          caret-shape: block;
+          border: none;
+          outline: none;
+          box-shadow: none;
         }
+      }
 
-        &.prompt {
-          white-space: normal;
-
-          [contenteditable='plaintext-only'] {
-            line-break: anywhere;
-
-            caret-color: var(--primary-color);
-            caret-shape: block;
-            border: none;
-            outline: none;
-            box-shadow: none;
-          }
+      @keyframes typing {
+        from {
+          width: 0;
         }
-
-        @keyframes typing {
-          from {
-            width: 0;
-          }
-          to {
-            // Works because the OCR-A font is monospaced
-            width: calc(var(--nr-chars) * 1ch);
-          }
+        to {
+          // Works because the OCR-A font is monospaced
+          width: calc(var(--nr-chars) * 1ch);
         }
       }
     }

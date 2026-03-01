@@ -1,23 +1,46 @@
 import { getRandomInt } from './util/get-random-int.js';
 
 const sectionEl = document.getElementById('cv-retrofuterism');
-const consoleDiv = sectionEl.querySelector('#console');
+const mainConsoleEl = sectionEl.querySelector('#main-console');
+
+const subjectDataContainerEl = sectionEl.querySelector('#subject-data-container');
+const subjectDataConsoleEl = sectionEl.querySelector('#subject-data-console');
 
 const ANIM_TIME_PER_CHAR_MS = 10;
 const TIME_BETWEEN_TEXT_BLOCKS_MIN_MS = 250;
 const TIME_BETWEEN_TEXT_BLOCKS_MAX_MS = 1000;
 
+const EventTypes = {
+  OptimalSubjectFound: 'OptimalSubjectFound',
+};
 const EVENTS_MAP = {
-  optimalSubjectFound: {
-    id: 'optimalSubjectFound',
+  [EventTypes.OptimalSubjectFound]: {
+    name: EventTypes.OptimalSubjectFound,
     trigger: 'Optimal subject found',
-    callBack: () => {
+    callBack: async () => {
       console.log('TRIGGERED');
+      const subjectDataText = [
+        [
+          'Name: Filip Strandberg',
+          'Age: 31',
+          '',
+          'Profession: Lead frontend dev',
+          'Residence: Sweden',
+          '',
+          'Email: email@gmail.com',
+          'Phone: (+46)12 345 7890',
+          '',
+          'GitHub: FlepTheFlabbergasted',
+          'LinkedIn: Filip Strandberg',
+        ],
+      ];
+      subjectDataContainerEl.style.setProperty('display', 'block');
+      await appendTextBlocks(subjectDataConsoleEl, subjectDataText);
     },
   },
 };
 
-const PROMPT = 'fstrand_mainframe:~> <span contenteditable="plaintext-only"></span>';
+const PROMPT = 'fstrand_mainframe:~>&nbsp;<span contenteditable="plaintext-only"></span>';
 
 export const STARTUP_TEXT_BLOCKS = [
   ['FSTRAN AG-31 Systems, BIOs v2.7', ''],
@@ -27,39 +50,38 @@ export const STARTUP_TEXT_BLOCKS = [
     'Storage: 21 PB M2-SSD, 69 PB Free',
     '',
   ],
-  // [
-  //   'Checking system integrity',
-  //   '  Core processor status ............ OK',
-  //   '  Communications array ............. OK',
-  //   '  Power distribution network ....... OK',
-  //   '',
-  //   'System hardware checks complete',
-  //   EVENT_TRIGGER_SAT_DATA_LINK_UP_STR,
-  //   '',
-  // ],
-  // [
-  //   'Data storage and network systems',
-  //   '  Data storage modules ............. OK',
-  //   '  Network connection status ........ OK',
-  //   '  Data encryption system ........... OK',
-  //   '',
-  //   'Data and network checks complete',
-  //   '',
-  //   'All systems online',
-  //   '',
-  // ],
-  // ['Initiating network modules...'],
-  // ['Starting network scan...'],
-  // ['Searching for suitable subject...', ''],
-  // [
-  //   'Optimal subject found',
-  //   '',
-  //   '  STRANDBERG, FILIP',
-  //   '  Lead Frontend Developer',
-  //   '  Builder of systems. Breaker of bugs',
-  //   '',
-  // ],
-  // ['', "Type 'help' to explore available modules.", ''],
+  [
+    'Checking system integrity',
+    '  Core processor status ............ OK',
+    '  Communications array ............. OK',
+    '  Power distribution network ....... OK',
+    '',
+    'System hardware checks complete',
+    '',
+  ],
+  [
+    'Data storage and network systems',
+    '  Data storage modules ............. OK',
+    '  Network connection status ........ OK',
+    '  Data encryption system ........... OK',
+    '',
+    'Data and network checks complete',
+    '',
+    'All systems online',
+    '',
+  ],
+  ['Initiating network modules...'],
+  ['Starting network scan...'],
+  ['Searching for suitable subject...', ''],
+  [
+    EVENTS_MAP[EventTypes.OptimalSubjectFound].trigger,
+    '',
+    '  STRANDBERG, FILIP',
+    '  Lead Frontend Developer',
+    '  Builder of systems. Breaker of bugs',
+    '',
+  ],
+  ['', "Type 'help' to explore available modules.", ''],
 ];
 
 export const COMMANDS = [
@@ -236,7 +258,8 @@ const appendTextRows = async (container, textRows) => {
 
     await timeout(animTime);
 
-    const event = Object.entries(EVENTS_MAP).find((_key, { trigger }) => trigger === text);
+    const event = Object.values(EVENTS_MAP).find((event) => event.trigger === text);
+
     if (event) {
       window.dispatchEvent(new Event(event.name));
     }
@@ -291,7 +314,7 @@ const onPromptKeyDownEventFn = async (event, container, element) => {
 
       if (command) {
         completePrompt(element);
-        await appendTextBlocks(consoleDiv, command.response);
+        await appendTextBlocks(mainConsoleEl, command.response);
         printPrompt(container);
       } else {
         console.log('nope');
@@ -323,21 +346,21 @@ const registerEvents = (eventsMap) => {
 };
 
 window.addEventListener('load', async () => {
-  const observer = new MutationObserver(() => scrollToBottomOfContainer(consoleDiv));
-  observer.observe(consoleDiv, { childList: true });
+  const observer = new MutationObserver(() => scrollToBottomOfContainer(mainConsoleEl));
+  observer.observe(mainConsoleEl, { childList: true });
 
   registerEvents(EVENTS_MAP);
 
-  consoleDiv.addEventListener('click', (event) => {
+  mainConsoleEl.addEventListener('click', (event) => {
     event.stopPropagation();
 
     if (!window.getSelection()?.toString()) {
-      const writingSpan = consoleDiv.querySelector('span[contenteditable="plaintext-only"]');
+      const writingSpan = mainConsoleEl.querySelector('span[contenteditable="plaintext-only"]');
       writingSpan?.focus();
     }
   });
 
-  await appendTextBlocks(consoleDiv, STARTUP_TEXT_BLOCKS);
+  await appendTextBlocks(mainConsoleEl, STARTUP_TEXT_BLOCKS);
 
-  printPrompt(consoleDiv);
+  printPrompt(mainConsoleEl);
 });
