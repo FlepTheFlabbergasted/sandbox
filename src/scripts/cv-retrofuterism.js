@@ -30,8 +30,8 @@ const EVENTS_MAP = {
           'Email: email@gmail.com',
           'Phone: (+46)12 345 7890',
           '',
-          'GitHub: FlepTheFlabbergasted',
-          'LinkedIn: Filip Strandberg',
+          'GitHub: <a target="_blank" href="https://github.com/FlepTheFlabbergasted">FlepTheFlabbergasted</a>',
+          'LinkedIn: <a target="_blank" href="https://www.linkedin.com/in/filip-strandberg/">Filip Strandberg</a>',
         ],
       ];
       subjectDataContainerEl.style.setProperty('display', 'block');
@@ -81,7 +81,7 @@ export const STARTUP_TEXT_BLOCKS = [
     '  Builder of systems. Breaker of bugs',
     '',
   ],
-  ['', "Type 'help' to explore available modules.", ''],
+  ["Type 'help' to explore available modules.", ''],
 ];
 
 export const COMMANDS = [

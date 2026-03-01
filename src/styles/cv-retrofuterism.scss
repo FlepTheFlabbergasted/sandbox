@@ -19,7 +19,7 @@
   color: var(--primary-color);
   font-family: 'ocr-a-extended';
   font-weight: bold;
-  font-size: 13px;
+  font-size: 14px;
 
   display: flex;
   flex-direction: row;
@@ -68,6 +68,16 @@
     }
   }
 
+  a {
+    color: inherit;
+    text-decoration: underline;
+
+    &:hover {
+      @extend .filled;
+      text-decoration: none;
+    }
+  }
+
   #left,
   #system {
     max-width: 250px;
@@ -85,7 +95,7 @@
 
   #main-console-container {
     width: 100%;
-    max-width: 50dvw;
+    max-width: 35dvw;
   }
 
   .console {
