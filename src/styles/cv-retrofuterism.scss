@@ -1,7 +1,16 @@
 @use 'sass:string';
 @use 'sass:color';
 
-// https://www.youtube.com/watch?v=7KDlPgRUm6w&list=PLDCHtNttcDy8-TyJw6uyimX0pzeaWCiIA&index=8&ab_channel=TinSleeves
+@property --cpu-load {
+  syntax: '<integer>';
+  initial-value: 42;
+  inherits: false;
+}
+@property --ram-usage {
+  syntax: '<integer>';
+  initial-value: 57;
+  inherits: false;
+}
 
 @font-face {
   font-family: ocr-a-extended;
@@ -79,23 +88,60 @@
   }
 
   #left,
-  #system {
-    max-width: 250px;
+  #system-container {
+    width: 250px;
+    height: min-content;
   }
-
   #left {
     display: flex;
     flex-direction: column;
     gap: var(--container-spacing);
   }
-
   #subject-data-container {
-    display: none;
+    visibility: hidden;
   }
-
   #main-console-container {
     width: 100%;
     max-width: 35dvw;
+  }
+  #system-container {
+    height: 126px;
+    visibility: hidden;
+
+    #cpu-load {
+      animation: cpu-load 15s infinite alternate cubic-bezier(0.02, 1.33, 1, -0.14);
+      counter-reset: num var(--cpu-load);
+
+      &::after {
+        content: counter(num);
+      }
+
+      @keyframes cpu-load {
+        from {
+          --cpu-load: 42;
+        }
+        to {
+          --cpu-load: 69;
+        }
+      }
+    }
+    #ram-usage {
+      animation: ram-usage 20s infinite alternate cubic-bezier(0, 1.76, 0.53, -0.62);
+      counter-reset: num var(--ram-usage);
+
+      &::after {
+        content: counter(num);
+      }
+
+      @keyframes ram-usage {
+        from {
+          --ram-usage: 57;
+        }
+        to {
+          --ram-usage: 89;
+        }
+      }
+    }
   }
 
   .console {

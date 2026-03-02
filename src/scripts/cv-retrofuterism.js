@@ -1,4 +1,5 @@
 import { getRandomInt } from './util/get-random-int.js';
+import { Timer } from './util/timer.js';
 
 const sectionEl = document.getElementById('cv-retrofuterism');
 const mainConsoleEl = sectionEl.querySelector('#main-console');
@@ -6,20 +7,56 @@ const mainConsoleEl = sectionEl.querySelector('#main-console');
 const subjectDataContainerEl = sectionEl.querySelector('#subject-data-container');
 const subjectDataConsoleEl = sectionEl.querySelector('#subject-data-console');
 
+const systemContainerEl = sectionEl.querySelector('#system-container');
+const systemConsoleEl = sectionEl.querySelector('#system-console');
+
 const ANIM_TIME_PER_CHAR_MS = 10;
-const TIME_BETWEEN_TEXT_BLOCKS_MIN_MS = 250;
-const TIME_BETWEEN_TEXT_BLOCKS_MAX_MS = 1000;
+const TIME_BETWEEN_TEXT_BLOCKS_MIN_MS = 250; // 500
+const TIME_BETWEEN_TEXT_BLOCKS_MAX_MS = 1000; // 2000
 
 const EventTypes = {
-  OptimalSubjectFound: 'OptimalSubjectFound',
+  ShowCpuLoadAndRamUsage: 'ShowCpuLoadAndRamUsage',
+  StartUptime: 'StartUptime',
+  ShowSubjectInfo: 'ShowSubjectInfo',
 };
 const EVENTS_MAP = {
-  [EventTypes.OptimalSubjectFound]: {
-    name: EventTypes.OptimalSubjectFound,
+  [EventTypes.ShowCpuLoadAndRamUsage]: {
+    name: EventTypes.ShowCpuLoadAndRamUsage,
+    trigger: 'Checking system integrity',
+    callBack: async () => {
+      const SYSTEM_TEXT = [['CPU LOAD: <span id="cpu-load"></span>%', 'RAM USAGE: <span id="ram-usage"></span>%', '']];
+      systemContainerEl.style.setProperty('visibility', 'visible');
+      await timeout(1000);
+      appendTextBlocks(systemConsoleEl, SYSTEM_TEXT);
+    },
+  },
+  [EventTypes.StartUptime]: {
+    name: EventTypes.StartUptime,
+    trigger: 'All systems online',
+    callBack: async () => {
+      const timer = new Timer();
+      timer.start();
+      setInterval(() => {
+        const { hours, minutes, seconds } = timer.getTime();
+        const secondsStr = seconds.toString().padStart(2, '0');
+        const minutesStr = minutes.toString().padStart(2, '0');
+        const hoursStr = hours.toString().padStart(2, '0');
+        const formattedTime = `${hoursStr}:${minutesStr}:${secondsStr}`;
+
+        const uptimeEl = sectionEl.querySelector('#uptime');
+        if (uptimeEl) {
+          uptimeEl.innerText = formattedTime;
+        }
+      }, 1000);
+      const UPTIME_TEXT = [['UPTIME: <span id="uptime">00:00:00</span>', '']];
+      appendTextBlocks(systemConsoleEl, UPTIME_TEXT);
+    },
+  },
+  [EventTypes.ShowSubjectInfo]: {
+    name: EventTypes.ShowSubjectInfo,
     trigger: 'Optimal subject found',
     callBack: async () => {
-      console.log('TRIGGERED');
-      const subjectDataText = [
+      const SUBJECT_DATA_TEXT = [
         [
           'Name: Filip Strandberg',
           'Age: 31',
@@ -34,8 +71,9 @@ const EVENTS_MAP = {
           'LinkedIn: <a target="_blank" href="https://www.linkedin.com/in/filip-strandberg/">Filip Strandberg</a>',
         ],
       ];
-      subjectDataContainerEl.style.setProperty('display', 'block');
-      await appendTextBlocks(subjectDataConsoleEl, subjectDataText);
+      subjectDataContainerEl.style.setProperty('visibility', 'visible');
+      await timeout(1000);
+      appendTextBlocks(subjectDataConsoleEl, SUBJECT_DATA_TEXT);
     },
   },
 };
@@ -45,13 +83,13 @@ const PROMPT = 'fstrand_mainframe:~>&nbsp;<span contenteditable="plaintext-only"
 export const STARTUP_TEXT_BLOCKS = [
   ['FSTRAN AG-31 Systems, BIOs v2.7', ''],
   [
-    'CPU: Flep Qbit-42 XR-3250, 128 Cores, 4.20GHz',
-    'MEM: FFMeP 1337 GB Quasi-Channel DDR64 RAM, 3200 GHz',
-    'Storage: 21 PB M2-SSD, 69 PB Free',
+    'CPU: Flep XR-3250, 2 Cores, 150MHz',
+    'MEM: FFMeP 500 KB Double-Channel DDR2 RAM, 920 MHz',
+    'Storage: 25 MB Floppy 4 MB Free',
     '',
   ],
   [
-    'Checking system integrity',
+    EVENTS_MAP[EventTypes.ShowCpuLoadAndRamUsage].trigger,
     '  Core processor status ............ OK',
     '  Communications array ............. OK',
     '  Power distribution network ....... OK',
@@ -67,14 +105,14 @@ export const STARTUP_TEXT_BLOCKS = [
     '',
     'Data and network checks complete',
     '',
-    'All systems online',
+    EVENTS_MAP[EventTypes.StartUptime].trigger,
     '',
   ],
   ['Initiating network modules...'],
   ['Starting network scan...'],
   ['Searching for suitable subject...', ''],
   [
-    EVENTS_MAP[EventTypes.OptimalSubjectFound].trigger,
+    EVENTS_MAP[EventTypes.ShowSubjectInfo].trigger,
     '',
     '  STRANDBERG, FILIP',
     '  Lead Frontend Developer',
@@ -116,7 +154,7 @@ export const COMMANDS = [
         '> swedbank',
         '> tieto',
         '',
-        "Run 'open <company>' to inspect a record",
+        "Run 'open &lt;company>' to inspect a record",
         '',
       ],
     ],
@@ -125,7 +163,7 @@ export const COMMANDS = [
     name: 'education',
     aliases: ['studies'],
     response: [
-      ['', 'Loading academic records...', '', '> bachelors', '> thesis', '', "Run 'open <record>' to inspect", ''],
+      ['', 'Loading academic records...', '', '> bachelors', '> thesis', '', "Run 'open &lt;record>' to inspect", ''],
     ],
   },
   {
@@ -143,7 +181,7 @@ export const COMMANDS = [
         '> cloud',
         '> design',
         '',
-        "Run 'open <category>' to expand",
+        "Run 'open &lt;category>' to expand",
         '',
       ],
     ],
@@ -317,8 +355,8 @@ const onPromptKeyDownEventFn = async (event, container, element) => {
         await appendTextBlocks(mainConsoleEl, command.response);
         printPrompt(container);
       } else {
-        console.log('nope');
         completePrompt(element);
+        await appendTextBlocks(mainConsoleEl, [['', `Unknown command '${text}'`, '']]);
         printPrompt(container);
       }
       break;
